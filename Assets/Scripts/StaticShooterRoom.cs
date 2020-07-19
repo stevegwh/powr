@@ -11,29 +11,25 @@ namespace Valve.VR.Extras
 {
     public class StaticShooterRoom : MonoBehaviour
     {
+        public GameObject TeleportPoint;
         public Material highLightMaterial;
         private bool showAssets = true;
-        public GameObject[] AssetsToScale; // Prefabs of the assets to spawn
-        private List<GameObject> _pivotPoints;
+        private static List<GameObject> _assetsToScale = new List<GameObject>(); // Prefabs of the assets to spawn
         [SerializeField]
         private List<GameObject> scaledAssets; // The assets after instantiation
         private List<GameObject> generatedPlanes;
-        private int assetIndex;
+        private Dictionary<PlaneType, List<GameObject>> planeDictionary = new Dictionary<PlaneType, List<GameObject>>();
         private SaveLoadData saveLoadData;
 
         public GameObject Level;
         // private float floorLevel;
 
-
-
-        // [SerializeField]
-        // private SteamVR_Action_Boolean mapButton = SteamVR_Input.GetBooleanAction("CalibrateButton");
         [SerializeField]
-        private SteamVR_Action_Boolean orientateButton = SteamVR_Input.GetBooleanAction("GrabPinch");
+        private SteamVR_Action_Boolean orientateButton = SteamVR_Input.GetBooleanAction("CalibrateButton");
         [SerializeField]
         public SteamVR_Behaviour_Pose pose;
 
-        void Start()
+        void Awake()
         {
             if (pose == null)
                 pose = GetComponent<SteamVR_Behaviour_Pose>();
@@ -41,16 +37,22 @@ namespace Valve.VR.Extras
                 Debug.Log("No SteamVR_Behaviour_Pose component found on this object", this);
 
             // mapButton.AddOnStateDownListener(MapVertex, pose.inputSource);
-            orientateButton.AddOnStateDownListener(OrientateLevelButtonHandler, pose.inputSource);
+            // orientateButton.AddOnStateDownListener(OrientateLevelButtonHandler, pose.inputSource);
 
-            _pivotPoints = new List<GameObject>();
             saveLoadData = GetComponent<SaveLoadData>();
             // floorLevel = Level.transform.position.y;
             generatedPlanes = new List<GameObject>();
             scaledAssets = new List<GameObject>();
             Load();
             GeneratePivotPoints();
-            assetIndex = 0;
+            GenerateTeleportPoints();
+        }
+
+        void Start()
+        {
+            AssetController assetController = scaledAssets[1].GetComponent<AssetController>();
+            RotateLevel(assetController.AssociatedPlane, assetController.AssociatedPivotPoint);
+
         }
 
         public void ToggleShowPlanes()
@@ -58,47 +60,76 @@ namespace Valve.VR.Extras
             foreach (GameObject go in generatedPlanes) go.SetActive(!go.activeSelf);
         }
 
-        private void GenerateScaledAsset(GameObject plane, Mesh planeMesh)
+        public void OrientateLevelHandler(GameObject teleportPoint)
         {
-            GameObject assetScaled = AssetScaler.ScaleAsset(plane, planeMesh.normals[0], AssetsToScale[assetIndex], false);
-            scaledAssets.Add(assetScaled);
-            // RotateLevel(plane);
-            assetIndex++;
+            AssetController assetController = teleportPoint.transform.parent.GetComponent<AssetController>();
+            GameObject plane = assetController.AssociatedPlane;
+            GameObject pivot = assetController.AssociatedPivotPoint;
+            RotateLevel(plane, pivot); // TODO: Only using one object
         }
 
-        private void OrientateLevelButtonHandler(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
+        // Instantiates Steam VR teleport points that the user will use in order to move forward in the level.
+        // TODO: Needs to be placed on the floor properly. This can be done once we have done the code for setting the proper floor height.
+        private void GenerateTeleportPoints()
         {
-            assetIndex = assetIndex < AssetsToScale.Length - 1 ? assetIndex + 1 : 0;
-            Debug.Log(assetIndex);
-            RotateLevel(generatedPlanes[0]);
+            foreach (var asset in scaledAssets)
+            {
+                GameObject telepoint = Instantiate(TeleportPoint, asset.transform.position, asset.transform.rotation);
+                telepoint.transform.position -= asset.transform.forward;
+                telepoint.transform.parent = asset.transform;
+            }
+
         }
 
+        public static void RegisterAssetToSpawn(GameObject asset)
+        {
+            _assetsToScale.Add(asset);
+        }
+
+        // Creates a copy of the rotation/position of all the assets. This is necessary as the entire level gets rotated/moved so we need
+        // to store where the objects were originally before any transformation.
         private void GeneratePivotPoints()
         {
-            foreach (var asset in AssetsToScale)
+            foreach (var asset in scaledAssets)
             {
                 GameObject pivotPoint = new GameObject("Pivot point");
                 pivotPoint.transform.position = asset.transform.position;
                 pivotPoint.transform.rotation = asset.transform.rotation;
-                _pivotPoints.Add(pivotPoint);
+                asset.GetComponent<AssetController>().AssociatedPivotPoint = pivotPoint;
             }
         }
-
-        private void RotateLevel(GameObject planeToMoveTo)
+        private void RotateLevel(GameObject planeToMoveTo, GameObject pivotPoint)
         {
-            OrientateLevel.Orientate(planeToMoveTo, _pivotPoints[assetIndex], Level);
+            OrientateLevel.Orientate(planeToMoveTo, pivotPoint, Level);
         }
 
         private void ScaleAllAssets()
         {
             // TODO: This works on the assumption that there is an equal number of planes to assets.
             // foreach (var plane in generatedPlanes)
-            foreach (var asset in AssetsToScale)
+            foreach (var asset in _assetsToScale)
             {
                 // As plane get's passed as reference and modified in AssetScaler it's important to make a visual copy of the original plane
-                GameObject planeCopy = Instantiate(generatedPlanes[0]); // TODO: For the moment this scales every asset to one plane only.
+                AssetController assetController = asset.GetComponent<AssetController>();
+                assetController.DecideBestPlane(planeDictionary[assetController.planeType]);
+                GameObject planeCopy = Instantiate(assetController.AssociatedPlane);
                 Mesh planeMesh = planeCopy.GetComponent<MeshFilter>().mesh;
-                GenerateScaledAsset(planeCopy, planeMesh);
+                GameObject assetScaled = AssetScaler.ScaleAsset(planeCopy, planeMesh.normals[0], asset, false);
+                scaledAssets.Add(assetScaled);
+            }
+        }
+
+        private void GeneratePlaneDictionary()
+        {
+            foreach (var plane in generatedPlanes)
+            {
+                CalibrationType assetController = plane.GetComponent<CalibrationType>();
+                if (!planeDictionary.ContainsKey(assetController.planeType))
+                {
+                    planeDictionary[assetController.planeType] = new List<GameObject>();
+                }
+                planeDictionary[assetController.planeType].Add(plane);
+
             }
         }
 
@@ -108,13 +139,13 @@ namespace Valve.VR.Extras
             foreach (var go in scaledAssets) Destroy(go);
             generatedPlanes.Clear();
             scaledAssets.Clear();
-            assetIndex = 0;
         }
 
         public void Load()
         {
             ResetScene();
             saveLoadData.LoadPlanesFromFile(ref generatedPlanes);
+            GeneratePlaneDictionary();
             ScaleAllAssets();
         }
 

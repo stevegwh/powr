@@ -11,6 +11,7 @@ namespace Valve.VR.Extras
 {
     public class CalibrateRoom : MonoBehaviour
     {
+        private PlaneType _currentPlaneType { get; set; }
         private bool showAssets;
         private bool _userCanCalibrateObjects;
         public GameObject[] AssetsToScale; // Prefabs of the assets to spawn
@@ -41,7 +42,7 @@ namespace Valve.VR.Extras
         void Start()
         {
             saveLoadData = GetComponent<SaveLoadData>();
-            _userCanCalibrateObjects = true;
+            // _userCanCalibrateObjects = true;
             // floorLevel = Level.transform.position.y;
             generatedPlanes = new List<GameObject>();
             scaledAssets = new List<GameObject>();
@@ -62,6 +63,12 @@ namespace Valve.VR.Extras
 
         }
 
+        public void SetCalibrationType(CalibrationType calType)
+        {
+            _userCanCalibrateObjects = true;
+            _currentPlaneType = calType.planeType;
+        }
+
 
         public void Restart()
         {
@@ -72,7 +79,7 @@ namespace Valve.VR.Extras
         public void ToggleShowAssets()
         {
             showAssets = !showAssets;
-            foreach (GameObject go in scaledAssets) go.SetActive(!go.activeSelf);
+            // foreach (GameObject go in scaledAssets) go.SetActive(!go.activeSelf);
         }
 
         public void ToggleShowPlanes()
@@ -119,14 +126,14 @@ namespace Valve.VR.Extras
             controllerVertices.Clear();
             assetIndex = 0;
             leftMarker.SetActive(false);
+            _userCanCalibrateObjects = false;
         }
 
         public void Load()
         {
             ResetScene();
             saveLoadData.LoadPlanesFromFile(ref generatedPlanes);
-            ScaleAllAssets();
-            _userCanCalibrateObjects = false;
+            // ScaleAllAssets();
         }
 
 
@@ -168,12 +175,16 @@ namespace Valve.VR.Extras
             // rightMarker.SetActive(false);
             GameObject plane = PlaneGenerator.GeneratePlane(controllerVertices[0], controllerVertices[1]);
             Mesh planeMesh = plane.GetComponent<MeshFilter>().mesh;
-            if (AssetsToScale[assetIndex] == null) return;
+            // if (AssetsToScale[assetIndex] == null) return;
             // As plane get's passed as reference and modified in AssetScaler it's important to make a visual copy of the original plane
             GameObject planeCopy = Instantiate(plane);
+            // Assign whether the current object is a door, crate etc.
+            CalibrationType calType = planeCopy.AddComponent<CalibrationType>();
+            calType.planeType = _currentPlaneType;
             generatedPlanes.Add(planeCopy);
-            GenerateScaledAsset(plane, planeMesh);
+            // GenerateScaledAsset(plane, planeMesh);
             controllerVertices.Clear();
+            _userCanCalibrateObjects = false;
         }
 
 
@@ -181,7 +192,7 @@ namespace Valve.VR.Extras
         {
             if (controllerVertices.Count < 2 || !_userCanCalibrateObjects) return;
             FinishCalibrate();
-            if (scaledAssets.Count == AssetsToScale.Length) _userCanCalibrateObjects = false;
+            // if (scaledAssets.Count == AssetsToScale.Length) _userCanCalibrateObjects = false;
         }
     }
 }

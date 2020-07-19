@@ -26,12 +26,15 @@ public class SaveLoadData: MonoBehaviour
 
             public Vertex trVertex;
             public Vertex blVertex;
-            public PlaneData(Vector3 blVertex, Vector3 trVertex)
+            public PlaneType planeType;
+            public PlaneData(Vector3 blVertex, Vector3 trVertex, PlaneType planeType)
             {
                 this.blVertex = new Vertex(blVertex.x, blVertex.y, blVertex.z);
                 this.trVertex = new Vertex(trVertex.x, trVertex.y, trVertex.z);
+                this.planeType = planeType;
             }
         }
+
         public void SavePlanesToFile(ref List<GameObject> generatedPlanes)
         {
             // if (File.Exists(Application.persistentDataPath + "/vertexdata.dat"))
@@ -43,7 +46,8 @@ public class SaveLoadData: MonoBehaviour
             foreach (var plane in generatedPlanes)
             {
                 var vertices = plane.GetComponent<MeshFilter>().mesh.vertices;
-                toSerialize.Add(new PlaneData(plane.transform.TransformPoint(vertices[0]), plane.transform.TransformPoint(vertices[2])));
+                PlaneType planeType = plane.GetComponent<CalibrationType>().planeType;
+                toSerialize.Add(new PlaneData(plane.transform.TransformPoint(vertices[0]), plane.transform.TransformPoint(vertices[2]), planeType));
             }
             BinaryFormatter bf = new BinaryFormatter ();
             FileStream file = File.Create (Application.persistentDataPath + "/vertexdata.dat");
@@ -62,7 +66,9 @@ public class SaveLoadData: MonoBehaviour
                  {
                     Vector3 v1 = new Vector3(plane.blVertex.x, plane.blVertex.y, plane.blVertex.z);
                     Vector3 v2 = new Vector3(plane.trVertex.x, plane.trVertex.y, plane.trVertex.z);
-                    generatedPlanes.Add(PlaneGenerator.GeneratePlane(v1, v2));
+                    GameObject deserializedPlane = PlaneGenerator.GeneratePlane(v1, v2);
+                    deserializedPlane.AddComponent<CalibrationType>().planeType = plane.planeType;
+                    generatedPlanes.Add(deserializedPlane);
                  }
                  file.Close ();
              }
