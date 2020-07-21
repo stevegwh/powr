@@ -14,7 +14,6 @@ namespace Valve.VR.InteractionSystem
 	//-------------------------------------------------------------------------
 	public class CCSSTeleport : MonoBehaviour
     {
-        public StaticShooterRoom GameManager;
         public SteamVR_Action_Boolean teleportAction = SteamVR_Input.GetAction<SteamVR_Action_Boolean>("Teleport");
 
         public LayerMask traceLayerMask;
@@ -858,7 +857,7 @@ namespace Valve.VR.InteractionSystem
 
 			CCSSTeleport.PlayerPre.Send( pointedAtTeleportMarker );
 
-			GameManager.OrientateLevelHandler(pointedAtTeleportMarker.gameObject);
+			StaticShooterRoom.OrientateLevelHandler(pointedAtTeleportMarker.gameObject);
    
 			SteamVR_Fade.Start( Color.clear, currentFadeTime );
 

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Valve.VR;
@@ -11,7 +13,13 @@ namespace Valve.VR.Extras
 {
     public class StaticShooterRoom : MonoBehaviour
     {
+
+
+        public static Transition activeTransition;
+        private static bool gamePaused;
+        public static PostProcessVolume postProcessingVol;
         public GameObject TeleportPoint;
+        public GameObject TransitionPoint;
         public Material highLightMaterial;
         private bool showAssets = true;
         private static List<GameObject> _assetsToScale = new List<GameObject>(); // Prefabs of the assets to spawn
@@ -21,7 +29,7 @@ namespace Valve.VR.Extras
         private Dictionary<PlaneType, List<GameObject>> planeDictionary = new Dictionary<PlaneType, List<GameObject>>();
         private SaveLoadData saveLoadData;
 
-        public GameObject Level;
+        public static GameObject Level;
         // private float floorLevel;
 
         [SerializeField]
@@ -31,13 +39,16 @@ namespace Valve.VR.Extras
 
         void Awake()
         {
+            postProcessingVol = GameObject.Find("VRCamera").GetComponent<PostProcessVolume>(); // TODO: Find a better way
+            postProcessingVol.enabled = false;
+            Level = GameObject.Find("Level");
             if (pose == null)
                 pose = GetComponent<SteamVR_Behaviour_Pose>();
             if (pose == null)
                 Debug.Log("No SteamVR_Behaviour_Pose component found on this object", this);
 
             // mapButton.AddOnStateDownListener(MapVertex, pose.inputSource);
-            // orientateButton.AddOnStateDownListener(OrientateLevelButtonHandler, pose.inputSource);
+            orientateButton.AddOnStateDownListener(PauseGame, pose.inputSource);
 
             saveLoadData = GetComponent<SaveLoadData>();
             // floorLevel = Level.transform.position.y;
@@ -46,6 +57,11 @@ namespace Valve.VR.Extras
             Load();
             GeneratePivotPoints();
             GenerateTeleportPoints();
+        }
+
+        private void PauseGame(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
+        {
+            GetComponent<PauseGame>().GamePause();
         }
 
         void Start()
@@ -59,13 +75,19 @@ namespace Valve.VR.Extras
         {
             foreach (GameObject go in generatedPlanes) go.SetActive(!go.activeSelf);
         }
-
-        public void OrientateLevelHandler(GameObject teleportPoint)
+        public static void PauseGame(bool toggle)
+        {
+            Time.timeScale = Convert.ToInt32(toggle);
+            gamePaused = toggle;
+        }
+        public static void OrientateLevelHandler(GameObject teleportPoint)
         {
             AssetController assetController = teleportPoint.transform.parent.GetComponent<AssetController>();
             GameObject plane = assetController.AssociatedPlane;
             GameObject pivot = assetController.AssociatedPivotPoint;
-            RotateLevel(plane, pivot); // TODO: Only using one object
+            GameObject transitionPoint = plane.transform.GetChild(0).gameObject;
+            transitionPoint.SetActive(true);
+            activeTransition = new Transition(plane, pivot, transitionPoint, postProcessingVol);
         }
 
         // Instantiates Steam VR teleport points that the user will use in order to move forward in the level.
@@ -77,6 +99,21 @@ namespace Valve.VR.Extras
                 GameObject telepoint = Instantiate(TeleportPoint, asset.transform.position, asset.transform.rotation);
                 telepoint.transform.position -= asset.transform.forward;
                 telepoint.transform.parent = asset.transform;
+            }
+
+        }
+        // Generates the markers for where the player has to stand before the game will teleport to the next point
+        private void GenerateTransitionPoints()
+        {
+            foreach (var plane in generatedPlanes)
+            {
+                GameObject transitionPoint = Instantiate(TransitionPoint, plane.transform.position, Quaternion.identity);
+                transitionPoint.transform.parent = plane.transform;
+                Vector3 planeNormal = plane.GetComponent<MeshFilter>().mesh.normals[0];
+                transitionPoint.transform.rotation = Quaternion.FromToRotation(transitionPoint.transform.forward, planeNormal);
+                transitionPoint.transform.position += planeNormal/2;
+                // transitionPoint.transform.position = new Vector3(transitionPoint.transform.position.x, -0.5f, transitionPoint.transform.position.z);
+                transitionPoint.SetActive(false);
             }
 
         }
@@ -98,7 +135,7 @@ namespace Valve.VR.Extras
                 asset.GetComponent<AssetController>().AssociatedPivotPoint = pivotPoint;
             }
         }
-        private void RotateLevel(GameObject planeToMoveTo, GameObject pivotPoint)
+        public static void RotateLevel(GameObject planeToMoveTo, GameObject pivotPoint)
         {
             OrientateLevel.Orientate(planeToMoveTo, pivotPoint, Level);
         }
@@ -145,6 +182,7 @@ namespace Valve.VR.Extras
         {
             ResetScene();
             saveLoadData.LoadPlanesFromFile(ref generatedPlanes);
+            GenerateTransitionPoints();
             GeneratePlaneDictionary();
             ScaleAllAssets();
         }
