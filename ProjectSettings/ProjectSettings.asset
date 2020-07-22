@@ -327,7 +327,16 @@ PlayerSettings:
     m_Enabled: 1
     m_Devices:
     - OpenVR
+    - None
     - Oculus
+  - m_BuildTarget: XboxOne
+    m_Enabled: 1
+    m_Devices:
+    - OpenVR
+  - m_BuildTarget: PS4
+    m_Enabled: 1
+    m_Devices:
+    - OpenVR
   openGLRequireES31: 0
   openGLRequireES31AEP: 0
   openGLRequireES32: 0

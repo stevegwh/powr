@@ -23,14 +23,15 @@ namespace Valve.VR.Extras
         public Material highLightMaterial;
         private bool showAssets = true;
         private static List<GameObject> _assetsToScale = new List<GameObject>(); // Prefabs of the assets to spawn
-        [SerializeField]
-        private List<GameObject> scaledAssets; // The assets after instantiation
-        private List<GameObject> generatedPlanes;
+        // [SerializeField]
+        private static List<GameObject> scaledAssets; // The assets after instantiation
+        private static List<GameObject> generatedPlanes;
         private Dictionary<PlaneType, List<GameObject>> planeDictionary = new Dictionary<PlaneType, List<GameObject>>();
         private SaveLoadData saveLoadData;
 
         public static GameObject Level;
-        // private float floorLevel;
+        // private static float floorLevel;
+        public static GameObject FloorMarker;
 
         [SerializeField]
         private SteamVR_Action_Boolean orientateButton = SteamVR_Input.GetBooleanAction("CalibrateButton");
@@ -42,6 +43,7 @@ namespace Valve.VR.Extras
             postProcessingVol = GameObject.Find("VRCamera").GetComponent<PostProcessVolume>(); // TODO: Find a better way
             postProcessingVol.enabled = false;
             Level = GameObject.Find("Level");
+            FloorMarker = GameObject.Find("FloorMarker");
             if (pose == null)
                 pose = GetComponent<SteamVR_Behaviour_Pose>();
             if (pose == null)
@@ -51,12 +53,9 @@ namespace Valve.VR.Extras
             orientateButton.AddOnStateDownListener(PauseGame, pose.inputSource);
 
             saveLoadData = GetComponent<SaveLoadData>();
-            // floorLevel = Level.transform.position.y;
             generatedPlanes = new List<GameObject>();
             scaledAssets = new List<GameObject>();
             Load();
-            GeneratePivotPoints();
-            GenerateTeleportPoints();
         }
 
         private void PauseGame(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
@@ -68,12 +67,16 @@ namespace Valve.VR.Extras
         {
             AssetController assetController = scaledAssets[1].GetComponent<AssetController>();
             RotateLevel(assetController.AssociatedPlane, assetController.AssociatedPivotPoint);
-
+            // SetFloorLevel();
         }
 
-        public void ToggleShowPlanes()
+        public static void ToggleShowPlanes()
         {
-            foreach (GameObject go in generatedPlanes) go.SetActive(!go.activeSelf);
+            foreach (GameObject go in generatedPlanes)
+            {
+                MeshRenderer renderer = go.GetComponent<MeshRenderer>();
+                renderer.enabled = !renderer.enabled;
+            }
         }
         public static void PauseGame(bool toggle)
         {
@@ -87,7 +90,7 @@ namespace Valve.VR.Extras
             GameObject pivot = assetController.AssociatedPivotPoint;
             GameObject transitionPoint = plane.transform.GetChild(0).gameObject;
             transitionPoint.SetActive(true);
-            activeTransition = new Transition(plane, pivot, transitionPoint, postProcessingVol);
+            activeTransition = new Transition(plane, pivot, transitionPoint, postProcessingVol, Level);
         }
 
         // Instantiates Steam VR teleport points that the user will use in order to move forward in the level.
@@ -96,9 +99,10 @@ namespace Valve.VR.Extras
         {
             foreach (var asset in scaledAssets)
             {
-                GameObject telepoint = Instantiate(TeleportPoint, asset.transform.position, asset.transform.rotation);
-                telepoint.transform.position -= asset.transform.forward;
+                GameObject telepoint = Instantiate(TeleportPoint);
                 telepoint.transform.parent = asset.transform;
+                telepoint.transform.position = new Vector3(asset.transform.position.x, 0, asset.transform.position.z);
+                telepoint.transform.position -= asset.transform.forward;
             }
 
         }
@@ -112,10 +116,9 @@ namespace Valve.VR.Extras
                 Vector3 planeNormal = plane.GetComponent<MeshFilter>().mesh.normals[0];
                 transitionPoint.transform.rotation = Quaternion.FromToRotation(transitionPoint.transform.forward, planeNormal);
                 transitionPoint.transform.position += planeNormal/2;
-                // transitionPoint.transform.position = new Vector3(transitionPoint.transform.position.x, -0.5f, transitionPoint.transform.position.z);
+                transitionPoint.transform.position = new Vector3(transitionPoint.transform.position.x, 0.02f, transitionPoint.transform.position.z);
                 transitionPoint.SetActive(false);
             }
-
         }
 
         public static void RegisterAssetToSpawn(GameObject asset)
@@ -142,8 +145,6 @@ namespace Valve.VR.Extras
 
         private void ScaleAllAssets()
         {
-            // TODO: This works on the assumption that there is an equal number of planes to assets.
-            // foreach (var plane in generatedPlanes)
             foreach (var asset in _assetsToScale)
             {
                 // As plane get's passed as reference and modified in AssetScaler it's important to make a visual copy of the original plane
@@ -170,6 +171,28 @@ namespace Valve.VR.Extras
             }
         }
 
+        private static void SetFloorLevel()
+        {
+            float floorLevel = 0.172f;
+            Dictionary<GameObject, Transform> assetParentDictionary = new Dictionary<GameObject, Transform>();
+            // Deparent all assets from the Level
+            foreach (var asset in scaledAssets)
+            {
+                assetParentDictionary[asset] = asset.transform.parent;
+                asset.transform.parent = null;
+            }
+
+            Vector3 previousPos = FloorMarker.transform.position;
+            Level.transform.parent = FloorMarker.transform;
+            FloorMarker.transform.position = new Vector3(0, FloorMarker.transform.position.y + floorLevel, 0);
+            Level.transform.parent = null;
+            FloorMarker.transform.position = previousPos;
+            foreach (var asset in scaledAssets)
+            {
+                asset.transform.parent = assetParentDictionary[asset];
+            }
+        }
+
         private void ResetScene()
         {
             foreach (var go in generatedPlanes) Destroy(go);
@@ -182,9 +205,13 @@ namespace Valve.VR.Extras
         {
             ResetScene();
             saveLoadData.LoadPlanesFromFile(ref generatedPlanes);
+            // Level.transform.position = new Vector3(0, floorLevel, 0);
             GenerateTransitionPoints();
             GeneratePlaneDictionary();
             ScaleAllAssets();
+            GeneratePivotPoints();
+            GenerateTeleportPoints();
+            ToggleShowPlanes();
         }
 
 

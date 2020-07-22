@@ -18,10 +18,10 @@ TagManager:
   - PostProcessing
   - Player
   - RoomTransitionPoint
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - EnemyBullet
+  - PlayerBullet
+  - WallsFloor
   - 
   - 
   - 

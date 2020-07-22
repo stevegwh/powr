@@ -6,18 +6,19 @@ using Valve.VR;
 public class Gun : MonoBehaviour
 {
     public GameObject bullet;
+    public GameObject explosion;
     public Transform fireNozzle;
-    private float bulletSpeed;
-    private List<Rigidbody> bullets = new List<Rigidbody>();
+    private AudioSource audioSource;
 
     [SerializeField]
     private SteamVR_Action_Boolean fireButton = SteamVR_Input.GetBooleanAction("InteractUI");
     [SerializeField]
     public SteamVR_Behaviour_Pose pose;
 
+    // TODO: This shoots without you holding a gun
     void Start()
     {
-        bulletSpeed = 20f;
+        audioSource = GetComponent<AudioSource>();
         if (pose == null)
             pose = GetComponent<SteamVR_Behaviour_Pose>();
         if (pose == null)
@@ -28,17 +29,12 @@ public class Gun : MonoBehaviour
 
     private void Fire(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
-        Rigidbody rb = Instantiate(bullet, fireNozzle.position, fireNozzle.rotation).GetComponent<Rigidbody>();
-        bullets.Add(rb);
-
-    }
-
-    void Update()
-    {
-        foreach (var rb in bullets)
-        {
-            rb.velocity = rb.transform.forward * bulletSpeed;
-        }
+        GameObject go = Instantiate(bullet, fireNozzle.position, fireNozzle.rotation);
+        Bullet b = go.GetComponent<Bullet>();
+        b.SetBulletLayer(13);
+        b.Explosion = explosion;
+        audioSource.Play();
+        Destroy(go, 5f);
     }
 
 }

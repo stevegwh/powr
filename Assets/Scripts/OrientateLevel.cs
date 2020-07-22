@@ -11,6 +11,7 @@ public class OrientateLevel : MonoBehaviour
     {
         // Reset level's orientation and position from any previous transformations
         pivotPoint.transform.parent = null; // Might be unnecessary 
+        // level.transform.position = new Vector3(0, floorLevel, 0);
         level.transform.position = Vector3.zero;
         level.transform.rotation = Quaternion.identity;
         // Parent level to the pivot point
