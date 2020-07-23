@@ -16,8 +16,8 @@ GameObject:
   - component: {fileID: 2659877044585237232}
   - component: {fileID: 349419004768722231}
   - component: {fileID: 2352790425002366010}
-  - component: {fileID: 2815969721942084421}
-  m_Layer: 13
+  - component: {fileID: 6667955250219310962}
+  m_Layer: 12
   m_Name: enemy_shot_prefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 7.5283346
   m_Center: {x: 0, y: 0, z: 2.0493221}
---- !u!114 &2815969721942084421
+--- !u!114 &6667955250219310962
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -215,6 +215,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2659877044575219804}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f6cf798f06ef9ea4aa6ba134223decd8, type: 3}
+  m_Script: {fileID: 11500000, guid: d649f2db1caa97c4aac1a3d887f4dbdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Explosion: {fileID: 0}

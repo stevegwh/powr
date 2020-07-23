@@ -13,9 +13,8 @@ namespace Valve.VR.Extras
 {
     public class StaticShooterRoom : MonoBehaviour
     {
-
-
         public static Transition activeTransition;
+        private static AudioSource _audioSource;
         private static bool gamePaused;
         public static PostProcessVolume postProcessingVol;
         public GameObject TeleportPoint;
@@ -40,6 +39,7 @@ namespace Valve.VR.Extras
 
         void Awake()
         {
+            _audioSource = GetComponent<AudioSource>();
             postProcessingVol = GameObject.Find("VRCamera").GetComponent<PostProcessVolume>(); // TODO: Find a better way
             postProcessingVol.enabled = false;
             Level = GameObject.Find("Level");
@@ -140,6 +140,7 @@ namespace Valve.VR.Extras
         }
         public static void RotateLevel(GameObject planeToMoveTo, GameObject pivotPoint)
         {
+            _audioSource.Play();
             OrientateLevel.Orientate(planeToMoveTo, pivotPoint, Level);
         }
 
