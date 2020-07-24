@@ -63,6 +63,13 @@ namespace Valve.VR.Extras
 
         }
 
+        public void StartGame()
+        {
+            GameObject player = GameObject.Find("Player");
+            Destroy(player);
+            GetComponent<SteamVR_LoadLevel>().enabled = true;
+        }
+
         public void SetCalibrationType(CalibrationType calType)
         {
             _userCanCalibrateObjects = true;

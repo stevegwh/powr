@@ -68,6 +68,7 @@ public class SaveLoadData: MonoBehaviour
                     Vector3 v2 = new Vector3(plane.trVertex.x, plane.trVertex.y, plane.trVertex.z);
                     GameObject deserializedPlane = PlaneGenerator.GeneratePlane(v1, v2);
                     deserializedPlane.AddComponent<CalibrationType>().planeType = plane.planeType;
+                    deserializedPlane.isStatic = true;
                     generatedPlanes.Add(deserializedPlane);
                  }
                  file.Close ();

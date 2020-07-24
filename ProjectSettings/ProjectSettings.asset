@@ -327,8 +327,8 @@ PlayerSettings:
     m_Enabled: 1
     m_Devices:
     - OpenVR
-    - None
     - Oculus
+    - None
   - m_BuildTarget: XboxOne
     m_Enabled: 1
     m_Devices:
