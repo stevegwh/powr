@@ -6,10 +6,13 @@ using UnityEngine;
 public class SetVRAnchor : MonoBehaviour
 {
     private VRCameraAnchor anchor;
+    private GameObject vrCameraOffset;
+    public bool offset = true;
     void Awake()
     {
-        anchor = GameObject.FindObjectOfType<VRCameraAnchor>();
-        StartCoroutine(WaitForVRPos());
+        // anchor = GameObject.FindObjectOfType<VRCameraAnchor>();
+        vrCameraOffset = transform.parent.gameObject;
+        // StartCoroutine(WaitForVRPos());
     }
 
     private IEnumerator WaitForVRPos()
@@ -18,7 +21,12 @@ public class SetVRAnchor : MonoBehaviour
         {
             yield return null;
         }
-        anchor.SetAnchorPosition(transform);
+        // vrCameraOffset.transform.localEulerAngles = new Vector3(0, -transform.localEulerAngles.y, 0);
+    }
+
+    void Update()
+    {
+        // if (!offset) return;
     }
 
 }

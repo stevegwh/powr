@@ -20,6 +20,8 @@ public class Transition
         StaticShooterRoom.RotateLevel(plane, pivotPoint);
         StaticShooterRoom.activeTransition = null;
         StaticShooterRoom.ToggleShowPlanes();
+        StaticShooterRoom.currentFocalPoint.StartEnemyWave();
+        StaticShooterRoom.OnTeleportFinish();
         // StaticShooterRoom.PauseGame(false);
         // postProcessingVol.enabled = false;
     }

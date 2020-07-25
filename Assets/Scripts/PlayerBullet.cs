@@ -9,11 +9,6 @@ public class PlayerBullet : MonoBehaviour
     private float bulletSpeed = 30f;
     public GameObject Explosion;
 
-    public void SetBulletLayer(int layer)
-    {
-        gameObject.layer = layer;
-    }
-
     public void SetBulletSpeed(float speed)
     {
         bulletSpeed = speed;
@@ -23,7 +18,10 @@ public class PlayerBullet : MonoBehaviour
     {
         if (gameObject.layer == 13)
         {
-            other.gameObject.GetComponentInParent<EnemyAI>().TakeDamage();
+            if (other.gameObject != null)
+            {
+                other.gameObject.GetComponentInParent<EnemyAI>().TakeDamage();
+            }
         };
         GameObject explosionClone = Instantiate(Explosion, transform.position, transform.rotation);
         Destroy(explosionClone, 1f);

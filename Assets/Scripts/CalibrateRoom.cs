@@ -11,6 +11,7 @@ namespace Valve.VR.Extras
 {
     public class CalibrateRoom : MonoBehaviour
     {
+        private GameObject vrAnchor;
         private PlaneType _currentPlaneType { get; set; }
         private bool showAssets;
         private bool _userCanCalibrateObjects;
@@ -41,6 +42,7 @@ namespace Valve.VR.Extras
         // private SteamVR_Action_Boolean orientateButton = SteamVR_Input.GetBooleanAction("GrabPinch");
         void Start()
         {
+            vrAnchor = GameObject.Find("VRAnchorController");
             saveLoadData = GetComponent<SaveLoadData>();
             // _userCanCalibrateObjects = true;
             // floorLevel = Level.transform.position.y;
@@ -121,7 +123,7 @@ namespace Valve.VR.Extras
                 return;
             }; // If calibration hasn't finished.
             text.GetComponent<Text>().text = "Calibration saved!";
-            saveLoadData.SavePlanesToFile(ref generatedPlanes);
+            saveLoadData.SavePlanesToFile(ref generatedPlanes, vrAnchor.transform);
         }
 
         private void ResetScene()
@@ -139,7 +141,22 @@ namespace Valve.VR.Extras
         public void Load()
         {
             ResetScene();
-            saveLoadData.LoadPlanesFromFile(ref generatedPlanes);
+            GameObject vrAnchorCurrent = new GameObject();
+            vrAnchorCurrent.transform.position = vrAnchor.transform.position;
+            vrAnchorCurrent.transform.rotation = vrAnchor.transform.rotation;
+            saveLoadData.LoadPlanesFromFile(ref generatedPlanes, ref vrAnchor);
+            Transform vrAnchorPos = vrAnchor.transform;
+            // vrAnchor.transform.position = new Vector3(
+            //     vrAnchorPos.position.x - vrAnchorCurrent.position.x, 
+            //     vrAnchorPos.position.y - vrAnchorCurrent.position.y,
+            //     vrAnchorPos.position.z - vrAnchorCurrent.position.z
+            //     );
+            // vrAnchor.transform.rotation = new Quaternion(
+            //     Math.Abs( vrAnchorPos.rotation.x - vrAnchorCurrent.transform.rotation.x ) ,
+            //     Math.Abs( vrAnchorPos.rotation.y - vrAnchorCurrent.transform.rotation.y ) ,
+            //     Math.Abs( vrAnchorPos.rotation.z - vrAnchorCurrent.transform.rotation.z ),
+            //     Math.Abs( vrAnchorPos.rotation.w - vrAnchorCurrent.transform.rotation.w )
+            //     );
             // ScaleAllAssets();
         }
 
@@ -184,7 +201,7 @@ namespace Valve.VR.Extras
             Mesh planeMesh = plane.GetComponent<MeshFilter>().mesh;
             // if (AssetsToScale[assetIndex] == null) return;
             // As plane get's passed as reference and modified in AssetScaler it's important to make a visual copy of the original plane
-            GameObject planeCopy = Instantiate(plane);
+            GameObject planeCopy = Instantiate(plane, vrAnchor.transform, true);
             // Assign whether the current object is a door, crate etc.
             CalibrationType calType = planeCopy.AddComponent<CalibrationType>();
             calType.planeType = _currentPlaneType;

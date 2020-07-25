@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Valve.VR.InteractionSystem;
 
 public class EnemyAI : MonoBehaviour
 {
+    [FormerlySerializedAs("assetController")] public AssetController enemyWaveController;
+    public bool Dead { get; set; }
     public GameObject DeathExplosion;
 
     private int _health;
@@ -15,7 +18,6 @@ public class EnemyAI : MonoBehaviour
 
     public AudioClip enemyExplosion;
 
-    private bool shouldDie;
 
     void Start()
     {
@@ -25,6 +27,7 @@ public class EnemyAI : MonoBehaviour
 
     public void TakeDamage()
     {
+        if (Dead) return;
         _health--;
         if (_health < 0)
         {
@@ -38,7 +41,8 @@ public class EnemyAI : MonoBehaviour
 
             GameObject explosionClone = Instantiate(DeathExplosion, transform.position, transform.rotation);
             Destroy(explosionClone, 1f);
-            shouldDie = true;
+            Dead = true;
+            enemyWaveController.RemoveEnemy(gameObject);
             return;
         }
         audioSource.Stop();
@@ -48,16 +52,13 @@ public class EnemyAI : MonoBehaviour
 
     private void Die()
     {
-        if (!audioSource.isPlaying)
-        {
-            Destroy(gameObject);
-        }
+        Destroy(gameObject);
     }
 
-
-    // Update is called once per frame
     void Update()
     {
-        if (shouldDie) Die();
+        if (Dead) Die();
     }
+    
+
 }

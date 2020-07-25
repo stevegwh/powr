@@ -19,6 +19,11 @@ public class LaserEnemyWeapon : MonoBehaviour
         // laser.SetMuzzle(Muzzle);
     }
 
+    void Start()
+    {
+        Player = GameObject.Find("VRCamera");
+    }
+
     void Update()
     {
         transform.LookAt(Player.transform);

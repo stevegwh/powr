@@ -7,10 +7,14 @@ public class AssetController : MonoBehaviour
 {
 
     public PlaneType planeType;
+
     // The real-world plane that the asset is representing.
     public GameObject AssociatedPlane;
 
     public GameObject AssociatedPivotPoint;
+
+    [SerializeField]
+    private List<GameObject> enemies;
 
     // Iterate through generated planes and find the most appropriate one to pair with.
     // TODO: For the moment just chooses a random plane. Perhaps could be an algorithm to choose the plane closest to the actual height of the object etc.
@@ -21,8 +25,44 @@ public class AssetController : MonoBehaviour
         Debug.Log(randNum);
     }
 
+    void Start()
+    {
+        enemies = new List<GameObject>();
+        Transform enemiesContainer = transform.Find("Enemies");
+        if (enemiesContainer == null) return;
+        for (int i = 0; i < enemiesContainer.childCount; i++)
+        {
+            GameObject enemy = enemiesContainer.GetChild(i).gameObject;
+            enemy.GetComponent<EnemyAI>().enemyWaveController = this;
+            enemies.Add(enemy);
+            enemiesContainer.GetChild(i).gameObject.SetActive(false);
+        }
+
+        enemiesContainer.transform.parent = transform.parent; // Set parent to the Level to avoid scaling the enemies
+        enemiesContainer.transform.localScale = Vector3.one; // Normalise the enemy scale
+    }
+
     void Awake()
     {
         StaticShooterRoom.RegisterAssetToSpawn(gameObject);
     }
+
+    public void StartEnemyWave()
+    {
+        foreach (var enemy in enemies)
+        {
+            enemy.SetActive(true);
+        }
+
+    }
+
+    public void RemoveEnemy(GameObject toRemove)
+    {
+        enemies.Remove(toRemove);
+        if (enemies.Count == 0) StaticShooterRoom.EnableNextTeleportPoint();
+        this.enabled = false;
+    }
+
+
+
 }

@@ -13,6 +13,7 @@ namespace Valve.VR.Extras
 {
     public class StaticShooterRoom : MonoBehaviour
     {
+        public static AssetController currentFocalPoint;
         public static Transition activeTransition;
         private static AudioSource _audioSource;
         private static bool gamePaused;
@@ -20,17 +21,21 @@ namespace Valve.VR.Extras
         public GameObject TeleportPoint;
         public GameObject TransitionPoint;
         public Material highLightMaterial;
+        public GameObject vrAnchorPoint;
+        public static GameObject Level;
+        // private static float floorLevel;
+        public static GameObject FloorMarker;
+        private SaveLoadData saveLoadData;
         private bool showAssets = true;
+
         private static List<GameObject> _assetsToScale = new List<GameObject>(); // Prefabs of the assets to spawn
         // [SerializeField]
         private static List<GameObject> scaledAssets; // The assets after instantiation
         private static List<GameObject> generatedPlanes;
+        private static List<GameObject> teleportPoints;
+        private static int teleportPointIndex = 1;
         private Dictionary<PlaneType, List<GameObject>> planeDictionary = new Dictionary<PlaneType, List<GameObject>>();
-        private SaveLoadData saveLoadData;
 
-        public static GameObject Level;
-        // private static float floorLevel;
-        public static GameObject FloorMarker;
 
         [SerializeField]
         private SteamVR_Action_Boolean orientateButton = SteamVR_Input.GetBooleanAction("CalibrateButton");
@@ -39,6 +44,7 @@ namespace Valve.VR.Extras
 
         void Awake()
         {
+            vrAnchorPoint = new GameObject();
             _audioSource = GetComponent<AudioSource>();
             postProcessingVol = GameObject.Find("VRCamera").GetComponent<PostProcessVolume>(); // TODO: Find a better way
             postProcessingVol.enabled = false;
@@ -65,8 +71,9 @@ namespace Valve.VR.Extras
 
         void Start()
         {
-            AssetController assetController = scaledAssets[1].GetComponent<AssetController>();
-            RotateLevel(assetController.AssociatedPlane, assetController.AssociatedPivotPoint);
+            currentFocalPoint = scaledAssets[0].GetComponent<AssetController>();
+            RotateLevel(currentFocalPoint.AssociatedPlane, currentFocalPoint.AssociatedPivotPoint);
+            currentFocalPoint.StartEnemyWave();
             // SetFloorLevel();
         }
 
@@ -83,11 +90,12 @@ namespace Valve.VR.Extras
             Time.timeScale = Convert.ToInt32(toggle);
             gamePaused = toggle;
         }
-        public static void OrientateLevelHandler(GameObject teleportPoint)
+        // Sets all the necessary variables so that the level can transition to the next focal point
+        public static void PrimeLevelForTransition(GameObject teleportPoint)
         {
-            AssetController assetController = teleportPoint.transform.parent.GetComponent<AssetController>();
-            GameObject plane = assetController.AssociatedPlane;
-            GameObject pivot = assetController.AssociatedPivotPoint;
+            currentFocalPoint = teleportPoint.transform.parent.GetComponent<AssetController>();
+            GameObject plane = currentFocalPoint.AssociatedPlane;
+            GameObject pivot = currentFocalPoint.AssociatedPivotPoint;
             GameObject transitionPoint = plane.transform.GetChild(0).gameObject;
             transitionPoint.SetActive(true);
             activeTransition = new Transition(plane, pivot, transitionPoint, postProcessingVol, Level);
@@ -97,12 +105,15 @@ namespace Valve.VR.Extras
         // TODO: Needs to be placed on the floor properly. This can be done once we have done the code for setting the proper floor height.
         private void GenerateTeleportPoints()
         {
+            teleportPoints = new List<GameObject>();
             foreach (var asset in scaledAssets)
             {
                 GameObject telepoint = Instantiate(TeleportPoint);
                 telepoint.transform.parent = asset.transform;
                 telepoint.transform.position = new Vector3(asset.transform.position.x, 0, asset.transform.position.z);
                 telepoint.transform.position -= asset.transform.forward;
+                teleportPoints.Add(telepoint);
+                telepoint.SetActive(false);
             }
 
         }
@@ -158,6 +169,7 @@ namespace Valve.VR.Extras
             }
         }
 
+        // Instantiates a dictionary that will be used to decide the most appropriate plane for each asset to use as a reference to scale to.
         private void GeneratePlaneDictionary()
         {
             foreach (var plane in generatedPlanes)
@@ -202,10 +214,22 @@ namespace Valve.VR.Extras
             scaledAssets.Clear();
         }
 
+        public static void EnableNextTeleportPoint()
+        {
+            Debug.Log("Enable teleport called");
+            teleportPoints[teleportPointIndex].gameObject.SetActive(true);
+        }
+
+        public static void OnTeleportFinish()
+        {
+            teleportPoints[teleportPointIndex].gameObject.SetActive(false);
+            teleportPointIndex++;
+        }
+
         public void Load()
         {
             ResetScene();
-            saveLoadData.LoadPlanesFromFile(ref generatedPlanes);
+            saveLoadData.LoadPlanesFromFile(ref generatedPlanes, ref vrAnchorPoint);
             // Level.transform.position = new Vector3(0, floorLevel, 0);
             GenerateTransitionPoints();
             GeneratePlaneDictionary();
@@ -214,7 +238,6 @@ namespace Valve.VR.Extras
             GenerateTeleportPoints();
             ToggleShowPlanes();
         }
-
 
     }
 }

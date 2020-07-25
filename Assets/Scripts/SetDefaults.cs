@@ -9,8 +9,10 @@ public  class SetDefaults : MonoBehaviour
 {
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        SteamVR_Settings.instance.trackingSpace = ETrackingUniverseOrigin.TrackingUniverseStanding;
+        Debug.Log($"Room set to {SteamVR_Settings.instance.trackingSpace}");
     }
 
 }

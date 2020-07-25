@@ -28,6 +28,7 @@ public class OrientateLevel : MonoBehaviour
         pivotPoint.transform.rotation = Quaternion.identity;
         pivotPoint.transform.rotation = Quaternion.FromToRotation(pivotPoint.transform.forward, -normal); // negative as plane normal faces player
         pivotPoint.transform.position = plane.transform.position;
+        // TODO: Assign the floor level here
 
         // Deparent and move pivot point back to original position so it can be used again.
         level.transform.parent = null;

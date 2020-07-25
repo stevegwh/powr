@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BurstFireEnemyWeapon : MonoBehaviour
 {
+    private EnemyAI enemyAIController;
+
     public GameObject Player;
 
     public GameObject Nozzle;
@@ -23,8 +25,15 @@ public class BurstFireEnemyWeapon : MonoBehaviour
         go.GetComponent<EnemyBullet>().SetBulletSpeed(2f);
         Destroy(go, 5f);
     }
+
+    void Start()
+    {
+        enemyAIController = GetComponent<EnemyAI>();
+        Player = GameObject.Find("VRCamera");
+    }
     void Update()
     {
+        if (enemyAIController.Dead) return;
         transform.LookAt(Player.transform);
 
         // Shoots a burst of three bullets in quick succession then waits 1 second.

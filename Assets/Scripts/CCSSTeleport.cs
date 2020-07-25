@@ -857,7 +857,7 @@ namespace Valve.VR.InteractionSystem
 
 			CCSSTeleport.PlayerPre.Send( pointedAtTeleportMarker );
 
-			StaticShooterRoom.OrientateLevelHandler(pointedAtTeleportMarker.gameObject);
+			StaticShooterRoom.PrimeLevelForTransition(pointedAtTeleportMarker.gameObject);
    
 			SteamVR_Fade.Start( Color.clear, currentFadeTime );
 
