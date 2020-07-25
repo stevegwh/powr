@@ -22,7 +22,7 @@ public class EnemyAI : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        _health = 3;
+        _health = 1;
     }
 
     public void TakeDamage()

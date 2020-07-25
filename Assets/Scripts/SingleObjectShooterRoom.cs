@@ -11,16 +11,14 @@ using Valve.VR.InteractionSystem;
 
 namespace Valve.VR.Extras
 {
-    public class StaticShooterRoom : MonoBehaviour
+    public class SingleObjectShooterRoom : MonoBehaviour
     {
         public static AssetController currentFocalPoint;
         public static Transition activeTransition;
         private static AudioSource _audioSource;
         private static bool gamePaused;
         public static PostProcessVolume postProcessingVol;
-        public GameObject TeleportPoint;
         public GameObject TransitionPoint;
-        public Material highLightMaterial;
         public GameObject vrAnchorPoint;
         public static GameObject Level;
         // private static float floorLevel;
@@ -28,17 +26,13 @@ namespace Valve.VR.Extras
         private SaveLoadData saveLoadData;
         private bool showAssets = true;
 
-        private static List<GameObject> _assetsToScale = new List<GameObject>(); // Prefabs of the assets to spawn
+        public List<GameObject> _assetsToScale = new List<GameObject>(); // Prefabs of the assets to spawn
         // [SerializeField]
         private static List<GameObject> scaledAssets; // The assets after instantiation
         private static List<GameObject> generatedPlanes;
         private static List<GameObject> teleportPoints;
         private static int teleportPointIndex = 1;
         private Dictionary<PlaneType, List<GameObject>> planeDictionary = new Dictionary<PlaneType, List<GameObject>>();
-
-
-        private static GameObject floorMarkerInternal;
-        private static GameObject floorMarkerExternal;
 
 
         [SerializeField]
@@ -48,8 +42,6 @@ namespace Valve.VR.Extras
 
         void Awake()
         {
-            floorMarkerExternal = GameObject.Find("FloorMarkerExternal");
-            floorMarkerInternal = GameObject.Find("FloorMarkerInternal");
             vrAnchorPoint = new GameObject();
             _audioSource = GetComponent<AudioSource>();
             postProcessingVol = GameObject.Find("VRCamera").GetComponent<PostProcessVolume>(); // TODO: Find a better way
@@ -73,15 +65,6 @@ namespace Valve.VR.Extras
         private void PauseGame(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
         {
             GetComponent<PauseGame>().GamePause();
-        }
-
-        private static void AlignFloor()
-        {
-            floorMarkerInternal.transform.parent = null;
-            Level.transform.parent = floorMarkerInternal.transform;
-            floorMarkerInternal.transform.position = new Vector3(floorMarkerInternal.transform.position.x, floorMarkerExternal.transform.position.y, floorMarkerInternal.transform.position.z);
-            Level.transform.parent = null;
-            floorMarkerInternal.transform.parent = Level.transform;
         }
 
         void Start()
@@ -116,22 +99,6 @@ namespace Valve.VR.Extras
             activeTransition = new Transition(plane, pivot, transitionPoint, postProcessingVol, Level);
         }
 
-        // Instantiates Steam VR teleport points that the user will use in order to move forward in the level.
-        // TODO: Needs to be placed on the floor properly. This can be done once we have done the code for setting the proper floor height.
-        private void GenerateTeleportPoints()
-        {
-            teleportPoints = new List<GameObject>();
-            foreach (var asset in scaledAssets)
-            {
-                GameObject telepoint = Instantiate(TeleportPoint);
-                telepoint.transform.parent = asset.transform;
-                telepoint.transform.position = new Vector3(asset.transform.position.x, 0, asset.transform.position.z);
-                telepoint.transform.position -= asset.transform.forward;
-                teleportPoints.Add(telepoint);
-                telepoint.SetActive(false);
-            }
-
-        }
         // Generates the markers for where the player has to stand before the game will teleport to the next point
         private void GenerateTransitionPoints()
         {
@@ -149,7 +116,7 @@ namespace Valve.VR.Extras
 
         public static void RegisterAssetToSpawn(GameObject asset)
         {
-            _assetsToScale.Add(asset);
+            // _assetsToScale.Add(asset);
         }
 
         // Creates a copy of the rotation/position of all the assets. This is necessary as the entire level gets rotated/moved so we need
@@ -228,7 +195,6 @@ namespace Valve.VR.Extras
             GeneratePlaneDictionary();
             ScaleAllAssets();
             GeneratePivotPoints();
-            GenerateTeleportPoints();
             ToggleShowPlanes();
         }
 

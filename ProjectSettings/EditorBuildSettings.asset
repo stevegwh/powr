@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/CalibrationScene.unity
     guid: cc5de9ed4ce47b742bdf04946b6df1e0
   - enabled: 1
-    path: Assets/Scenes/StaticShooter.unity
+    path: Assets/Scenes/TransitionShooter.unity
     guid: 28208e0a7008f1849a097b2aeb2b7687
   m_configObjects: {}

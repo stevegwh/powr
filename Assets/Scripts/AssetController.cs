@@ -44,7 +44,7 @@ public class AssetController : MonoBehaviour
 
     void Awake()
     {
-        StaticShooterRoom.RegisterAssetToSpawn(gameObject);
+        TransitionShooterRoom.RegisterAssetToSpawn(gameObject);
     }
 
     public void StartEnemyWave()
@@ -59,7 +59,7 @@ public class AssetController : MonoBehaviour
     public void RemoveEnemy(GameObject toRemove)
     {
         enemies.Remove(toRemove);
-        if (enemies.Count == 0) StaticShooterRoom.EnableNextTeleportPoint();
+        if (enemies.Count == 0) TransitionShooterRoom.EnableNextTeleportPoint();
         this.enabled = false;
     }
 

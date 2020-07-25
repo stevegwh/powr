@@ -17,12 +17,12 @@ public class Transition
         // transitionPoint.GetComponent<BoxCollider>().enabled = false;
         transitionPoint.SetActive(false);
         level.SetActive(true);
-        StaticShooterRoom.RotateLevel(plane, pivotPoint);
-        StaticShooterRoom.activeTransition = null;
-        StaticShooterRoom.ToggleShowPlanes();
-        StaticShooterRoom.currentFocalPoint.StartEnemyWave();
-        StaticShooterRoom.OnTeleportFinish();
-        // StaticShooterRoom.PauseGame(false);
+        TransitionShooterRoom.RotateLevel(plane, pivotPoint);
+        TransitionShooterRoom.activeTransition = null;
+        TransitionShooterRoom.ToggleShowPlanes();
+        TransitionShooterRoom.currentFocalPoint.StartEnemyWave();
+        TransitionShooterRoom.OnTeleportFinish();
+        // TransitionShooterRoom.PauseGame(false);
         // postProcessingVol.enabled = false;
     }
 
@@ -34,8 +34,8 @@ public class Transition
         this.postProcessingVol = postProcessingVol;
         this.level = level;
         level.SetActive(false);
-        StaticShooterRoom.ToggleShowPlanes();
+        TransitionShooterRoom.ToggleShowPlanes();
         // postProcessingVol.enabled = true;
-        // StaticShooterRoom.PauseGame(true);
+        // TransitionShooterRoom.PauseGame(true);
     }
 }

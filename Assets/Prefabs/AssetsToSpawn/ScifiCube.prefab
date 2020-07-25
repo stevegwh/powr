@@ -45,6 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   planeType: 1
+  AssociatedPlane: {fileID: 0}
+  AssociatedPivotPoint: {fileID: 0}
+  enemies: []
 --- !u!1 &5060416463111114460
 GameObject:
   m_ObjectHideFlags: 0
