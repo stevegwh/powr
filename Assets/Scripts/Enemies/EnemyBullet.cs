@@ -21,13 +21,10 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (gameObject.layer == 12) return;
-        if (gameObject.layer == 13)
-        {
-            Destroy(other.gameObject);
-        };
         GameObject explosionClone = Instantiate(Explosion, transform.position, transform.rotation);
+        explosionClone.transform.parent = null;
         Destroy(explosionClone, 1f);
+        Destroy(gameObject);
     }
 
     void Start()

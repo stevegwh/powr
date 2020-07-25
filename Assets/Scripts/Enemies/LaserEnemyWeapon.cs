@@ -21,7 +21,7 @@ public class LaserEnemyWeapon : MonoBehaviour
 
     void Start()
     {
-        Player = GameObject.Find("VRCamera");
+        Player = GameObject.Find("BodyColliderDamage");
     }
 
     void Update()

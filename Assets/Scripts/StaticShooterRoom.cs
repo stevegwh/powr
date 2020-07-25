@@ -37,6 +37,10 @@ namespace Valve.VR.Extras
         private Dictionary<PlaneType, List<GameObject>> planeDictionary = new Dictionary<PlaneType, List<GameObject>>();
 
 
+        private static GameObject floorMarkerInternal;
+        private static GameObject floorMarkerExternal;
+
+
         [SerializeField]
         private SteamVR_Action_Boolean orientateButton = SteamVR_Input.GetBooleanAction("CalibrateButton");
         [SerializeField]
@@ -44,6 +48,8 @@ namespace Valve.VR.Extras
 
         void Awake()
         {
+            floorMarkerExternal = GameObject.Find("FloorMarkerExternal");
+            floorMarkerInternal = GameObject.Find("FloorMarkerInternal");
             vrAnchorPoint = new GameObject();
             _audioSource = GetComponent<AudioSource>();
             postProcessingVol = GameObject.Find("VRCamera").GetComponent<PostProcessVolume>(); // TODO: Find a better way
@@ -67,6 +73,15 @@ namespace Valve.VR.Extras
         private void PauseGame(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
         {
             GetComponent<PauseGame>().GamePause();
+        }
+
+        private static void AlignFloor()
+        {
+            floorMarkerInternal.transform.parent = null;
+            Level.transform.parent = floorMarkerInternal.transform;
+            floorMarkerInternal.transform.position = new Vector3(floorMarkerInternal.transform.position.x, floorMarkerExternal.transform.position.y, floorMarkerInternal.transform.position.z);
+            Level.transform.parent = null;
+            floorMarkerInternal.transform.parent = Level.transform;
         }
 
         void Start()
@@ -153,6 +168,7 @@ namespace Valve.VR.Extras
         {
             _audioSource.Play();
             OrientateLevel.Orientate(planeToMoveTo, pivotPoint, Level);
+            // AlignFloor();
         }
 
         private void ScaleAllAssets()
@@ -184,28 +200,6 @@ namespace Valve.VR.Extras
             }
         }
 
-        private static void SetFloorLevel()
-        {
-            float floorLevel = 0.172f;
-            Dictionary<GameObject, Transform> assetParentDictionary = new Dictionary<GameObject, Transform>();
-            // Deparent all assets from the Level
-            foreach (var asset in scaledAssets)
-            {
-                assetParentDictionary[asset] = asset.transform.parent;
-                asset.transform.parent = null;
-            }
-
-            Vector3 previousPos = FloorMarker.transform.position;
-            Level.transform.parent = FloorMarker.transform;
-            FloorMarker.transform.position = new Vector3(0, FloorMarker.transform.position.y + floorLevel, 0);
-            Level.transform.parent = null;
-            FloorMarker.transform.position = previousPos;
-            foreach (var asset in scaledAssets)
-            {
-                asset.transform.parent = assetParentDictionary[asset];
-            }
-        }
-
         private void ResetScene()
         {
             foreach (var go in generatedPlanes) Destroy(go);
@@ -216,7 +210,6 @@ namespace Valve.VR.Extras
 
         public static void EnableNextTeleportPoint()
         {
-            Debug.Log("Enable teleport called");
             teleportPoints[teleportPointIndex].gameObject.SetActive(true);
         }
 
