@@ -13,6 +13,7 @@ namespace Valve.VR.Extras
 {
     public class TransitionShooterRoom : MonoBehaviour
     {
+        public AssetController StartingObject;
         public static AssetController currentFocalPoint;
         public static Transition activeTransition;
         private static AudioSource _audioSource;
@@ -31,8 +32,6 @@ namespace Valve.VR.Extras
         // [SerializeField]
         private static List<GameObject> instantiatedScaledAssets; // The assets after instantiation
         private static List<GameObject> generatedPlanes;
-        private static List<GameObject> teleportPoints;
-        private static int teleportPointIndex = 1;
 
         private Dictionary<PlaneType, List<GameObject>> planeDictionary = new Dictionary<PlaneType, List<GameObject>>();
 
@@ -72,7 +71,7 @@ namespace Valve.VR.Extras
 
         void Start()
         {
-            currentFocalPoint = instantiatedScaledAssets[0].GetComponent<AssetController>();
+            currentFocalPoint = StartingObject;
             activeTransition = new Transition(postProcessingVol, Level, currentFocalPoint);
             activeTransition.TriggerTransition();
         }
@@ -90,10 +89,8 @@ namespace Valve.VR.Extras
             Time.timeScale = Convert.ToInt32(toggle);
             gamePaused = toggle;
         }
-        // Sets all the necessary variables so that the level can transition to the next focal point
-        public static void PrimeLevelForTransition(GameObject teleportPoint)
+        public static void StartTransition()
         {
-            currentFocalPoint = teleportPoint.transform.parent.GetComponent<AssetController>();
             activeTransition = new Transition(postProcessingVol, Level, currentFocalPoint);
         }
 
@@ -101,14 +98,13 @@ namespace Valve.VR.Extras
         // TODO: Needs to be placed on the floor properly. This can be done once we have done the code for setting the proper floor height.
         private void GenerateTeleportPoints()
         {
-            teleportPoints = new List<GameObject>();
             foreach (var asset in instantiatedScaledAssets)
             {
                 GameObject telepoint = Instantiate(TeleportPoint);
                 telepoint.transform.parent = asset.transform;
-                telepoint.transform.position = new Vector3(asset.transform.position.x, 0, asset.transform.position.z);
+                telepoint.transform.position = asset.transform.position;
                 telepoint.transform.position -= asset.transform.forward;
-                teleportPoints.Add(telepoint);
+                asset.GetComponent<AssetController>().AssociatedTeleportPoint = telepoint;
                 telepoint.SetActive(false);
             }
 
@@ -123,7 +119,7 @@ namespace Valve.VR.Extras
                 Vector3 planeNormal = plane.GetComponent<MeshFilter>().mesh.normals[0];
                 transitionPoint.transform.rotation = Quaternion.FromToRotation(transitionPoint.transform.forward, planeNormal);
                 transitionPoint.transform.position += planeNormal/2;
-                transitionPoint.transform.position = new Vector3(transitionPoint.transform.position.x, 0.02f, transitionPoint.transform.position.z);
+                transitionPoint.transform.position = new Vector3(transitionPoint.transform.position.x, 0.02f, transitionPoint.transform.position.z); //TODO: Fix floor position
                 transitionPoint.SetActive(false);
             }
         }
@@ -192,20 +188,13 @@ namespace Valve.VR.Extras
 
         public static void EnableNextTeleportPoint()
         {
-            teleportPoints[teleportPointIndex].gameObject.SetActive(true);
-        }
-
-        public static void OnTeleportFinish()
-        {
-            teleportPoints[teleportPointIndex].gameObject.SetActive(false);
-            teleportPointIndex++;
+            currentFocalPoint.AssociatedTeleportPoint.SetActive(true);
         }
 
         public void Load()
         {
             ResetScene();
             saveLoadData.LoadPlanesFromFile(ref generatedPlanes, ref vrAnchorPoint);
-            // Level.transform.position = new Vector3(0, floorLevel, 0);
             GenerateTransitionPoints();
             GeneratePlaneDictionary();
             ScaleAllAssets();

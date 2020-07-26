@@ -17,18 +17,32 @@ public class Transition
 
     public void TriggerTransition()
     {
+        // currentFocalPoint.transform.parent = level.transform;
         // transitionPoint.GetComponent<BoxCollider>().enabled = false;
         transitionPoint.SetActive(false);
         level.SetActive(true);
-        float floorLevel = currentFocalPoint.transform.Find("FloorMarker").transform.position.y;
-        environment.transform.position = new Vector3(environment.transform.position.x, floorLevel, environment.transform.position.z);
         TransitionShooterRoom.RotateLevel(plane, pivotPoint);
         TransitionShooterRoom.activeTransition = null;
         TransitionShooterRoom.ToggleShowPlanes();
         TransitionShooterRoom.currentFocalPoint.StartEnemyWave();
-        TransitionShooterRoom.OnTeleportFinish();
-        // TransitionShooterRoom.PauseGame(false);
-        // postProcessingVol.enabled = false;
+        // TransitionShooterRoom.OnTransitionFinish(); // Calling this here which updates currentFocalPoint in AssetController and then continuing on with the same variable name below seems just a bit weird
+
+        Transform floorVector = currentFocalPoint.transform.Find("FloorMarker").transform;
+        Vector3 floorPos = floorVector.transform.TransformPoint(floorVector.position);
+        environment.transform.position = new Vector3(environment.transform.position.x, floorPos.y, environment.transform.position.z);
+
+        // Now that we've finished instantiating the focalpoint we can prime the next one
+        currentFocalPoint.AssociatedTeleportPoint.SetActive(false);
+        if (TransitionShooterRoom.currentFocalPoint.NextObject != null)
+        {
+            TransitionShooterRoom.currentFocalPoint = TransitionShooterRoom.currentFocalPoint.NextObject;
+        }
+        else
+        {
+            Debug.Log("Game over");
+        }
+
+
     }
 
     public Transition(PostProcessVolume postProcessingVol, GameObject level, AssetController currentFocalPoint)

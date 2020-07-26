@@ -2437,7 +2437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5a6a70209b6e6345bfe18b02314a54e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  levelName: StaticShooter
+  levelName: TransitionShooter
   internalProcessPath: 
   internalProcessArgs: 
   loadAdditive: 0
@@ -3617,6 +3617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 589ab7ff96358e443b07fd5e040470e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offset: 1
 --- !u!1 &6829779168420979136
 GameObject:
   m_ObjectHideFlags: 0

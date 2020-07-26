@@ -88,16 +88,12 @@ namespace Valve.VR.Extras
             Time.timeScale = Convert.ToInt32(toggle);
             gamePaused = toggle;
         }
-        // Sets all the necessary variables so that the level can transition to the next focal point
-        public static void PrimeLevelForTransition(GameObject teleportPoint)
-        {
-            currentFocalPoint = teleportPoint.transform.parent.GetComponent<AssetController>();
-            GameObject plane = currentFocalPoint.AssociatedPlane;
-            GameObject pivot = currentFocalPoint.AssociatedPivotPoint;
-            GameObject transitionPoint = plane.transform.GetChild(0).gameObject;
-            transitionPoint.SetActive(true);
-            // activeTransition = new Transition(plane, pivot, transitionPoint, postProcessingVol, Level);
-        }
+        // // Sets all the necessary variables so that the level can transition to the next focal point
+        // public static void PrimeLevelForTransition(GameObject teleportPoint)
+        // {
+        //     currentFocalPoint = teleportPoint.transform.parent.GetComponent<AssetController>();
+        //     activeTransition = new Transition(postProcessingVol, Level, currentFocalPoint);
+        // }
 
         // Generates the markers for where the player has to stand before the game will teleport to the next point
         private void GenerateTransitionPoints()

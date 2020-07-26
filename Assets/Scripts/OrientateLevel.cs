@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrientateLevel : MonoBehaviour
+public class OrientateLevel 
 {
     // Each of the core assets in the level have had their original positions and rotations stored. With this class we will use them to rotate
     // the level. The entire level becomes a child of the pivot point therefore it will be subject to the same transformations we make to the pivot point.
@@ -28,7 +28,6 @@ public class OrientateLevel : MonoBehaviour
         pivotPoint.transform.rotation = Quaternion.identity;
         pivotPoint.transform.rotation = Quaternion.FromToRotation(pivotPoint.transform.forward, -normal); // negative as plane normal faces player
         pivotPoint.transform.position = plane.transform.position;
-        // TODO: Assign the floor level here
 
         // Deparent and move pivot point back to original position so it can be used again.
         level.transform.parent = null;

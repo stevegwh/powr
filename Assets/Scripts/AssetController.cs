@@ -5,13 +5,16 @@ using Valve.VR.Extras;
 
 public class AssetController : MonoBehaviour
 {
-
     public PlaneType planeType;
 
     // The real-world plane that the asset is representing.
     public GameObject AssociatedPlane;
 
     public GameObject AssociatedPivotPoint;
+
+    public GameObject AssociatedTeleportPoint;
+
+    public AssetController NextObject;
 
     [SerializeField]
     private List<GameObject> enemies;
@@ -39,6 +42,7 @@ public class AssetController : MonoBehaviour
         }
 
     }
+
 
     // Ensures the enemies do not get scaled along with its parent asset
     public void PostScale()
