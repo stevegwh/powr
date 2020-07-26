@@ -13,29 +13,32 @@ public class Transition
     private GameObject transitionPoint;
     private GameObject environment;
     private GameObject level;
-    private PostProcessVolume postProcessingVol;
 
     public void TriggerTransition()
     {
-        // currentFocalPoint.transform.parent = level.transform;
-        // transitionPoint.GetComponent<BoxCollider>().enabled = false;
         transitionPoint.SetActive(false);
         level.SetActive(true);
         TransitionShooterRoom.RotateLevel(plane, pivotPoint);
         TransitionShooterRoom.activeTransition = null;
         TransitionShooterRoom.ToggleShowPlanes();
         TransitionShooterRoom.currentFocalPoint.StartEnemyWave();
-        // TransitionShooterRoom.OnTransitionFinish(); // Calling this here which updates currentFocalPoint in AssetController and then continuing on with the same variable name below seems just a bit weird
 
-        Transform floorVector = currentFocalPoint.transform.Find("FloorMarker").transform;
-        Vector3 floorPos = floorVector.transform.TransformPoint(floorVector.position);
-        environment.transform.position = new Vector3(environment.transform.position.x, floorPos.y, environment.transform.position.z);
+        Transform localFloorPos = currentFocalPoint.transform.Find("FloorMarker").transform; 
+        Vector3 worldFloorPos = localFloorPos.transform.TransformPoint(localFloorPos.position); 
+        environment.transform.position = new Vector3(environment.transform.position.x, worldFloorPos.y, environment.transform.position.z);
 
-        // Now that we've finished instantiating the focalpoint we can prime the next one
         currentFocalPoint.AssociatedTeleportPoint.SetActive(false);
-        if (TransitionShooterRoom.currentFocalPoint.NextObject != null)
+        if (currentFocalPoint.NextObject != null)
         {
-            TransitionShooterRoom.currentFocalPoint = TransitionShooterRoom.currentFocalPoint.NextObject;
+            // Make the teleport point of the next object the floor height of the current focal point.
+            // Doesn't use worldFloorPos as the teleport point is local to the currentFocalPoint
+            TransitionShooterRoom.currentFocalPoint.NextObject.AssociatedTeleportPoint.transform.position = new Vector3(
+                TransitionShooterRoom.currentFocalPoint.NextObject.AssociatedTeleportPoint.transform.position.x, 
+                localFloorPos.position.y, 
+                TransitionShooterRoom.currentFocalPoint.NextObject.AssociatedTeleportPoint.transform.position.z);
+
+            // Now that we've finished instantiating the focalpoint we can prime the next one
+            TransitionShooterRoom.currentFocalPoint = currentFocalPoint.NextObject;
         }
         else
         {
@@ -45,19 +48,17 @@ public class Transition
 
     }
 
-    public Transition(PostProcessVolume postProcessingVol, GameObject level, AssetController currentFocalPoint)
+    public Transition(GameObject level, AssetController currentFocalPoint)
     {
         this.currentFocalPoint = currentFocalPoint;
         plane = currentFocalPoint.AssociatedPlane;
         pivotPoint = currentFocalPoint.AssociatedPivotPoint;
         transitionPoint = plane.transform.GetChild(0).gameObject;
         transitionPoint.SetActive(true);
-        this.postProcessingVol = postProcessingVol;
         this.level = level;
         environment = level.transform.Find("Environment").gameObject;
         level.SetActive(false);
         TransitionShooterRoom.ToggleShowPlanes();
-        // postProcessingVol.enabled = true;
         // TransitionShooterRoom.PauseGame(true);
     }
 }

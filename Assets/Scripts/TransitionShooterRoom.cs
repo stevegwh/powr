@@ -72,7 +72,7 @@ namespace Valve.VR.Extras
         void Start()
         {
             currentFocalPoint = StartingObject;
-            activeTransition = new Transition(postProcessingVol, Level, currentFocalPoint);
+            StartTransition();
             activeTransition.TriggerTransition();
         }
 
@@ -91,7 +91,7 @@ namespace Valve.VR.Extras
         }
         public static void StartTransition()
         {
-            activeTransition = new Transition(postProcessingVol, Level, currentFocalPoint);
+            activeTransition = new Transition(Level, currentFocalPoint);
         }
 
         // Instantiates Steam VR teleport points that the user will use in order to move forward in the level.
