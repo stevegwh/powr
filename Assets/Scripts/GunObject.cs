@@ -8,6 +8,10 @@ using Valve.VR.InteractionSystem;
 
 public class GunObject : MonoBehaviour
 {
+    public Hand Hand;
+    public Hand.AttachmentFlags attachmentFlags = Hand.AttachmentFlags.ParentToHand | Hand.AttachmentFlags.DetachFromOtherHand | Hand.AttachmentFlags.TurnOnKinematic;
+    public Transform attachmentOffset;
+
     public GameObject bullet;
     public Text AmmoText;
     public GameObject explosion;
@@ -20,7 +24,6 @@ public class GunObject : MonoBehaviour
     public AudioClip reloadSound;
     public AudioClip emptyAmmoSound;
     public AudioClip gunShootSound;
-    public Hand hand;
 
     void Start()
     {
@@ -32,12 +35,12 @@ public class GunObject : MonoBehaviour
     {
         if (ammoCount == 0)
         {
-            hand.TriggerHapticPulse(0.2f, 1f, 0.5f);
+            Hand.TriggerHapticPulse(0.2f, 1f, 0.5f);
             audioSource.clip = reloadVoiceSound;
             audioSource.Play();
             return;
         }
-        hand.TriggerHapticPulse(1.5f, 0.2f, 2f);
+        Hand.TriggerHapticPulse(1.5f, 0.2f, 2f);
         // if (ammoCount < 0)
         // {
         //     audioSource.clip = emptyAmmoSound;
@@ -60,7 +63,11 @@ public class GunObject : MonoBehaviour
         ammoCount = ammoCountMax;
         AmmoText.text = ammoCount.ToString();
     }
-
-
+    public void AttachGun(Hand hand)
+    {
+        if (hand != Hand) return;
+        hand.ShowSkeleton(false);
+        hand.AttachObject(gameObject, GrabTypes.Grip, attachmentFlags, attachmentOffset);
+    }
 
 }

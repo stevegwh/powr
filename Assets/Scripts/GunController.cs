@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net.Mime;
 using UnityEngine;
@@ -27,7 +28,8 @@ public class GunController : MonoBehaviour
 
         _hand = GetComponent<Hand>();
         gun = GunGameObject.GetComponent<GunObject>();
-        gun.hand = GetComponent<Hand>();
+        gun.Hand = _hand;
+        gun.AttachGun(_hand);
         fireButton.AddOnStateDownListener(Fire, pose.inputSource);
     }
 
@@ -36,8 +38,5 @@ public class GunController : MonoBehaviour
         if (_hand.currentAttachedObject != GunGameObject) return;
         gun.Fire();
     }
-
-
-
 
 }

@@ -478,11 +478,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6c7849d873041df91dde733e787611e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  attachmentOffset: {fileID: 1648232504957159846}
+  attachmentFlags: 44
   bullet: {fileID: 136330, guid: 9a0c3383523899643a8d0661cfaca4e4, type: 3}
   AmmoText: {fileID: 3032702621883331620}
   explosion: {fileID: 1000011128802252, guid: 96730f8640590934eacb6f860058e7f9, type: 3}
   fireNozzle: {fileID: 1727842252558609618}
   ammoCountMax: 6
+  reloadVoiceSound: {fileID: 0}
+  reloadSound: {fileID: 0}
+  emptyAmmoSound: {fileID: 0}
+  gunShootSound: {fileID: 0}
+  hand: {fileID: 0}
 --- !u!1 &3832703582600972130
 GameObject:
   m_ObjectHideFlags: 0

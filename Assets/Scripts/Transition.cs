@@ -16,6 +16,7 @@ public class Transition
 
     public void TriggerTransition()
     {
+        // currentFocalPoint.transform.parent = level.transform;
         transitionPoint.SetActive(false);
         level.SetActive(true);
         TransitionShooterRoom.RotateLevel(plane, pivotPoint);
@@ -23,10 +24,12 @@ public class Transition
         TransitionShooterRoom.ToggleShowPlanes();
         TransitionShooterRoom.currentFocalPoint.StartEnemyWave();
 
+        // Set floor level
         Transform localFloorPos = currentFocalPoint.transform.Find("FloorMarker").transform; 
         Vector3 worldFloorPos = localFloorPos.transform.TransformPoint(localFloorPos.position); 
         environment.transform.position = new Vector3(environment.transform.position.x, worldFloorPos.y, environment.transform.position.z);
 
+        // Fix teleport points
         currentFocalPoint.AssociatedTeleportPoint.SetActive(false);
         if (currentFocalPoint.NextObject != null)
         {
@@ -38,6 +41,7 @@ public class Transition
                 TransitionShooterRoom.currentFocalPoint.NextObject.AssociatedTeleportPoint.transform.position.z);
 
             // Now that we've finished instantiating the focalpoint we can prime the next one
+            // currentFocalPoint.transform.parent = environment.transform;
             TransitionShooterRoom.currentFocalPoint = currentFocalPoint.NextObject;
         }
         else
