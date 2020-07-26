@@ -158,7 +158,6 @@ namespace Valve.VR.Extras
                 GameObject planeCopy = Instantiate(assetController.AssociatedPlane);
                 Mesh planeMesh = planeCopy.GetComponent<MeshFilter>().mesh;
                 GameObject assetScaled = AssetScaler.ScaleAsset(planeCopy, planeMesh.normals[0], asset, false);
-                assetController.PostScale();
                 instantiatedScaledAssets.Add(assetScaled);
             }
         }

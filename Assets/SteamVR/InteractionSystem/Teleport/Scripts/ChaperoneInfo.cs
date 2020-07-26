@@ -46,12 +46,12 @@ namespace Valve.VR.InteractionSystem
 		IEnumerator Start()
 		{
 			// Uncomment for roomscale testing
-			_instance.initialized = true;
-			_instance.playAreaSizeX = UnityEngine.Random.Range( 1.0f, 4.0f );
-			_instance.playAreaSizeZ = UnityEngine.Random.Range( 1.0f, _instance.playAreaSizeX );
-			_instance.roomscale = true;
-			ChaperoneInfo.Initialized.Send();
-			yield break;
+			// _instance.initialized = true;
+			// _instance.playAreaSizeX = UnityEngine.Random.Range( 1.0f, 4.0f );
+			// _instance.playAreaSizeZ = UnityEngine.Random.Range( 1.0f, _instance.playAreaSizeX );
+			// _instance.roomscale = true;
+			// ChaperoneInfo.Initialized.Send();
+			// yield break;
 
 			// Get interface pointer
 			var chaperone = OpenVR.Chaperone;

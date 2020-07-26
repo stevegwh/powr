@@ -43,13 +43,6 @@ public class AssetController : MonoBehaviour
 
     }
 
-
-    // Ensures the enemies do not get scaled along with its parent asset
-    public void PostScale()
-    {
-        Transform enemiesContainer = transform.Find("Enemies");
-        enemiesContainer.transform.localScale = Vector3.one; // Normalise the enemy scale
-    }
     void Awake()
     {
         TransitionShooterRoom.RegisterAssetToSpawn(gameObject);
@@ -59,6 +52,11 @@ public class AssetController : MonoBehaviour
     {
         foreach (var enemy in enemies)
         {
+            // As the enemies start off as children of a focal point that has been scaled, the enemies themselves get scaled by the same margin.
+            // Therefore we need to make sure they have no parent and their scale is restored.
+            // This 'could' introduce a bug if they original scale of the enemy is not 'one'
+            enemy.transform.parent = null;
+            enemy.transform.localScale = Vector3.one;
             enemy.SetActive(true);
         }
 
