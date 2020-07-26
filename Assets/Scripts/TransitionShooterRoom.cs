@@ -18,22 +18,22 @@ namespace Valve.VR.Extras
         private static AudioSource _audioSource;
         private static bool gamePaused;
         public static PostProcessVolume postProcessingVol;
+        public static GameObject Level;
+        public static GameObject Environment;
         public GameObject TeleportPoint;
         public GameObject TransitionPoint;
-        public Material highLightMaterial;
         public GameObject vrAnchorPoint;
-        public static GameObject Level;
-        // private static float floorLevel;
-        public static GameObject FloorMarker;
+
         private SaveLoadData saveLoadData;
         private bool showAssets = true;
 
         private static List<GameObject> _assetsToScale = new List<GameObject>(); // Prefabs of the assets to spawn
         // [SerializeField]
-        private static List<GameObject> scaledAssets; // The assets after instantiation
+        private static List<GameObject> instantiatedScaledAssets; // The assets after instantiation
         private static List<GameObject> generatedPlanes;
         private static List<GameObject> teleportPoints;
         private static int teleportPointIndex = 1;
+
         private Dictionary<PlaneType, List<GameObject>> planeDictionary = new Dictionary<PlaneType, List<GameObject>>();
 
 
@@ -49,7 +49,8 @@ namespace Valve.VR.Extras
             postProcessingVol = GameObject.Find("VRCamera").GetComponent<PostProcessVolume>(); // TODO: Find a better way
             postProcessingVol.enabled = false;
             Level = GameObject.Find("Level");
-            FloorMarker = GameObject.Find("FloorMarker");
+            Environment = Level.transform.Find("Environment").gameObject;
+
             if (pose == null)
                 pose = GetComponent<SteamVR_Behaviour_Pose>();
             if (pose == null)
@@ -60,7 +61,7 @@ namespace Valve.VR.Extras
 
             saveLoadData = GetComponent<SaveLoadData>();
             generatedPlanes = new List<GameObject>();
-            scaledAssets = new List<GameObject>();
+            instantiatedScaledAssets = new List<GameObject>();
             Load();
         }
 
@@ -71,10 +72,9 @@ namespace Valve.VR.Extras
 
         void Start()
         {
-            currentFocalPoint = scaledAssets[0].GetComponent<AssetController>();
-            RotateLevel(currentFocalPoint.AssociatedPlane, currentFocalPoint.AssociatedPivotPoint);
-            currentFocalPoint.StartEnemyWave();
-            // SetFloorLevel();
+            currentFocalPoint = instantiatedScaledAssets[0].GetComponent<AssetController>();
+            activeTransition = new Transition(postProcessingVol, Level, currentFocalPoint);
+            activeTransition.TriggerTransition();
         }
 
         public static void ToggleShowPlanes()
@@ -94,11 +94,7 @@ namespace Valve.VR.Extras
         public static void PrimeLevelForTransition(GameObject teleportPoint)
         {
             currentFocalPoint = teleportPoint.transform.parent.GetComponent<AssetController>();
-            GameObject plane = currentFocalPoint.AssociatedPlane;
-            GameObject pivot = currentFocalPoint.AssociatedPivotPoint;
-            GameObject transitionPoint = plane.transform.GetChild(0).gameObject;
-            transitionPoint.SetActive(true);
-            activeTransition = new Transition(plane, pivot, transitionPoint, postProcessingVol, Level);
+            activeTransition = new Transition(postProcessingVol, Level, currentFocalPoint);
         }
 
         // Instantiates Steam VR teleport points that the user will use in order to move forward in the level.
@@ -106,7 +102,7 @@ namespace Valve.VR.Extras
         private void GenerateTeleportPoints()
         {
             teleportPoints = new List<GameObject>();
-            foreach (var asset in scaledAssets)
+            foreach (var asset in instantiatedScaledAssets)
             {
                 GameObject telepoint = Instantiate(TeleportPoint);
                 telepoint.transform.parent = asset.transform;
@@ -141,7 +137,7 @@ namespace Valve.VR.Extras
         // to store where the objects were originally before any transformation.
         private void GeneratePivotPoints()
         {
-            foreach (var asset in scaledAssets)
+            foreach (var asset in instantiatedScaledAssets)
             {
                 GameObject pivotPoint = new GameObject("Pivot point");
                 pivotPoint.transform.position = asset.transform.position;
@@ -166,7 +162,8 @@ namespace Valve.VR.Extras
                 GameObject planeCopy = Instantiate(assetController.AssociatedPlane);
                 Mesh planeMesh = planeCopy.GetComponent<MeshFilter>().mesh;
                 GameObject assetScaled = AssetScaler.ScaleAsset(planeCopy, planeMesh.normals[0], asset, false);
-                scaledAssets.Add(assetScaled);
+                assetController.PostScale();
+                instantiatedScaledAssets.Add(assetScaled);
             }
         }
 
@@ -188,9 +185,9 @@ namespace Valve.VR.Extras
         private void ResetScene()
         {
             foreach (var go in generatedPlanes) Destroy(go);
-            foreach (var go in scaledAssets) Destroy(go);
+            foreach (var go in instantiatedScaledAssets) Destroy(go);
             generatedPlanes.Clear();
-            scaledAssets.Clear();
+            instantiatedScaledAssets.Clear();
         }
 
         public static void EnableNextTeleportPoint()

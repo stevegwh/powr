@@ -96,7 +96,7 @@ namespace Valve.VR.Extras
             GameObject pivot = currentFocalPoint.AssociatedPivotPoint;
             GameObject transitionPoint = plane.transform.GetChild(0).gameObject;
             transitionPoint.SetActive(true);
-            activeTransition = new Transition(plane, pivot, transitionPoint, postProcessingVol, Level);
+            // activeTransition = new Transition(plane, pivot, transitionPoint, postProcessingVol, Level);
         }
 
         // Generates the markers for where the player has to stand before the game will teleport to the next point

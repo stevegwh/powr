@@ -38,10 +38,14 @@ public class AssetController : MonoBehaviour
             enemiesContainer.GetChild(i).gameObject.SetActive(false);
         }
 
-        enemiesContainer.transform.parent = transform.parent; // Set parent to the Level to avoid scaling the enemies
-        enemiesContainer.transform.localScale = Vector3.one; // Normalise the enemy scale
     }
 
+    // Ensures the enemies do not get scaled along with its parent asset
+    public void PostScale()
+    {
+        Transform enemiesContainer = transform.Find("Enemies");
+        enemiesContainer.transform.localScale = Vector3.one; // Normalise the enemy scale
+    }
     void Awake()
     {
         TransitionShooterRoom.RegisterAssetToSpawn(gameObject);

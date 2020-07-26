@@ -16,11 +16,12 @@ public class PlayerBullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (gameObject.layer == 13)
+        if (gameObject.layer == 13) // TODO: Check this
         {
             if (other.gameObject != null)
             {
-                other.gameObject.GetComponentInParent<EnemyAI>().TakeDamage();
+                EnemyAI ai = other.gameObject.GetComponentInParent<EnemyAI>();
+                if (ai != null) ai.TakeDamage();
             }
         };
         GameObject explosionClone = Instantiate(Explosion, transform.position, transform.rotation);
