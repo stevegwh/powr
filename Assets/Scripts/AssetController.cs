@@ -25,7 +25,6 @@ public class AssetController : MonoBehaviour
     {
         int randNum = Random.Range(0, planes.Count);
         AssociatedPlane = planes[randNum];
-        Debug.Log(randNum);
     }
 
     void Start()
