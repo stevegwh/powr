@@ -1,14 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
 using Valve.VR.Extras;
 
 public class Transition
 {
     private AssetController currentFocalPoint;
-    private GameObject plane;
-    private GameObject pivotPoint;
+    private readonly GameObject plane;
+    private readonly GameObject pivotPoint;
     private GameObject transitionPoint;
     private GameObject environment;
     private GameObject level;
@@ -18,10 +17,11 @@ public class Transition
         // currentFocalPoint.transform.parent = level.transform;
         transitionPoint.SetActive(false);
         level.SetActive(true);
-        TransitionShooterRoom.RotateLevel(plane, pivotPoint);
-        TransitionShooterRoom.activeTransition = null;
-        TransitionShooterRoom.ToggleShowPlanes();
-        TransitionShooterRoom.currentFocalPoint.StartEnemyWave();
+        TransitionShooterRoom instance = TransitionShooterRoom.instance;
+        instance.RotateLevel(plane, pivotPoint);
+        instance.activeTransition = null;
+        instance.ToggleShowPlanes();
+        instance.currentFocalPoint.StartEnemyWave();
 
         // Set floor level
         Transform localFloorPos = currentFocalPoint.transform.Find("FloorMarker").transform; 
@@ -34,14 +34,16 @@ public class Transition
         {
             // Make the teleport point of the next object the floor height of the current focal point.
             // Doesn't use worldFloorPos as the teleport point is local to the currentFocalPoint
-            TransitionShooterRoom.currentFocalPoint.NextObject.AssociatedTeleportPoint.transform.position = new Vector3(
-                TransitionShooterRoom.currentFocalPoint.NextObject.AssociatedTeleportPoint.transform.position.x, 
-                localFloorPos.position.y, 
-                TransitionShooterRoom.currentFocalPoint.NextObject.AssociatedTeleportPoint.transform.position.z);
+            Vector3 telepoint = instance.currentFocalPoint.NextObject.AssociatedTeleportPoint.transform.position;
+            instance.currentFocalPoint.NextObject.AssociatedTeleportPoint.transform.position = new Vector3(
+                telepoint.x,
+                localFloorPos.position.y,
+                telepoint.z
+            );
 
             // Now that we've finished instantiating the focalpoint we can prime the next one
             // currentFocalPoint.transform.parent = environment.transform;
-            TransitionShooterRoom.currentFocalPoint = currentFocalPoint.NextObject;
+            instance.currentFocalPoint = currentFocalPoint.NextObject;
         }
         else
         {
@@ -61,7 +63,7 @@ public class Transition
         this.level = level;
         environment = level.transform.Find("Environment").gameObject;
         level.SetActive(false);
-        TransitionShooterRoom.ToggleShowPlanes();
+        TransitionShooterRoom.instance.ToggleShowPlanes();
         // TransitionShooterRoom.PauseGame(true);
     }
 }
