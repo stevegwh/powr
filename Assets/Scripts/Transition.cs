@@ -23,12 +23,19 @@ public class Transition
         instance.ToggleShowPlanes();
         instance.currentFocalPoint.StartEnemyWave();
 
-        // Set floor level
-        Transform localFloorPos = currentFocalPoint.transform.Find("FloorMarker").transform; 
+        // Set up an object at the base of the focal point in order to raise the floor the correct level
+        Transform child = currentFocalPoint.transform.GetChild(0);
+        float objectHeight = child.GetComponent<MeshFilter>().mesh.bounds.size.y/2;
+
+        GameObject floorMarker = new GameObject("FloorMarker");
+        floorMarker.transform.parent = currentFocalPoint.transform;
+        floorMarker.transform.localPosition = new Vector3(child.localPosition.x, child.localPosition.y - objectHeight, child.localPosition.z);
+
+        Transform localFloorPos = floorMarker.transform;
         Vector3 worldFloorPos = localFloorPos.transform.TransformPoint(localFloorPos.position); 
         environment.transform.position = new Vector3(environment.transform.position.x, worldFloorPos.y, environment.transform.position.z);
 
-        // Fix teleport points
+        // Fix teleport points' position
         currentFocalPoint.AssociatedTeleportPoint.SetActive(false);
         if (currentFocalPoint.NextObject != null)
         {

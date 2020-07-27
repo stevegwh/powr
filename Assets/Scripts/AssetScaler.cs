@@ -44,7 +44,7 @@ public class AssetScaler : MonoBehaviour
         }
 
         // DEBUG
-        // OrientateLevel(assetToScale, assetIndex);
+        // LevelOrientator(assetToScale, assetIndex);
         //
 
         assetScaledMesh.RecalculateBounds();

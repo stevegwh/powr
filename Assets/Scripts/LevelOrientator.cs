@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OrientateLevel 
+public class LevelOrientator 
 {
     // Each of the core assets in the level have had their original positions and rotations stored. With this class we will use them to rotate
     // the level. The entire level becomes a child of the pivot point therefore it will be subject to the same transformations we make to the pivot point.
     // Simply put - we move the pivot point to the same rotation and position of the plane and the entire level follows suit.
-    public static void Orientate(GameObject plane, GameObject pivotPoint, GameObject level)
+    public void Orientate(GameObject plane, GameObject pivotPoint, GameObject level)
     {
         // Reset level's orientation and position from any previous transformations
         pivotPoint.transform.parent = null; // Might be unnecessary 

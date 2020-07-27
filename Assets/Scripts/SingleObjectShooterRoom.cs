@@ -91,7 +91,8 @@ namespace Valve.VR.Extras
         public static void RotateLevel(GameObject planeToMoveTo, GameObject pivotPoint)
         {
             _audioSource.Play();
-            OrientateLevel.Orientate(planeToMoveTo, pivotPoint, Level);
+            var levelOrientator = new LevelOrientator();
+            levelOrientator.Orientate(planeToMoveTo, pivotPoint, Level);
             // AlignFloor();
         }
 
