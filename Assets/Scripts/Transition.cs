@@ -14,26 +14,21 @@ public class Transition
 
     public void TriggerTransition()
     {
-        // currentFocalPoint.transform.parent = level.transform;
         transitionPoint.SetActive(false);
         level.SetActive(true);
+        // currentFocalPoint.transform.parent = level.transform; // TEST CODE
         TransitionShooterRoom instance = TransitionShooterRoom.instance;
         instance.RotateLevel(plane, pivotPoint);
         instance.activeTransition = null;
         instance.ToggleShowPlanes();
         instance.currentFocalPoint.StartEnemyWave();
 
-        // Set up an object at the base of the focal point in order to raise the floor the correct level
-        Transform child = currentFocalPoint.transform.GetChild(0);
-        float objectHeight = child.GetComponent<MeshFilter>().mesh.bounds.size.y/2;
-
-        GameObject floorMarker = new GameObject("FloorMarker");
-        floorMarker.transform.parent = currentFocalPoint.transform;
-        floorMarker.transform.localPosition = new Vector3(child.localPosition.x, child.localPosition.y - objectHeight, child.localPosition.z);
-
+        // Move the environment's floor to the base of the object we are transitioning to
+        GameObject floorMarker = currentFocalPoint.transform.Find("FloorMarker").gameObject;
         Transform localFloorPos = floorMarker.transform;
         Vector3 worldFloorPos = localFloorPos.transform.TransformPoint(localFloorPos.position); 
         environment.transform.position = new Vector3(environment.transform.position.x, worldFloorPos.y, environment.transform.position.z);
+        instance.MoveAllAssetsToFloorLevel();
 
         // Fix teleport points' position
         currentFocalPoint.AssociatedTeleportPoint.SetActive(false);
@@ -49,20 +44,17 @@ public class Transition
             );
 
             // Now that we've finished instantiating the focalpoint we can prime the next one
-            // currentFocalPoint.transform.parent = environment.transform;
             instance.currentFocalPoint = currentFocalPoint.NextObject;
         }
         else
         {
             Debug.Log("Game over");
         }
-
-
     }
 
     public Transition(GameObject level, AssetController currentFocalPoint)
     {
-        this.currentFocalPoint = currentFocalPoint;
+        this.currentFocalPoint = currentFocalPoint; // TODO: Is this necessary?
         plane = currentFocalPoint.AssociatedPlane;
         pivotPoint = currentFocalPoint.AssociatedPivotPoint;
         transitionPoint = plane.transform.GetChild(0).gameObject;

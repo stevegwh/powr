@@ -116,7 +116,6 @@ public class TransitionShooterRoom : MonoBehaviour
         // _audioSource.Play();
         var levelOrientator = new LevelOrientator();
         levelOrientator.Orientate(planeToMoveTo, pivotPoint, Level);
-        // AlignFloor();
     }
     public void StartTransition()
     {
@@ -163,6 +162,8 @@ public class TransitionShooterRoom : MonoBehaviour
             pivotPoint.transform.position = asset.transform.position;
             pivotPoint.transform.rotation = asset.transform.rotation;
             asset.GetComponent<AssetController>().AssociatedPivotPoint = pivotPoint;
+            // TEST CODE
+            // asset.transform.parent = Environment.transform;
         }
     }
 
@@ -176,6 +177,14 @@ public class TransitionShooterRoom : MonoBehaviour
             GameObject planeCopy = Instantiate(assetController.AssociatedPlane);
             Mesh planeMesh = planeCopy.GetComponent<MeshFilter>().mesh;
             GameObject assetScaled = AssetScaler.ScaleAsset(planeCopy, planeMesh.normals[0], asset, false);
+
+            // Instantiate a marker for the floor position
+            Transform child = assetScaled.transform.GetChild(0);
+            float objectHeight = child.GetComponent<MeshFilter>().mesh.bounds.size.y/2;
+            GameObject floorMarker = new GameObject("FloorMarker");
+            floorMarker.transform.parent = assetScaled.transform;
+            floorMarker.transform.localPosition = new Vector3(child.localPosition.x, child.localPosition.y - objectHeight, child.localPosition.z);
+
             instantiatedScaledAssets.Add(assetScaled);
         }
     }
@@ -196,6 +205,26 @@ public class TransitionShooterRoom : MonoBehaviour
     }
     #endregion
 
+    // Without doing this the other assets in the scene are not aligned on the floor correctly
+    // TODO: Optimization: Only scale the assets that the player can see
+    public void MoveAllAssetsToFloorLevel()
+    {
+        foreach (var asset in instantiatedScaledAssets)
+        {
+            if (asset.GetComponent<AssetController>() == currentFocalPoint) continue;
+
+            // Set the floorMarker as the parent of the object and drag it down to the floor.
+            Transform floorMarker = asset.transform.Find("FloorMarker");
+            Transform formerParent = asset.transform.parent;
+            floorMarker.parent = asset.transform.parent;
+            asset.transform.parent = floorMarker.transform;
+
+            floorMarker.position = new Vector3(floorMarker.position.x, Environment.transform.position.y, floorMarker.position.z);
+
+            asset.transform.parent = formerParent;
+            floorMarker.parent = asset.transform;
+        }
+    }
     private void ResetScene()
     {
         foreach (var go in generatedPlanes) Destroy(go);

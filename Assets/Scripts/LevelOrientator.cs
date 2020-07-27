@@ -9,11 +9,18 @@ public class LevelOrientator
     // Simply put - we move the pivot point to the same rotation and position of the plane and the entire level follows suit.
     public void Orientate(GameObject plane, GameObject pivotPoint, GameObject level)
     {
-        // Reset level's orientation and position from any previous transformations
         pivotPoint.transform.parent = null; // Might be unnecessary 
+        // Reset level's orientation and position from any previous transformations
         // level.transform.position = new Vector3(0, floorLevel, 0);
         level.transform.position = Vector3.zero;
         level.transform.rotation = Quaternion.identity;
+
+        // Reset the asset to its original position. Necessary due to the object's position constantly changing due to the floor moving.
+        pivotPoint.transform.parent = TransitionShooterRoom.instance.currentFocalPoint.transform.parent;
+        TransitionShooterRoom.instance.currentFocalPoint.transform.position = pivotPoint.transform.position;
+        pivotPoint.transform.parent = null; // Might be unnecessary 
+        //
+
         // Parent level to the pivot point
         level.transform.parent = pivotPoint.transform;
 
