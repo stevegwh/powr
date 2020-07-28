@@ -14,6 +14,9 @@ public class Stretcher : MonoBehaviour
 
     void Start()
     {
+        if (GameManager.instance.gameType == GameManager.GameType.TransitionShooterControl) return;
+
+        // TODO: Doesn't account for stretchers below the object
         transform.parent = TargetGameObject.transform;
         float offset = 0;
         if (direction == StretcherDirection.Horizontal)
@@ -27,11 +30,5 @@ public class Stretcher : MonoBehaviour
         }
         transform.localScale = new Vector3(transform.localPosition.x - offset, transform.localScale.y, transform.localScale.z);
         transform.parent = TargetGameObject.transform.parent;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

@@ -857,54 +857,62 @@ namespace Valve.VR.InteractionSystem
 
 			CCSSTeleport.PlayerPre.Send( pointedAtTeleportMarker );
 
-			TransitionShooterRoom.instance.StartTransition();
    
 			SteamVR_Fade.Start( Color.clear, currentFadeTime );
 
-   
-			// TeleportPoint teleportPoint = teleportingToMarker as TeleportPoint;
-			// Vector3 teleportPosition = pointedAtPosition;
-   
-			// if ( teleportPoint != null )
-			// {
-			// 	teleportPosition = teleportPoint.transform.position;
-   //
-			// 	//Teleport to a new scene
-			// 	if ( teleportPoint.teleportType == TeleportPoint.TeleportPointType.SwitchToNewScene )
-			// 	{
-			// 		teleportPoint.TeleportToScene();
-			// 		return;
-			// 	}
-			// }
-   //
-			// // Find the actual floor position below the navigation mesh
-			// TeleportArea teleportArea = teleportingToMarker as TeleportArea;
-			// if ( teleportArea != null )
-			// {
-			// 	if ( floorFixupMaximumTraceDistance > 0.0f )
-			// 	{
-			// 		RaycastHit raycastHit;
-			// 		if ( Physics.Raycast( teleportPosition + 0.05f * Vector3.down, Vector3.down, out raycastHit, floorFixupMaximumTraceDistance, floorFixupTraceLayerMask ) )
-			// 		{
-			// 			teleportPosition = raycastHit.point;
-			// 		}
-			// 	}
-			// }
-   //
-			// if ( teleportingToMarker.ShouldMovePlayer() )
-			// {
-			// 	Vector3 playerFeetOffset = player.trackingOriginTransform.position - player.feetPositionGuess;
-			// 	player.trackingOriginTransform.position = teleportPosition + playerFeetOffset;
-   //
-   //              if (player.leftHand.currentAttachedObjectInfo.HasValue)
-   //                  player.leftHand.ResetAttachedTransform(player.leftHand.currentAttachedObjectInfo.Value);
-   //              if (player.rightHand.currentAttachedObjectInfo.HasValue)
-   //                  player.rightHand.ResetAttachedTransform(player.rightHand.currentAttachedObjectInfo.Value);
-   //          }
-			// else
-			// {
-			// 	teleportingToMarker.TeleportPlayer( pointedAtPosition );
-			// }
+            if (GameManager.instance.gameType == GameManager.GameType.TransitionShooter)
+            {
+                GameManager.instance.StartTransition();
+            }
+            else
+            {
+				GameManager.instance.TransitionControlSceneTeleportEnd();
+
+                TeleportPoint teleportPoint = teleportingToMarker as TeleportPoint;
+                Vector3 teleportPosition = pointedAtPosition;
+       
+                if ( teleportPoint != null )
+                {
+                    teleportPosition = teleportPoint.transform.position;
+       
+                    //Teleport to a new scene
+                    if ( teleportPoint.teleportType == TeleportPoint.TeleportPointType.SwitchToNewScene )
+                    {
+                        teleportPoint.TeleportToScene();
+                        return;
+                    }
+                }
+       
+                // Find the actual floor position below the navigation mesh
+                TeleportArea teleportArea = teleportingToMarker as TeleportArea;
+                if ( teleportArea != null )
+                {
+                    if ( floorFixupMaximumTraceDistance > 0.0f )
+                    {
+                        RaycastHit raycastHit;
+                        if ( Physics.Raycast( teleportPosition + 0.05f * Vector3.down, Vector3.down, out raycastHit, floorFixupMaximumTraceDistance, floorFixupTraceLayerMask ) )
+                        {
+                            teleportPosition = raycastHit.point;
+                        }
+                    }
+                }
+       
+                if ( teleportingToMarker.ShouldMovePlayer() )
+                {
+                    Vector3 playerFeetOffset = player.trackingOriginTransform.position - player.feetPositionGuess;
+                    player.trackingOriginTransform.position = teleportPosition + playerFeetOffset;
+       
+                    if (player.leftHand.currentAttachedObjectInfo.HasValue)
+                        player.leftHand.ResetAttachedTransform(player.leftHand.currentAttachedObjectInfo.Value);
+                    if (player.rightHand.currentAttachedObjectInfo.HasValue)
+                        player.rightHand.ResetAttachedTransform(player.rightHand.currentAttachedObjectInfo.Value);
+                }
+                else
+                {
+                    teleportingToMarker.TeleportPlayer( pointedAtPosition );
+                }
+                
+            }
    
 			CCSSTeleport.Player.Send( pointedAtTeleportMarker );
 		}

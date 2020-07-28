@@ -16,8 +16,8 @@ public class LevelOrientator
         level.transform.rotation = Quaternion.identity;
 
         // Reset the asset to its original position. Necessary due to the object's position constantly changing due to the floor moving.
-        pivotPoint.transform.parent = TransitionShooterRoom.instance.currentFocalPoint.transform.parent;
-        TransitionShooterRoom.instance.currentFocalPoint.transform.position = pivotPoint.transform.position;
+        pivotPoint.transform.parent = GameManager.instance.currentFocalPoint.transform.parent;
+        GameManager.instance.currentFocalPoint.transform.position = pivotPoint.transform.position;
         pivotPoint.transform.parent = null; // Might be unnecessary 
         //
 

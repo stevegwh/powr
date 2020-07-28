@@ -12,6 +12,6 @@ public class ChangeRoomPosition : MonoBehaviour
     }
     void OnTriggerEnter(Collider other)
     {
-        TransitionShooterRoom.instance.activeTransition.TriggerTransition();
+        GameManager.instance.activeTransition.TriggerTransition();
     }
 }

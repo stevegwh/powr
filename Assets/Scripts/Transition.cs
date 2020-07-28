@@ -17,7 +17,7 @@ public class Transition
         transitionPoint.SetActive(false);
         level.SetActive(true);
         // currentFocalPoint.transform.parent = level.transform; // TEST CODE
-        TransitionShooterRoom instance = TransitionShooterRoom.instance;
+        GameManager instance = GameManager.instance;
         instance.RotateLevel(plane, pivotPoint);
         instance.activeTransition = null;
         instance.ToggleShowPlanes();
@@ -39,7 +39,7 @@ public class Transition
             Vector3 telepoint = instance.currentFocalPoint.NextObject.AssociatedTeleportPoint.transform.position;
             instance.currentFocalPoint.NextObject.AssociatedTeleportPoint.transform.position = new Vector3(
                 telepoint.x,
-                localFloorPos.position.y,
+                localFloorPos.position.y + 0.1f,
                 telepoint.z
             );
 
@@ -62,7 +62,7 @@ public class Transition
         this.level = level;
         environment = level.transform.Find("Environment").gameObject;
         level.SetActive(false);
-        TransitionShooterRoom.instance.ToggleShowPlanes();
-        // TransitionShooterRoom.PauseGame(true);
+        GameManager.instance.ToggleShowPlanes();
+        // GameManager.PauseGame(true);
     }
 }

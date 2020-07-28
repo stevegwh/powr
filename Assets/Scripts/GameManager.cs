@@ -6,15 +6,24 @@ using UnityEngine.UI;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 
-public class TransitionShooterRoom : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
+    public enum GameType
+    {
+        TransitionShooter,
+        TransitionShooterControl, // Uses regular teleporting instead of transitions
+        StaticShooter,
+        StaticShooterControl
+    }
+
+    public GameType gameType;
     public AssetController StartingObject;
     public AssetController currentFocalPoint;
     public Transition activeTransition;
     private AudioSource _audioSource;
     private bool gamePaused;
-    public GameObject Level;
-    public GameObject Environment;
+    private GameObject Level;
+    private GameObject Environment;
 
     private GameObject TeleportPoint;
     private GameObject TransitionPoint;
@@ -35,14 +44,14 @@ public class TransitionShooterRoom : MonoBehaviour
     public SteamVR_Behaviour_Pose pose;
 
     //-------------------------------------------------
-    private static TransitionShooterRoom _instance;
-    public static TransitionShooterRoom instance
+    private static GameManager _instance;
+    public static GameManager instance
     {
         get
         {
             if ( _instance == null )
             {
-                _instance = GameObject.FindObjectOfType<TransitionShooterRoom>();
+                _instance = GameObject.FindObjectOfType<GameManager>();
 
                 DontDestroyOnLoad( _instance.gameObject );
             }
@@ -72,7 +81,33 @@ public class TransitionShooterRoom : MonoBehaviour
         saveLoadData = GetComponent<SaveLoadData>();
         generatedPlanes = new List<GameObject>();
         instantiatedScaledAssets = new List<GameObject>();
-        Load();
+        if (gameType == GameType.TransitionShooter)
+        {
+            Load();
+        }
+        else if (gameType == GameType.TransitionShooterControl)
+        {
+            TransitionControlSceneLoad();
+        }
+    }
+
+    private void TransitionControlSceneLoad()
+    {
+        ResetScene();
+        instantiatedScaledAssets = new List<GameObject>(_assetsToScale); // as we don't need to scale we can just bypass it
+        // Necessary part of GenerateScaledAssets that we need
+        foreach (var asset in _assetsToScale)
+        {
+            Transform child = asset.transform.GetChild(0);
+            float objectHeight = child.GetComponent<MeshFilter>().mesh.bounds.size.y / 2;
+            GameObject floorMarker = new GameObject("FloorMarker");
+            floorMarker.transform.parent = asset.transform;
+            floorMarker.transform.localPosition = new Vector3(child.localPosition.x,
+                child.localPosition.y - objectHeight, child.localPosition.z);
+        }
+        GenerateTeleportPoints();
+        // Allows the player to reload by bringing the gun over their shoulder. Only enabled in control version of game.
+        GameObject.FindObjectOfType<CheckIfPlayerDucking>().gameObject.GetComponent<BoxCollider>().enabled = true;
     }
 
     private void PauseGame(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
@@ -83,9 +118,26 @@ public class TransitionShooterRoom : MonoBehaviour
     IEnumerator Start()
     {
         currentFocalPoint = StartingObject;
-        StartTransition();
-        activeTransition.TriggerTransition();
+        if (gameType == GameType.TransitionShooter)
+        {
+            StartTransition();
+            activeTransition.TriggerTransition();
+        }
+        else if (gameType == GameType.TransitionShooterControl)
+        {
+            GameObject player = GameObject.Find("Player");
+            player.transform.position = currentFocalPoint.transform.Find("TeleportPoint(Clone)").position;
+            currentFocalPoint.StartEnemyWave();
+            currentFocalPoint = currentFocalPoint.NextObject;
+        }
         yield return null;
+    }
+
+    public void TransitionControlSceneTeleportEnd()
+    {
+        currentFocalPoint.AssociatedTeleportPoint.SetActive(false);
+        currentFocalPoint.StartEnemyWave();
+        currentFocalPoint = currentFocalPoint.NextObject;
     }
 
     # region Helper Functions
@@ -104,6 +156,11 @@ public class TransitionShooterRoom : MonoBehaviour
     }
     public void EnableNextTeleportPoint()
     {
+        if (currentFocalPoint.AssociatedTeleportPoint == null)
+        {
+            Debug.Log("No more teleports");
+            return;
+        }
         currentFocalPoint.AssociatedTeleportPoint.SetActive(true);
     }
 
@@ -132,6 +189,10 @@ public class TransitionShooterRoom : MonoBehaviour
             telepoint.transform.parent = asset.transform;
             telepoint.transform.position = asset.transform.position;
             telepoint.transform.position -= asset.transform.forward;
+            // New
+            Transform floorMarker = asset.transform.Find("FloorMarker");
+            telepoint.transform.position = new Vector3(telepoint.transform.position.x, floorMarker.position.y, telepoint.transform.position.z);
+            //
             asset.GetComponent<AssetController>().AssociatedTeleportPoint = telepoint;
             telepoint.SetActive(false);
         }
