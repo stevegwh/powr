@@ -12,6 +12,7 @@ public class Stretcher : MonoBehaviour
     public GameObject TargetGameObject;
     public StretcherDirection direction;
 
+    // TODO: Gettign warning about stretching to negative
     void Start()
     {
         if (GameManager.instance.gameType == GameManager.GameType.TransitionShooterControl) return;

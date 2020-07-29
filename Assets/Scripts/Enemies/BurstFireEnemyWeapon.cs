@@ -1,9 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BurstFireEnemyWeapon : MonoBehaviour
 {
+    // private BulletManager bulletManager;
+
+    private List<EnemyBullet> _bulletStore;
+
     private EnemyAI enemyAIController;
 
     public GameObject Player;
@@ -18,23 +24,58 @@ public class BurstFireEnemyWeapon : MonoBehaviour
 
     private int _bulletPool = 2;
 
-    private void Fire()
+    private Transform cachedTransform;
+
+    private Transform cachedNozzleTransform;
+
+    private void Awake()
     {
-        GameObject go = Instantiate(Bullet, Nozzle.transform.position, Nozzle.transform.rotation);
-        go.GetComponent<EnemyBullet>().SetBulletLayer(12);
-        go.GetComponent<EnemyBullet>().SetBulletSpeed(2f);
-        Destroy(go, 5f);
+        cachedTransform = transform;
+        cachedNozzleTransform = Nozzle.transform;
+        _bulletStore = new List<EnemyBullet>();
     }
 
     void Start()
     {
+        // bulletManager = BulletManager.instance;
         enemyAIController = GetComponent<EnemyAI>();
         Player = GameObject.Find("VRCamera");
     }
+
+    private void OnEnable()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            _bulletStore.Add(BulletManager.instance.RequestBullet());
+            _bulletStore[i].parent = gameObject;
+            _bulletStore[i].gameObject.SetActive(false);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        if (BulletManager.instance != null)
+        {
+            BulletManager.instance.ReturnBullet(_bulletStore);
+        }
+    }
+
+    private void Fire()
+    {
+        foreach (var bullet in _bulletStore.Where(bullet => !bullet.gameObject.activeSelf))
+        {
+            GameObject go = bullet.gameObject;
+            go.SetActive(true);
+            go.transform.position = cachedNozzleTransform.position;
+            go.transform.rotation = cachedNozzleTransform.rotation;
+            break;
+        }
+    }
+
     void Update()
     {
         if (enemyAIController.Dead) return;
-        transform.LookAt(Player.transform);
+        cachedTransform.LookAt(Player.transform);
 
         // Shoots a burst of three bullets in quick succession then waits 1 second.
         if (_bulletTimer < bulletDelay)

@@ -2,12 +2,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VolumetricLines;
 
 public class EnemyBullet : MonoBehaviour
 {
+    public GameObject parent;
+    // public bool isActive;
     private Rigidbody rb;
     private float bulletSpeed = 30f;
     public GameObject Explosion;
+    private float bulletTimer = 0;
+    private float maxBulletTime = 5f;
+    private Transform cachedTransform;
+
+    void Awake()
+    {
+        // Explosion = Instantiate(Explosion);
+        // cachedExplosionTransform = Explosion.transform;
+        // cachedExplosionParticleSystem = Explosion.GetComponent<ParticleSystem>();
+        rb = GetComponent<Rigidbody>();
+        cachedTransform = transform;
+    }
 
     public void SetBulletLayer(int layer)
     {
@@ -21,20 +36,35 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        GameObject explosionClone = Instantiate(Explosion, transform.position, transform.rotation);
-        explosionClone.transform.parent = null;
-        Destroy(explosionClone, 1f);
-        Destroy(gameObject);
+        // cachedExplosionTransform.position = cachedTransform.position;
+        // cachedExplosionParticleSystem.Play();
+        // Deactivate();
+        gameObject.SetActive(false);
+
     }
 
-    void Start()
+    void OnEnable()
     {
-        rb = GetComponent<Rigidbody>();
+        bulletTimer = 0;
     }
 
     void Update()
     {
+        // if (!isActive && !cachedExplosionParticleSystem.isPlaying)
+        // {
+        //     cachedExplosionParticleSystem.Stop();
+        //     ReturnBullet();
+        // }
+        // if (!isActive) return;
         rb.velocity = rb.transform.forward * bulletSpeed;
+        if (bulletTimer < maxBulletTime)
+        {
+            bulletTimer += Time.deltaTime;
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
 }

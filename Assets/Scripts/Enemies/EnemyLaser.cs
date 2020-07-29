@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using SemihOrhan.WaveOne.StartPoints.Shapes;
 using UnityEngine;
-using UnityEngine.Serialization;
 using VolumetricLines;
 
 public class EnemyLaser : MonoBehaviour

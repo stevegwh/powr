@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 2659877044577292300}
   - component: {fileID: 2659877044576209282}
   - component: {fileID: 2659877044584871542}
-  - component: {fileID: 2659877044584962742}
   - component: {fileID: 2659877044585237232}
   - component: {fileID: 349419004768722231}
   - component: {fileID: 2352790425002366010}
@@ -104,18 +103,6 @@ MonoBehaviour:
   m_lineColor: {r: 0.034482718, g: 1, b: 0, a: 0}
   m_lineWidth: 66
   m_lightSaberFactor: 0.747
---- !u!114 &2659877044584962742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2659877044575219804}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5cb039d3a64491f4ebfc852d25b5ee70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!108 &2659877044585237232
 Light:
   m_ObjectHideFlags: 0
@@ -188,7 +175,7 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -218,4 +205,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d649f2db1caa97c4aac1a3d887f4dbdd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  parent: {fileID: 0}
+  isActive: 0
   Explosion: {fileID: 1000013462590818, guid: ecdd96beb7f93494880c052dfccf9dc1, type: 3}
