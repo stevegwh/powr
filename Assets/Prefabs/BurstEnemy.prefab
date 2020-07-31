@@ -232,7 +232,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2099189907078690017}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.507, z: 0.689}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -10057,6 +10057,7 @@ GameObject:
   - component: {fileID: 2105240208218370923}
   - component: {fileID: 2116592425524178501}
   - component: {fileID: 2122124976621586193}
+  - component: {fileID: 8627083267279472639}
   m_Layer: 0
   m_Name: MachineGunRobot_Laser
   m_TagString: Untagged
@@ -10126,6 +10127,19 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &8627083267279472639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099712315834698765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96f2de36fa8f47045a5f6cea1ad9d6f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Player: {fileID: 0}
 --- !u!1 &2099728048910765161
 GameObject:
   m_ObjectHideFlags: 0
@@ -10559,6 +10573,7 @@ MonoBehaviour:
   Player: {fileID: 0}
   Nozzle: {fileID: 4804011838224984528}
   Bullet: {fileID: 2659877044575219804, guid: 29a5674a32c67ef4bbe73a8f713ea938, type: 3}
+  Health: 1
 --- !u!1 &4804011838224984528
 GameObject:
   m_ObjectHideFlags: 0

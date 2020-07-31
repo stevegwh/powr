@@ -9,7 +9,7 @@ public class EnemyBullet : MonoBehaviour
     public GameObject parent;
     // public bool isActive;
     // private Rigidbody rb;
-    private float bulletSpeed = 20f;
+    private float bulletSpeed = 10f;
     public GameObject Explosion;
     private float bulletTimer = 0;
     private float maxBulletTime = 5f;

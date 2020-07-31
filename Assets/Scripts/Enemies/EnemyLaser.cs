@@ -6,41 +6,31 @@ using VolumetricLines;
 
 public class EnemyLaser : MonoBehaviour
 {
-    private VolumetricLineBehavior laserBeam;
-
-    private SphereCollider col;
-
-
-
-    public void SetLaserStartPos(Vector3 newPos)
-    {
-        laserBeam.StartPos = newPos;
-    }
-
-    private void OnEnable()
-    {
-    }
-
+    private LineRenderer laserBeam;
 
     void Start()
     {
-        laserBeam = GetComponentInParent<VolumetricLineBehavior>();
-        col = GetComponent<SphereCollider>();
+        laserBeam = GetComponent<LineRenderer>();
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        // Destroy(transform.parent.gameObject);
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        if ( Vector3.Distance(laserBeam.StartPos, laserBeam.EndPos)  < 10000f )
+        RaycastHit hit;
+        // Does the ray intersect any objects excluding the player layer
+        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit))
         {
-            laserBeam.EndPos = new Vector3(laserBeam.EndPos.x, laserBeam.EndPos.y, laserBeam.EndPos.z + 1000f);
-            col.center = laserBeam.EndPos;
+            Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);
+            if (hit.collider)
+            {
+                laserBeam.SetPosition(1, hit.point);
+            }
+            else
+            {
+                laserBeam.SetPosition(1, transform.forward*5000);
+            }
         }
 
     }
+
+
 }

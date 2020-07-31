@@ -21,7 +21,7 @@ public class Transition
         instance.RotateLevel(plane, pivotPoint);
         instance.activeTransition = null;
         instance.ToggleShowPlanes();
-        instance.currentFocalPoint.StartEnemyWave();
+        // instance.currentFocalPoint.StartEnemyWave();
 
         // Move the environment's floor to the base of the object we are transitioning to
         GameObject floorMarker = currentFocalPoint.transform.Find("FloorMarker").gameObject;
@@ -44,7 +44,8 @@ public class Transition
             );
 
             // Now that we've finished instantiating the focalpoint we can prime the next one
-            instance.currentFocalPoint = currentFocalPoint.NextObject;
+            // instance.currentFocalPoint = currentFocalPoint.NextObject;
+            GameManager.instance.ReadyCube.SetActive(true);
         }
         else
         {

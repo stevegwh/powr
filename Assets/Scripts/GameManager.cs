@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
         StaticShooterControl
     }
 
+    public GameObject ReadyCube;
     public GameType gameType;
     public AssetController StartingObject;
     public AssetController currentFocalPoint;
@@ -71,6 +72,7 @@ public class GameManager : MonoBehaviour
         Environment = Level.transform.Find("Environment").gameObject;
         TransitionPoint = Resources.Load<GameObject>("TransitionPointView");
         TeleportPoint = Resources.Load<GameObject>("TeleportPoint");
+        ReadyCube = GameObject.Find("ReadyCube");
 
         if (pose == null)
             pose = GetComponent<SteamVR_Behaviour_Pose>();
@@ -128,8 +130,8 @@ public class GameManager : MonoBehaviour
         {
             GameObject player = GameObject.Find("Player");
             player.transform.position = currentFocalPoint.transform.Find("TeleportPoint(Clone)").position;
-            currentFocalPoint.StartEnemyWave();
-            currentFocalPoint = currentFocalPoint.NextObject;
+            // currentFocalPoint.StartEnemyWave();
+            // currentFocalPoint = currentFocalPoint.NextObject;
         }
         yield return null;
     }
@@ -137,8 +139,7 @@ public class GameManager : MonoBehaviour
     public void TransitionControlSceneTeleportEnd()
     {
         currentFocalPoint.AssociatedTeleportPoint.SetActive(false);
-        currentFocalPoint.StartEnemyWave();
-        currentFocalPoint = currentFocalPoint.NextObject;
+        ReadyCube.SetActive(true);
     }
 
     # region Helper Functions
@@ -196,6 +197,7 @@ public class GameManager : MonoBehaviour
             //
             asset.GetComponent<AssetController>().AssociatedTeleportPoint = telepoint;
             telepoint.SetActive(false);
+
         }
 
     }

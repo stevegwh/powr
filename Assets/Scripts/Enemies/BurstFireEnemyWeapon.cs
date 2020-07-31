@@ -20,13 +20,15 @@ public class BurstFireEnemyWeapon : MonoBehaviour
 
     private float _bulletTimer;
 
-    private readonly float bulletDelay = 1f;
+    private readonly float bulletDelay = 2f;
 
     private int _bulletPool = 2;
 
     private Transform cachedTransform;
 
     private Transform cachedNozzleTransform;
+
+    public int Health = 1;
 
     private void Awake()
     {
@@ -38,8 +40,8 @@ public class BurstFireEnemyWeapon : MonoBehaviour
     void Start()
     {
         // bulletManager = BulletManager.instance;
-        enemyAIController = GetComponentInParent<EnemyAI>();
-        enemyAIController.Health = 1;
+        enemyAIController = GetComponent<EnemyAI>() ?? GetComponentInParent<EnemyAI>();
+        enemyAIController.Health = Health;
         Player = GameObject.Find("VRCamera");
     }
 
