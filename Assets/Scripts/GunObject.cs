@@ -18,7 +18,7 @@ public class GunObject : MonoBehaviour
     public Transform fireNozzle;
     // private Interactable _gunInteractable;
     private AudioSource audioSource;
-    public int ammoCountMax = 6;
+    public int ammoCountMax = 12;
     private int ammoCount;
     public AudioClip reloadVoiceSound;
     public AudioClip reloadSound;
@@ -29,6 +29,7 @@ public class GunObject : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         ammoCount = ammoCountMax;
+        AmmoText.text = ammoCount.ToString();
     }
 
     public void Fire()
@@ -41,12 +42,6 @@ public class GunObject : MonoBehaviour
             return;
         }
         Hand.TriggerHapticPulse(1.5f, 0.2f, 2f);
-        // if (ammoCount < 0)
-        // {
-        //     audioSource.clip = emptyAmmoSound;
-        //     audioSource.Play();
-        //     return;
-        // }
         ammoCount--;
         AmmoText.text = ammoCount.ToString();
         GameObject go = Instantiate(bullet, fireNozzle.position, fireNozzle.rotation);
@@ -68,6 +63,10 @@ public class GunObject : MonoBehaviour
         if (hand != Hand) return;
         hand.ShowSkeleton(false);
         hand.AttachObject(gameObject, GrabTypes.Grip, attachmentFlags, attachmentOffset);
+    }
+
+    void Update()
+    {
     }
 
 }

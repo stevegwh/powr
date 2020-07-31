@@ -38,7 +38,8 @@ public class BurstFireEnemyWeapon : MonoBehaviour
     void Start()
     {
         // bulletManager = BulletManager.instance;
-        enemyAIController = GetComponent<EnemyAI>();
+        enemyAIController = GetComponentInParent<EnemyAI>();
+        enemyAIController.Health = 1;
         Player = GameObject.Find("VRCamera");
     }
 

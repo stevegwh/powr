@@ -9,9 +9,8 @@ public class EnemyAI : MonoBehaviour
 {
     [FormerlySerializedAs("assetController")] public AssetController enemyWaveController;
     public bool Dead { get; set; }
+    public int Health { get; set; }
     public GameObject DeathExplosion;
-
-    private int _health;
 
     private AudioSource audioSource;
 
@@ -20,17 +19,17 @@ public class EnemyAI : MonoBehaviour
     public AudioClip enemyExplosion;
 
 
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        _health = 1;
     }
 
     public void TakeDamage()
     {
         if (Dead) return;
-        _health--;
-        if (_health < 0)
+        Health--;
+        if (Health < 0)
         {
             audioSource.Stop();
             audioSource.clip = enemyExplosion;
@@ -59,6 +58,8 @@ public class EnemyAI : MonoBehaviour
     void Update()
     {
         if (Dead) Die();
+        // audioSource.pitch = Time.timeScale;
+        // Mathf.Clamp(audioSource.pitch, 0.6f, 1);
     }
     
 

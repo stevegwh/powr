@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Valve.VR.Extras;
 
 public class AssetController : MonoBehaviour
@@ -16,7 +17,7 @@ public class AssetController : MonoBehaviour
 
     public AssetController NextObject;
 
-    [SerializeField]
+    public Transform enemiesContainer;
     private List<GameObject> enemies;
 
     // Iterate through generated planes and find the most appropriate one to pair with.
@@ -30,7 +31,6 @@ public class AssetController : MonoBehaviour
     void Start()
     {
         enemies = new List<GameObject>();
-        Transform enemiesContainer = transform.Find("Enemies");
         if (enemiesContainer == null) return;
         for (int i = 0; i < enemiesContainer.childCount; i++)
         {
@@ -49,13 +49,9 @@ public class AssetController : MonoBehaviour
 
     public void StartEnemyWave()
     {
+        TimeManager.instance.gameActive = true;
         foreach (var enemy in enemies)
         {
-            // As the enemies start off as children of a focal point that has been scaled, the enemies themselves get scaled by the same margin.
-            // Therefore we need to make sure they have no parent and their scale is restored.
-            // This 'could' introduce a bug if they original scale of the enemy is not 'one'
-            enemy.transform.parent = null;
-            enemy.transform.localScale = Vector3.one;
             enemy.SetActive(true);
         }
 
@@ -64,7 +60,12 @@ public class AssetController : MonoBehaviour
     public void RemoveEnemy(GameObject toRemove)
     {
         enemies.Remove(toRemove);
-        if (enemies.Count == 0) GameManager.instance.EnableNextTeleportPoint();
+        if (enemies.Count == 0)
+        {
+            GameManager.instance.EnableNextTeleportPoint();
+            BulletManager.instance.DisableAllBullets();
+            TimeManager.instance.gameActive = false;
+        }
         this.enabled = false;
     }
 

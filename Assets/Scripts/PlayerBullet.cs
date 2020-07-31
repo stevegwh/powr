@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class PlayerBullet : MonoBehaviour
 {
-    private Rigidbody rb;
-    private float bulletSpeed = 30f;
+    private float bulletSpeed = 50f;
+    private Transform cachedTransform;
     public GameObject Explosion;
 
     public void SetBulletSpeed(float speed)
@@ -24,19 +24,22 @@ public class PlayerBullet : MonoBehaviour
                 if (ai != null) ai.TakeDamage();
             }
         };
-        GameObject explosionClone = Instantiate(Explosion, transform.position, transform.rotation);
+        GameObject explosionClone = Instantiate(Explosion, cachedTransform.position, cachedTransform.rotation);
         Destroy(explosionClone, 1f);
         Destroy(gameObject);
     }
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        // rb = GetComponent<Rigidbody>();
+        cachedTransform = transform;
+        TimeManager.instance.TimeOverrideEnabled = true;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        rb.velocity = rb.transform.forward * bulletSpeed;
+        cachedTransform.position += cachedTransform.forward * (bulletSpeed * Time.deltaTime);
+        // rb.velocity = rb.transform.forward * bulletSpeed;
     }
 
 }

@@ -10,9 +10,15 @@ public class EnemyLaser : MonoBehaviour
 
     private SphereCollider col;
 
+
+
     public void SetLaserStartPos(Vector3 newPos)
     {
         laserBeam.StartPos = newPos;
+    }
+
+    private void OnEnable()
+    {
     }
 
 
@@ -32,7 +38,7 @@ public class EnemyLaser : MonoBehaviour
     {
         if ( Vector3.Distance(laserBeam.StartPos, laserBeam.EndPos)  < 10000f )
         {
-            laserBeam.EndPos = new Vector3(laserBeam.EndPos.x, laserBeam.EndPos.y, laserBeam.EndPos.z + 100f);
+            laserBeam.EndPos = new Vector3(laserBeam.EndPos.x, laserBeam.EndPos.y, laserBeam.EndPos.z + 1000f);
             col.center = laserBeam.EndPos;
         }
 

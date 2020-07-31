@@ -39,7 +39,7 @@ public class Transition
             Vector3 telepoint = instance.currentFocalPoint.NextObject.AssociatedTeleportPoint.transform.position;
             instance.currentFocalPoint.NextObject.AssociatedTeleportPoint.transform.position = new Vector3(
                 telepoint.x,
-                localFloorPos.position.y + 0.1f,
+                localFloorPos.position.y,
                 telepoint.z
             );
 

@@ -8,8 +8,8 @@ public class EnemyBullet : MonoBehaviour
 {
     public GameObject parent;
     // public bool isActive;
-    private Rigidbody rb;
-    private float bulletSpeed = 30f;
+    // private Rigidbody rb;
+    private float bulletSpeed = 20f;
     public GameObject Explosion;
     private float bulletTimer = 0;
     private float maxBulletTime = 5f;
@@ -20,7 +20,7 @@ public class EnemyBullet : MonoBehaviour
         // Explosion = Instantiate(Explosion);
         // cachedExplosionTransform = Explosion.transform;
         // cachedExplosionParticleSystem = Explosion.GetComponent<ParticleSystem>();
-        rb = GetComponent<Rigidbody>();
+        // rb = GetComponent<Rigidbody>();
         cachedTransform = transform;
     }
 
@@ -48,7 +48,7 @@ public class EnemyBullet : MonoBehaviour
         bulletTimer = 0;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // if (!isActive && !cachedExplosionParticleSystem.isPlaying)
         // {
@@ -56,7 +56,8 @@ public class EnemyBullet : MonoBehaviour
         //     ReturnBullet();
         // }
         // if (!isActive) return;
-        rb.velocity = rb.transform.forward * bulletSpeed;
+        // rb.velocity = rb.transform.forward * bulletSpeed;
+        transform.position += cachedTransform.forward * (bulletSpeed * Time.deltaTime);
         if (bulletTimer < maxBulletTime)
         {
             bulletTimer += Time.deltaTime;

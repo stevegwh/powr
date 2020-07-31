@@ -27,6 +27,7 @@ public class GunController : MonoBehaviour
 
 
         _hand = GetComponent<Hand>();
+        _hand.HideSkeleton();
         gun = GunGameObject.GetComponent<GunObject>();
         gun.Hand = _hand;
         gun.AttachGun(_hand);

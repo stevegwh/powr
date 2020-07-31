@@ -38,7 +38,6 @@ public class BulletManager : MonoBehaviour
             GameObject go = Instantiate(Bullet);
             EnemyBullet bullet = go.GetComponent<EnemyBullet>();
             bullet.SetBulletLayer(12);
-            bullet.SetBulletSpeed(2f);
             bulletPool.Add(bullet);
             go.SetActive(false);
         }
@@ -50,6 +49,13 @@ public class BulletManager : MonoBehaviour
         EnemyBullet bullet = bulletPool[0];
         bulletPool.RemoveAt(0);
         return bullet;
+    }
+
+
+    public void DisableAllBullets()
+    {
+        bulletPool.ForEach(e=> e.gameObject.SetActive(false));
+
     }
 
     public void ReturnBullet(EnemyBullet bullet)

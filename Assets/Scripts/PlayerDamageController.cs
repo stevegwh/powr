@@ -6,7 +6,7 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class PlayerDamageController : MonoBehaviour
 {
-    private PostProcessVolume postProcess;
+    // private Vignette vignette;
 
     private float invincibilityDelay;
 
@@ -14,31 +14,33 @@ public class PlayerDamageController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var vrCamera = GameObject.Find("VRCamera");
-        postProcess = vrCamera.GetComponent<PostProcessVolume>();
+        // var vrCamera = GameObject.Find("VRCamera");
+        // PostProcessVolume postProcess = vrCamera.GetComponent<PostProcessVolume>();
+        // vignette = postProcess.profile.GetSetting<Vignette>();
     }
 
     public void TakeDamage()
     {
-        postProcess.enabled = true;
+        // vignette.enabled.value = true;
     }
 
     public void OnTriggerEnter(Collider other)
     {
+        if (!TimeManager.instance.gameActive) return;
         TakeDamage();
         invincibilityDelay = 0;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (invincibilityDelay < maxInvincibilityDelay)
         {
-            invincibilityDelay += Time.deltaTime;
+            invincibilityDelay += Time.fixedUnscaledDeltaTime;
         }
         else
         {
-            postProcess.enabled = false;
+            // vignette.enabled.value = false;
         }
         
     }

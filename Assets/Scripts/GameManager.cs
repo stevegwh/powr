@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 
@@ -121,7 +122,7 @@ public class GameManager : MonoBehaviour
         if (gameType == GameType.TransitionShooter)
         {
             StartTransition();
-            activeTransition.TriggerTransition();
+            // activeTransition.TriggerTransition();
         }
         else if (gameType == GameType.TransitionShooterControl)
         {
@@ -272,7 +273,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (var asset in instantiatedScaledAssets)
         {
-            if (asset.GetComponent<AssetController>() == currentFocalPoint) continue;
+            // if (asset.GetComponent<AssetController>() == currentFocalPoint) continue;
 
             // Set the floorMarker as the parent of the object and drag it down to the floor.
             Transform floorMarker = asset.transform.Find("FloorMarker");
