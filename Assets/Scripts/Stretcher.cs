@@ -15,7 +15,7 @@ public class Stretcher : MonoBehaviour
     // TODO: Gettign warning about stretching to negative
     void Start()
     {
-        if (GameManager.instance.gameType == GameManager.GameType.TransitionShooterControl) return;
+        if (GameManager.instance.GameType == GameType.TransitionShooterControl) return;
 
         // TODO: Doesn't account for stretchers below the object
         transform.parent = TargetGameObject.transform;

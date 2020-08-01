@@ -9,16 +9,11 @@ using Valve.VR.InteractionSystem;
 
 public class GameManager : MonoBehaviour
 {
-    public enum GameType
-    {
-        TransitionShooter,
-        TransitionShooterControl, // Uses regular teleporting instead of transitions
-        StaticShooter,
-        StaticShooterControl
-    }
 
     public GameObject ReadyCube;
-    public GameType gameType;
+    private GameType gameType;
+    public GameType GameType => gameType;
+
     public AssetController StartingObject;
     public AssetController currentFocalPoint;
     public Transition activeTransition;
@@ -66,6 +61,15 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        if (SetDefaults.instance != null)
+        {
+            gameType = SetDefaults.instance.gameType;
+        }
+        else
+        {
+            Debug.Log("No game type specified. Using control scene.");
+            gameType = GameType.TransitionShooterControl;
+        }
         vrAnchorPoint = new GameObject();
         _audioSource = GetComponent<AudioSource>();
         Level = GameObject.Find("Level");

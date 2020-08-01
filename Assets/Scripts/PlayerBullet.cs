@@ -9,11 +9,6 @@ public class PlayerBullet : MonoBehaviour
     private Transform cachedTransform;
     public GameObject Explosion;
 
-    public void SetBulletSpeed(float speed)
-    {
-        bulletSpeed = speed;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (gameObject.layer == 13) // TODO: Check this
@@ -33,7 +28,6 @@ public class PlayerBullet : MonoBehaviour
     {
         // rb = GetComponent<Rigidbody>();
         cachedTransform = transform;
-        TimeManager.instance.TimeOverrideEnabled = true;
     }
 
     void FixedUpdate()

@@ -1612,7 +1612,7 @@ PrefabInstance:
     - target: {fileID: 6963834515318986990, guid: 3284fb99c87a40041a4f0414487c926b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.19399998
+      value: 0.179
       objectReference: {fileID: 0}
     - target: {fileID: 6963834515318986990, guid: 3284fb99c87a40041a4f0414487c926b,
         type: 3}
@@ -23056,8 +23056,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad3961a72420f0b45bbc13106933a871, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReadyCube: {fileID: 0}
-  gameType: 0
+  ReadyCube: {fileID: 1751012660}
   StartingObject: {fileID: 61006803}
   currentFocalPoint: {fileID: 0}
   vrAnchorPoint: {fileID: 0}
@@ -29539,7 +29538,7 @@ PrefabInstance:
     - target: {fileID: 6963834515318986990, guid: 3284fb99c87a40041a4f0414487c926b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.19399998
+      value: 0.179
       objectReference: {fileID: 0}
     - target: {fileID: 6963834515318986990, guid: 3284fb99c87a40041a4f0414487c926b,
         type: 3}
@@ -41605,6 +41604,12 @@ Transform:
   m_Father: {fileID: 1171070766}
   m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1751012660 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3446354708941941526, guid: afbae23963958cc48941e8d563cddbad,
+    type: 3}
+  m_PrefabInstance: {fileID: 3446354708755175942}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1775954062
 GameObject:
   m_ObjectHideFlags: 0
@@ -51751,7 +51756,7 @@ PrefabInstance:
     - target: {fileID: 6963834515318986990, guid: 3284fb99c87a40041a4f0414487c926b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.19399998
+      value: 0.179
       objectReference: {fileID: 0}
     - target: {fileID: 6963834515318986990, guid: 3284fb99c87a40041a4f0414487c926b,
         type: 3}
@@ -52499,7 +52504,7 @@ PrefabInstance:
     - target: {fileID: 6963834515318986990, guid: 3284fb99c87a40041a4f0414487c926b,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.19399998
+      value: 0.179
       objectReference: {fileID: 0}
     - target: {fileID: 6963834515318986990, guid: 3284fb99c87a40041a4f0414487c926b,
         type: 3}
@@ -54413,7 +54418,7 @@ PrefabInstance:
     - target: {fileID: 3446354708941941522, guid: afbae23963958cc48941e8d563cddbad,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.104
+      value: 1.321
       objectReference: {fileID: 0}
     - target: {fileID: 3446354708941941522, guid: afbae23963958cc48941e8d563cddbad,
         type: 3}
@@ -55753,7 +55758,6 @@ GameObject:
   - component: {fileID: 6829779168430156586}
   - component: {fileID: 6829779168420975931}
   - component: {fileID: 6829779168420975932}
-  - component: {fileID: 6829779168420975933}
   m_Layer: 8
   m_Name: VRCamera
   m_TagString: MainCamera
@@ -55838,21 +55842,6 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   priority: 0
---- !u!114 &6829779168420975933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6829779168420975930}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88c7ca790b6d53849988a18758211508, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bulletTimeEnabled: 0
-  handR: {fileID: 6829779168431197792}
-  handL: {fileID: 6829779168431378174}
 --- !u!1 &6829779168420979136
 GameObject:
   m_ObjectHideFlags: 0

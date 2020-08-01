@@ -33,6 +33,10 @@ public class GunController : MonoBehaviour
         gun.AttachGun(_hand);
         fireButton.AddOnStateDownListener(Fire, pose.inputSource);
     }
+    public void OnDestroy()
+    {
+        _hand.DetachObject(GunGameObject);
+    }
 
     private void Fire(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {

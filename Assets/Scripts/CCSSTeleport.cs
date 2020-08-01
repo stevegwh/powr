@@ -860,7 +860,7 @@ namespace Valve.VR.InteractionSystem
    
 			SteamVR_Fade.Start( Color.clear, currentFadeTime );
 
-            if (GameManager.instance.gameType == GameManager.GameType.TransitionShooter)
+            if (GameManager.instance.GameType == GameType.TransitionShooter)
             {
                 GameManager.instance.StartTransition();
             }

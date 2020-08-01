@@ -26,7 +26,6 @@ public class PlayerDamageController : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (!TimeManager.instance.gameActive) return;
         TakeDamage();
         invincibilityDelay = 0;
     }

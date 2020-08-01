@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net.Mime;
 using UnityEngine;
@@ -18,7 +19,7 @@ public class GunObject : MonoBehaviour
     public Transform fireNozzle;
     // private Interactable _gunInteractable;
     private AudioSource audioSource;
-    public int ammoCountMax = 12;
+    public int ammoCountMax;
     private int ammoCount;
     public AudioClip reloadVoiceSound;
     public AudioClip reloadSound;
@@ -50,6 +51,7 @@ public class GunObject : MonoBehaviour
         Destroy(go, 5f);
     }
 
+
     public void Reload()
     {
         if (ammoCount > 0) return;
@@ -64,9 +66,4 @@ public class GunObject : MonoBehaviour
         hand.ShowSkeleton(false);
         hand.AttachObject(gameObject, GrabTypes.Grip, attachmentFlags, attachmentOffset);
     }
-
-    void Update()
-    {
-    }
-
 }

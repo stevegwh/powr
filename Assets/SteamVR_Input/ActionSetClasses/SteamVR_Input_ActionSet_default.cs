@@ -113,6 +113,14 @@ namespace Valve.VR
             }
         }
         
+        public virtual SteamVR_Action_Boolean MoveMarkerDown
+        {
+            get
+            {
+                return SteamVR_Actions.default_MoveMarkerDown;
+            }
+        }
+        
         public virtual SteamVR_Action_Vibration Haptic
         {
             get

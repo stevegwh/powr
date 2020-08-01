@@ -40,11 +40,13 @@ public class ReadyCube : MonoBehaviour
             interactable.hoveringHand == hand.otherHand && hand.otherHand.IsGrabbingWithType(GrabTypes.Grip))
         {
             // GameManager.instance.currentFocalPoint.StartEnemyWave();
-            if (GameManager.instance.gameType == GameManager.GameType.TransitionShooterControl)
+            if (GameManager.instance.GameType == GameType.TransitionShooterControl)
             {
-                GameManager.instance.TransitionControlSceneTeleportEnd();
+                // GameManager.instance.TransitionControlSceneTeleportEnd();
+                GameManager.instance.currentFocalPoint.StartEnemyWave();
+                GameManager.instance.currentFocalPoint = GameManager.instance.currentFocalPoint.NextObject;
             }
-            else if (GameManager.instance.gameType == GameManager.GameType.TransitionShooter)
+            else if (GameManager.instance.GameType == GameType.TransitionShooter)
             {
                 GameManager.instance.currentFocalPoint.StartEnemyWave();
                 GameManager.instance.currentFocalPoint = GameManager.instance.currentFocalPoint.NextObject;

@@ -49,7 +49,6 @@ public class AssetController : MonoBehaviour
 
     public void StartEnemyWave()
     {
-        TimeManager.instance.gameActive = true;
         foreach (var enemy in enemies)
         {
             enemy.SetActive(true);
@@ -64,7 +63,6 @@ public class AssetController : MonoBehaviour
         {
             GameManager.instance.EnableNextTeleportPoint();
             BulletManager.instance.DisableAllBullets();
-            TimeManager.instance.gameActive = false;
         }
         this.enabled = false;
     }
