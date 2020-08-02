@@ -32,7 +32,7 @@ public class RushEnemy : MonoBehaviour
 
     private float moveSpeed = 5f;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         fireBurst = GetComponentInChildren<ParticleSystem>();
         audioSource = GetComponent<AudioSource>();
@@ -47,11 +47,20 @@ public class RushEnemy : MonoBehaviour
 
     void OnEnable()
     {
-        if (player == null) return;
+        StartCoroutine(WaitOnPlayer());
         fireBurst.Stop();
         m_collider.enabled = false;
         m_renderer.enabled = false;
         StartCoroutine(SpawnDelay());
+    }
+
+    private IEnumerator WaitOnPlayer()
+    {
+        Debug.Log("Looking for player");
+        player = GameObject.Find("BodyColliderDamage");
+        while(player == null){
+            yield return null;
+        }
     }
 
     private IEnumerator SpawnDelay()

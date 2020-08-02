@@ -18,7 +18,7 @@ public class GunController : MonoBehaviour
     public SteamVR_Behaviour_Pose pose;
     private Hand _hand;
 
-    void Start()
+    void Awake()
     {
         if (pose == null)
             pose = GetComponent<SteamVR_Behaviour_Pose>();

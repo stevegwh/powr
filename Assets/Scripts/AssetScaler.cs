@@ -28,7 +28,7 @@ public class AssetScaler : MonoBehaviour
         float xFraction = modelScale.x / targetScale.x;
         float yFraction = modelScale.y / targetScale.y;
         // float zFraction = modelScale.z / targetScale.z;
-        Vector3 newScale = new Vector3(assetToScale.transform.localScale.x/xFraction, assetToScale.transform.localScale.y/yFraction, 1);
+        Vector3 newScale = new Vector3(assetToScale.transform.localScale.x/xFraction, assetToScale.transform.localScale.y/yFraction, assetToScale.transform.localScale.z);
         assetToScale.transform.localScale = newScale;
 
         #endregion 

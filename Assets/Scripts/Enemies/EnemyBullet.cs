@@ -12,7 +12,7 @@ public class EnemyBullet : MonoBehaviour
     private float bulletSpeed = 2f;
     public GameObject Explosion;
     private float bulletTimer = 0;
-    private float maxBulletTime = 5f;
+    private float maxBulletTime = 10f;
     private Transform cachedTransform;
     private Transform cachedExplosionTransform;
 

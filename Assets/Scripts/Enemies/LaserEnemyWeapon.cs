@@ -56,7 +56,7 @@ public class LaserEnemyWeapon : MonoBehaviour
         Transform floorMarker = AssociatedAsset.transform.Find("FloorMarker");
         if (floorMarker == null) return;  // Floormarker not initialized yet.
         float distToFloor = Vector3.Distance(floorMarker.position, AssociatedAsset.transform.position);
-        cachedTransform.position = new Vector3(cachedTransform.position.x, AssociatedAsset.transform.position.y + distToFloor, cachedTransform.position.z);
+        cachedTransform.position = new Vector3(cachedTransform.position.x, AssociatedAsset.transform.position.y + distToFloor + 0.3f, cachedTransform.position.z);
     }
 
     void Start()

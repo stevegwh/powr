@@ -35,6 +35,7 @@ public class GunObject : MonoBehaviour
 
     public void Fire()
     {
+        if (Hand == null) return;
         if (ammoCount == 0)
         {
             Hand.TriggerHapticPulse(0.2f, 1f, 0.5f);

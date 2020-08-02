@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1727842252558609618}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: BulletEmitter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,7 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1648232504957159846}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: GrabOffset
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -71,7 +71,7 @@ GameObject:
   - component: {fileID: 3832703582346906255}
   - component: {fileID: 3832703582346906253}
   - component: {fileID: 3832703582346906252}
-  m_Layer: 5
+  m_Layer: 15
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,8 +149,8 @@ GameObject:
   - component: {fileID: 3832703582438931028}
   - component: {fileID: 3832703582438931114}
   - component: {fileID: 3832703582438931029}
-  m_Layer: 5
-  m_Name: AmmoText
+  m_Layer: 15
+  m_Name: Text (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 3832703582474617315}
   - component: {fileID: 3832703582474617313}
   - component: {fileID: 3832703582474617312}
-  m_Layer: 5
+  m_Layer: 15
   m_Name: Text (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -303,7 +303,8 @@ GameObject:
   - component: {fileID: 7247028240776649064}
   - component: {fileID: 9001869629008376729}
   - component: {fileID: 73660302355040149}
-  m_Layer: 0
+  - component: {fileID: 303252501}
+  m_Layer: 15
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -319,7 +320,7 @@ Transform:
   m_GameObject: {fileID: 3832703582600972128}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
+  m_LocalScale: {x: 0.25000003, y: 0.25000003, z: 0.25000003}
   m_Children:
   - {fileID: 3832703582600944450}
   - {fileID: 3832703582600944452}
@@ -338,11 +339,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3832703582600972128}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.48271456, y: 0.69018084, z: 0.18312775}
-  m_Center: {x: -0.4307984, y: 0.044530615, z: -0.033318013}
+  m_Size: {x: 1.3492281, y: 0.69018084, z: 0.18312775}
+  m_Center: {x: 0.0024584532, y: 0.04453063, z: -0.03331802}
 --- !u!114 &7247028240776649064
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -430,11 +431,108 @@ MonoBehaviour:
   AmmoText: {fileID: 3032702621883331620}
   explosion: {fileID: 1000011128802252, guid: 96730f8640590934eacb6f860058e7f9, type: 3}
   fireNozzle: {fileID: 1727842252558609618}
-  ammoCountMax: 6
-  reloadVoiceSound: {fileID: 0}
-  reloadSound: {fileID: 0}
-  emptyAmmoSound: {fileID: 0}
-  gunShootSound: {fileID: 0}
+  ammoCountMax: 9
+  reloadVoiceSound: {fileID: 8300000, guid: 9c594e7e6e75e8742985f037d1615797, type: 3}
+  reloadSound: {fileID: 8300000, guid: 1cddbc17b4d914f489974cfa8c83ce94, type: 3}
+  emptyAmmoSound: {fileID: 8300000, guid: 15c4285fb0a7e444c9b75375fc67444b, type: 3}
+  gunShootSound: {fileID: 8300000, guid: 3e7c3961f01bdcc4fa563afd27e0996b, type: 3}
+--- !u!82 &303252501
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3832703582600972128}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 243078391499754788, guid: ec12f7772c03e4c4c9e4c2f1643595ad,
+    type: 2}
+  m_audioClip: {fileID: 8300000, guid: 3e7c3961f01bdcc4fa563afd27e0996b, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &3832703582600972130
 GameObject:
   m_ObjectHideFlags: 0
@@ -446,7 +544,7 @@ GameObject:
   - component: {fileID: 3832703582600944450}
   - component: {fileID: 3832703582604335968}
   - component: {fileID: 3832703582603237792}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Gun_Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -525,7 +623,7 @@ GameObject:
   - component: {fileID: 3832703582600944452}
   - component: {fileID: 3832703582604335970}
   - component: {fileID: 3832703582603237794}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Gun_Bullet_Hole
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -604,7 +702,7 @@ GameObject:
   - component: {fileID: 3832703582600944454}
   - component: {fileID: 3832703582604335972}
   - component: {fileID: 3832703582603237796}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Gun_Loader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -684,7 +782,7 @@ GameObject:
   - component: {fileID: 3832703582600944456}
   - component: {fileID: 3832703582604335974}
   - component: {fileID: 3832703582603237798}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Gun_Tigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -764,7 +862,7 @@ GameObject:
   - component: {fileID: 3832703582705633605}
   - component: {fileID: 3832703582705633604}
   - component: {fileID: 3832703582705633607}
-  m_Layer: 5
+  m_Layer: 15
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -865,8 +963,8 @@ GameObject:
   - component: {fileID: 512949766431402296}
   - component: {fileID: 540513378722194064}
   - component: {fileID: 3032702621883331620}
-  m_Layer: 5
-  m_Name: Text (3)
+  m_Layer: 15
+  m_Name: AmmoText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -25,7 +25,7 @@ public class EnemyAI : MonoBehaviour
 
 
 
-    void Start()
+    void Awake()
     {
         audioSource = GetComponent<AudioSource>();
         explosionClone = Instantiate(DeathExplosion);
@@ -39,6 +39,19 @@ public class EnemyAI : MonoBehaviour
         if (TryGetComponent(out MeshRenderer rend))
         {
             m_renderers.Add(rend);
+        }
+    }
+
+    public void ToggleRenderersAndColliders(bool toggle)
+    {
+        foreach (var r in m_renderers)
+        {
+            r.enabled = toggle;
+        }
+
+        foreach (var c in m_colliders)
+        {
+            c.enabled = toggle;
         }
     }
 
@@ -64,6 +77,7 @@ public class EnemyAI : MonoBehaviour
             explosionClone.SetActive(true);
             explosionClone.transform.position = transform.position;
             enemyWaveController.RemoveEnemy(gameObject);
+            // TODO: Delete particle effects on death
             Destroy(explosionClone, 1f);
             Destroy(gameObject, 1f);
             return;
