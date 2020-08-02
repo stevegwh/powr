@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class BurstFireEnemyWeapon : MonoBehaviour
 {
@@ -20,21 +21,27 @@ public class BurstFireEnemyWeapon : MonoBehaviour
 
     private float _bulletTimer;
 
-    private readonly float bulletDelay = 2f;
+    private float bulletDelay;
 
-    private int _bulletPool = 2;
+    private readonly int defaultBulletPool = 3;
+    private int _bulletPool;
 
     private Transform cachedTransform;
 
     private Transform cachedNozzleTransform;
 
-    public int Health = 1;
+    public int Health = 2;
+
+    private AudioSource weaponSound;
 
     private void Awake()
     {
+        _bulletPool = defaultBulletPool;
         cachedTransform = transform;
         cachedNozzleTransform = Nozzle.transform;
         _bulletStore = new List<EnemyBullet>();
+        weaponSound = transform.GetChild(0).GetComponent<AudioSource>();
+        bulletDelay = Random.Range(2f, 6f);
     }
 
     void Start()
@@ -73,6 +80,8 @@ public class BurstFireEnemyWeapon : MonoBehaviour
             go.transform.rotation = cachedNozzleTransform.rotation;
             break;
         }
+
+        weaponSound.Play();
     }
 
     void Update()
@@ -95,8 +104,9 @@ public class BurstFireEnemyWeapon : MonoBehaviour
             }
             else
             {
+                bulletDelay = Random.Range(2f, 6f);
                 _bulletTimer = 0;
-                _bulletPool = 3;
+                _bulletPool = defaultBulletPool;
             }
         }
         

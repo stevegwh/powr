@@ -2,17 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 using Valve.VR;
+using Valve.VR.Extras;
 using Valve.VR.InteractionSystem;
 
 public class GameManager : MonoBehaviour
 {
 
     public GameObject ReadyCube;
-    private GameType gameType;
-    public GameType GameType => gameType;
+
+    public GameType GameType { get; private set; }
 
     public AssetController StartingObject;
     public AssetController currentFocalPoint;
@@ -63,12 +65,12 @@ public class GameManager : MonoBehaviour
     {
         if (SetDefaults.instance != null)
         {
-            gameType = SetDefaults.instance.gameType;
+            GameType = SetDefaults.instance.gameType;
         }
         else
         {
             Debug.Log("No game type specified. Using control scene.");
-            gameType = GameType.TransitionShooterControl;
+            GameType = GameType.TransitionShooterControl;
         }
         vrAnchorPoint = new GameObject();
         _audioSource = GetComponent<AudioSource>();
@@ -88,11 +90,11 @@ public class GameManager : MonoBehaviour
         saveLoadData = GetComponent<SaveLoadData>();
         generatedPlanes = new List<GameObject>();
         instantiatedScaledAssets = new List<GameObject>();
-        if (gameType == GameType.TransitionShooter)
+        if (GameType == GameType.TransitionShooter)
         {
             Load();
         }
-        else if (gameType == GameType.TransitionShooterControl)
+        else if (GameType == GameType.TransitionShooterControl)
         {
             TransitionControlSceneLoad();
         }
@@ -125,12 +127,12 @@ public class GameManager : MonoBehaviour
     IEnumerator Start()
     {
         currentFocalPoint = StartingObject;
-        if (gameType == GameType.TransitionShooter)
+        if (GameType == GameType.TransitionShooter)
         {
             StartTransition();
             // activeTransition.TriggerTransition();
         }
-        else if (gameType == GameType.TransitionShooterControl)
+        else if (GameType == GameType.TransitionShooterControl)
         {
             GameObject player = GameObject.Find("Player");
             player.transform.position = currentFocalPoint.transform.Find("TeleportPoint(Clone)").position;
@@ -145,6 +147,7 @@ public class GameManager : MonoBehaviour
         currentFocalPoint.AssociatedTeleportPoint.SetActive(false);
         ReadyCube.SetActive(true);
     }
+
 
     # region Helper Functions
     public void ToggleShowPlanes()
@@ -162,6 +165,11 @@ public class GameManager : MonoBehaviour
     }
     public void EnableNextTeleportPoint()
     {
+        if (currentFocalPoint == null)
+        {
+            GameOverManager.instance.Victory();
+            return;
+        }
         if (currentFocalPoint.AssociatedTeleportPoint == null)
         {
             Debug.Log("No more teleports");

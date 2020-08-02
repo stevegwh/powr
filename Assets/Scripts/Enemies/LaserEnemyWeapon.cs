@@ -15,7 +15,6 @@ public class LaserEnemyWeapon : MonoBehaviour
     public LaserDirection initialDirection;
     public GameObject AssociatedAsset;
     private float _rotation;
-    private AudioSource audioSource;
     private bool fireLaserCharging;
     private bool FireLaserCharging
     {
@@ -60,24 +59,16 @@ public class LaserEnemyWeapon : MonoBehaviour
         cachedTransform.position = new Vector3(cachedTransform.position.x, AssociatedAsset.transform.position.y + distToFloor, cachedTransform.position.z);
     }
 
-    void Awake()
-    {
-        audioSource = GetComponent<AudioSource>();
-    }
-
     void Start()
     {
         Player = GameObject.Find("BodyColliderDamage");
         _rotation = initialDirection == LaserDirection.Right ? 0.2f : -0.2f;
         EnemyAI enemyAiComponent = GetComponent<EnemyAI>() ?? GetComponentInParent<EnemyAI>();
         enemyAiComponent.Health = Health;
-
     }
-
 
     private IEnumerator LaserCountdown()
     {
-        // audioSource.volume = 0.2f;
         yield return new WaitForSeconds(3f);
         FireLaserCharging = false;
         Fire();
@@ -85,7 +76,7 @@ public class LaserEnemyWeapon : MonoBehaviour
 
     private IEnumerator LaserFire()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(6f);
         FireLaserCharging = true;
         _rotation *= -1;
     }
@@ -93,8 +84,6 @@ public class LaserEnemyWeapon : MonoBehaviour
     void Update()
     {
         if (FireLaserCharging) return;
-        // audioSource.volume += 0.01f;
-        // Mathf.Clamp(audioSource.volume, 0, 1);
         cachedTransform.Rotate(0, _rotation, 0);
 
     }

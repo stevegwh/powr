@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Valve.VR.InteractionSystem;
 
 public class ReadyCube : MonoBehaviour
@@ -10,6 +11,10 @@ public class ReadyCube : MonoBehaviour
 
     private Hand hand;
 
+    public Text GrabMeText;
+
+    private Transform player;
+
 
     private AssetController assetController;
     // Start is called before the first frame update
@@ -17,6 +22,7 @@ public class ReadyCube : MonoBehaviour
     {
         interactable = GetComponent<Interactable>();
         hand = GameObject.Find("RightHand").GetComponent<Hand>();
+        player = GameObject.Find("VRCamera").transform;
     }
 
     private void OnEnable()
@@ -40,19 +46,22 @@ public class ReadyCube : MonoBehaviour
             interactable.hoveringHand == hand.otherHand && hand.otherHand.IsGrabbingWithType(GrabTypes.Grip))
         {
             // GameManager.instance.currentFocalPoint.StartEnemyWave();
-            if (GameManager.instance.GameType == GameType.TransitionShooterControl)
-            {
-                // GameManager.instance.TransitionControlSceneTeleportEnd();
-                GameManager.instance.currentFocalPoint.StartEnemyWave();
-                GameManager.instance.currentFocalPoint = GameManager.instance.currentFocalPoint.NextObject;
-            }
-            else if (GameManager.instance.GameType == GameType.TransitionShooter)
-            {
-                GameManager.instance.currentFocalPoint.StartEnemyWave();
-                GameManager.instance.currentFocalPoint = GameManager.instance.currentFocalPoint.NextObject;
-            }
+            // if (GameManager.instance.GameType == GameType.TransitionShooterControl)
+            // {
+            //     // GameManager.instance.TransitionControlSceneTeleportEnd();
+            // }
+            // else if (GameManager.instance.GameType == GameType.TransitionShooter)
+            // {
+            //     GameManager.instance.currentFocalPoint.StartEnemyWave();
+            //     GameManager.instance.currentFocalPoint = GameManager.instance.currentFocalPoint.NextObject;
+            // }
+            GameManager.instance.currentFocalPoint.StartEnemyWave();
+            GameManager.instance.currentFocalPoint = GameManager.instance.currentFocalPoint.NextObject;
             gameObject.SetActive(false);
         }
+
+        GrabMeText.transform.rotation = Quaternion.LookRotation(GrabMeText.transform.position - player.transform.position);
+
         
     }
 }

@@ -3527,9 +3527,9 @@ MonoBehaviour:
   showGrid: 0
   fadeOutTime: 0.5
   fadeInTime: 0.5
-  postLoadSettleTime: 0
+  postLoadSettleTime: 2
   loadingScreenFadeInTime: 1
-  loadingScreenFadeOutTime: 0.25
+  loadingScreenFadeOutTime: 2
   autoTriggerOnEnable: 1
 --- !u!114 &1816091866
 MonoBehaviour:

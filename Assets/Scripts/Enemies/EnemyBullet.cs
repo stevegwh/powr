@@ -7,19 +7,22 @@ using VolumetricLines;
 public class EnemyBullet : MonoBehaviour
 {
     public GameObject parent;
-    // public bool isActive;
-    // private Rigidbody rb;
-    private float bulletSpeed = 10f;
+    private SphereCollider m_collider;
+    private MeshRenderer m_renderer;
+    private float bulletSpeed = 2f;
     public GameObject Explosion;
     private float bulletTimer = 0;
     private float maxBulletTime = 5f;
     private Transform cachedTransform;
+    private Transform cachedExplosionTransform;
 
     void Awake()
     {
-        // Explosion = Instantiate(Explosion);
-        // cachedExplosionTransform = Explosion.transform;
-        // cachedExplosionParticleSystem = Explosion.GetComponent<ParticleSystem>();
+        m_renderer = GetComponent<MeshRenderer>();
+        m_collider = GetComponent<SphereCollider>();
+        Explosion = Instantiate(Explosion);
+        cachedExplosionTransform = Explosion.transform;
+        Explosion.SetActive(false);
         // rb = GetComponent<Rigidbody>();
         cachedTransform = transform;
     }
@@ -29,18 +32,22 @@ public class EnemyBullet : MonoBehaviour
         gameObject.layer = layer;
     }
 
-    public void SetBulletSpeed(float speed)
-    {
-        bulletSpeed = speed;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
-        // cachedExplosionTransform.position = cachedTransform.position;
-        // cachedExplosionParticleSystem.Play();
-        // Deactivate();
-        gameObject.SetActive(false);
+        Explosion.SetActive(true);
+        cachedExplosionTransform.position = cachedTransform.position;
+        m_renderer.enabled = false;
+        m_collider.enabled = false;
+        StartCoroutine(WaitForExplosion());
+    }
 
+    private IEnumerator WaitForExplosion()
+    {
+        yield return new WaitForSecondsRealtime(1f);
+        m_renderer.enabled = true;
+        m_collider.enabled = true;
+        Explosion.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     void OnEnable()
@@ -50,14 +57,8 @@ public class EnemyBullet : MonoBehaviour
 
     void FixedUpdate()
     {
-        // if (!isActive && !cachedExplosionParticleSystem.isPlaying)
-        // {
-        //     cachedExplosionParticleSystem.Stop();
-        //     ReturnBullet();
-        // }
-        // if (!isActive) return;
-        // rb.velocity = rb.transform.forward * bulletSpeed;
-        transform.position += cachedTransform.forward * (bulletSpeed * Time.deltaTime);
+        if (Explosion.activeSelf) return;
+        cachedTransform.position += cachedTransform.forward * (bulletSpeed * Time.deltaTime);
         if (bulletTimer < maxBulletTime)
         {
             bulletTimer += Time.deltaTime;

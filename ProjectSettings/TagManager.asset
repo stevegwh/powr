@@ -6,6 +6,7 @@ TagManager:
   tags:
   - FxTemporaire
   - projectile
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -25,7 +26,7 @@ TagManager:
   - Gun
   - ReloadArea
   - BodyCollider
-  - 
+  - RushEnemy
   - 
   - 
   - 

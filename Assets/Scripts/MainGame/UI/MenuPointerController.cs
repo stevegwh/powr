@@ -74,7 +74,4 @@ public class MenuPointerController : MonoBehaviour
         _lastColor = _normalColor;
         // Debug.Log("Button was exited");
     }
-    void Update()
-    {
-    }
 }
