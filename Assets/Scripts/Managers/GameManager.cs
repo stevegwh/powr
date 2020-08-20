@@ -9,6 +9,8 @@ using Valve.VR;
 using Valve.VR.Extras;
 using Valve.VR.InteractionSystem;
 
+// Main class responsible for loading all necessary component of the game. 
+// Also responsible for transitioning from one focal point to the next.
 public class GameManager : MonoBehaviour
 {
 
@@ -63,6 +65,7 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
+        // Set game type
         if (SetDefaults.instance != null)
         {
             GameType = SetDefaults.instance.gameType;
@@ -72,6 +75,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("No game type specified. Using control scene.");
             GameType = GameType.TransitionShooterControl;
         }
+        // Find/load necessary game objects in scene
         vrAnchorPoint = new GameObject();
         _audioSource = GetComponent<AudioSource>();
         Level = GameObject.Find("Level");
@@ -80,16 +84,18 @@ public class GameManager : MonoBehaviour
         TeleportPoint = Resources.Load<GameObject>("TeleportPoint");
         ReadyCube = GameObject.Find("ReadyCube");
 
+        // Bind button
         if (pose == null)
             pose = GetComponent<SteamVR_Behaviour_Pose>();
         if (pose == null)
             Debug.Log("No SteamVR_Behaviour_Pose component found on this object", this);
-
         orientateButton.AddOnStateDownListener(PauseGame, pose.inputSource);
 
         saveLoadData = GetComponent<SaveLoadData>();
         generatedPlanes = new List<GameObject>();
         instantiatedScaledAssets = new List<GameObject>();
+
+        // Load game.
         if (GameType == GameType.TransitionShooter)
         {
             Load();
@@ -166,7 +172,7 @@ public class GameManager : MonoBehaviour
     }
     public void EnableNextTeleportPoint()
     {
-        if (currentFocalPoint == null || currentFocalPoint.NextObject == null)
+        if (currentFocalPoint == null)
         {
             GameOverManager.instance.Victory();
             return;

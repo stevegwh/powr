@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
+// The 'missle' enemy type. Aims at the player until it reaches a certain distance, then it continues on its last known trajectory.
+// This gives the player a chance to avoid the missile, as opposed to it always aiming at them.
+
 public class RushEnemy : MonoBehaviour
 {
     private ParticleSystem fireBurst;

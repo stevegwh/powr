@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Extends a game object in one direction until it reaches its target.
+// Used to fill the gap left from scaling assets down.
 public class Stretcher : MonoBehaviour
 {
     public enum StretcherDirection
@@ -12,7 +14,6 @@ public class Stretcher : MonoBehaviour
     public GameObject TargetGameObject;
     public StretcherDirection direction;
 
-    // TODO: Gettign warning about stretching to negative
     void Start()
     {
         if (GameManager.instance.GameType == GameType.TransitionShooterControl) return;

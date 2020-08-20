@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Valve.VR.InteractionSystem;
 
+// Base enemy component. Handles all generic enemy behaviour. Currently, it mainly handles the enemy being destroyed.
 public class EnemyAI : MonoBehaviour
 {
     [FormerlySerializedAs("assetController")] public AssetController enemyWaveController;

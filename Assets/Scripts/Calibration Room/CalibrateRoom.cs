@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
-
+// Responsible for the calibration room scene (the first scene of the game).
 namespace Valve.VR.Extras
 {
     public class CalibrateRoom : MonoBehaviour
@@ -149,18 +149,6 @@ namespace Valve.VR.Extras
             vrAnchorCurrent.transform.rotation = vrAnchor.transform.rotation;
             saveLoadData.LoadPlanesFromFile(ref generatedPlanes, ref vrAnchor);
             Transform vrAnchorPos = vrAnchor.transform;
-            // vrAnchor.transform.position = new Vector3(
-            //     vrAnchorPos.position.x - vrAnchorCurrent.position.x, 
-            //     vrAnchorPos.position.y - vrAnchorCurrent.position.y,
-            //     vrAnchorPos.position.z - vrAnchorCurrent.position.z
-            //     );
-            // vrAnchor.transform.rotation = new Quaternion(
-            //     Math.Abs( vrAnchorPos.rotation.x - vrAnchorCurrent.transform.rotation.x ) ,
-            //     Math.Abs( vrAnchorPos.rotation.y - vrAnchorCurrent.transform.rotation.y ) ,
-            //     Math.Abs( vrAnchorPos.rotation.z - vrAnchorCurrent.transform.rotation.z ),
-            //     Math.Abs( vrAnchorPos.rotation.w - vrAnchorCurrent.transform.rotation.w )
-            //     );
-            // ScaleAllAssets();
         }
 
 

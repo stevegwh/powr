@@ -19,7 +19,7 @@ public class AssetScaler : MonoBehaviour
 
         #region Asset Scaling
         // Scale the model
-        // Does not scale by depth for the moment (easy to fix?)
+        // Does not scale by depth for the moment (would require one additional point set by the user)
         GameObject assetScaledChild = assetToScale.transform.GetChild(0).gameObject; // assetToScale is just a parent GO for pivoting purposes. The child is the real object.
         Mesh assetScaledMesh = assetScaledChild.GetComponent<MeshFilter>().mesh;
         Vector3 targetScale = plane.GetComponent<MeshRenderer>().bounds.size;

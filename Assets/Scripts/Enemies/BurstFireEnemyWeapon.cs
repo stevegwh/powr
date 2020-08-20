@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
+// Enemy type. Aims at enemy and fires a burst of three bullets. Each burst can occur any time between a set range.
 public class BurstFireEnemyWeapon : MonoBehaviour
 {
     public AudioClip enemyActivate;

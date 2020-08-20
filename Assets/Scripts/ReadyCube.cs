@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Valve.VR.InteractionSystem;
 
+// Above each 'focal point' the ReadyCube (a black cube with 'grab me') appears. Once grabbed, the next stage begins.
 public class ReadyCube : MonoBehaviour
 {
     private Interactable interactable;

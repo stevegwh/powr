@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using VolumetricLines;
 
+// Responsible for handling all generic enemy bullet functionality. Attached to the bullet itself.
+
 public class EnemyBullet : MonoBehaviour
 {
     public GameObject parent;
     private SphereCollider m_collider;
     private MeshRenderer m_renderer;
-    private float bulletSpeed = 2f;
+    private float bulletSpeed = 5f;
     public GameObject Explosion;
     private float bulletTimer = 0;
     private float maxBulletTime = 10f;
@@ -41,11 +43,16 @@ public class EnemyBullet : MonoBehaviour
         StartCoroutine(WaitForExplosion());
     }
 
+    private void OnDisable()
+    {
+        Explosion.SetActive(false);
+    }
+
     private IEnumerator WaitForExplosion()
     {
         yield return new WaitForSecondsRealtime(1f);
-        m_renderer.enabled = true;
-        m_collider.enabled = true;
+        // m_renderer.enabled = true;
+        // m_collider.enabled = true;
         Explosion.SetActive(false);
         gameObject.SetActive(false);
     }

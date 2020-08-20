@@ -1,12 +1,13 @@
 ﻿
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
-using UnityEngine.Serialization;
+
+
+// Responsible for serializing and loading the saved plane data of the real-world objects.
+// Currently saves the transform data of the plane (its position, rotation) and the vectors of the plane mesh itself.
 public class SaveLoadData: MonoBehaviour
 {
     [Serializable]
@@ -70,6 +71,7 @@ public class SaveLoadData: MonoBehaviour
         List<PlaneData> serializedPlaneVectors = new List<PlaneData>();
         List<SerializedGameObject> serializedGameObjects = new List<SerializedGameObject>();
 
+        // Store the parent object (vrAnchor) of all the planes.
         Vertex anchorPos = new Vertex(vrAnchor.position.x, vrAnchor.position.y, vrAnchor.position.z);
         Rotation anchorRot = new Rotation(vrAnchor.rotation.x, vrAnchor.rotation.y, vrAnchor.rotation.z, vrAnchor.rotation.w);
         SerializedGameObject serializedVrAnchor = new SerializedGameObject(anchorPos, anchorRot);
@@ -77,12 +79,12 @@ public class SaveLoadData: MonoBehaviour
 
         foreach (var plane in generatedPlanes)
         {
-            // Save the transform data of the plane's game object
+            // Save the transform data of the plane's game object.
             Vertex pos = new Vertex(plane.transform.localPosition.x, plane.transform.localPosition.y, plane.transform.localPosition.z);
             Rotation rot = new Rotation(plane.transform.localRotation.x, plane.transform.localRotation.y, plane.transform.localRotation.z, plane.transform.localRotation.w);
             SerializedGameObject serializedGameObject = new SerializedGameObject(pos, rot);
             serializedGameObjects.Add(serializedGameObject);
-            // Save the procedural mesh data to be reconstructed later
+            // Save the procedural mesh data to be reconstructed later.
             var vertices = plane.GetComponent<MeshFilter>().mesh.vertices;
             PlaneType planeType = plane.GetComponent<CalibrationType>().planeType;
             serializedPlaneVectors.Add(new PlaneData(plane.transform.TransformPoint(vertices[0]), plane.transform.TransformPoint(vertices[2]), planeType));
@@ -96,6 +98,7 @@ public class SaveLoadData: MonoBehaviour
         file2.Close ();
     }
 
+    // vrAnchor is the root game object for all the planes. If the planes become out of sync with their real-world object, this root could be used to rotate the planes all at once.
     public void LoadPlanesFromFile( ref List<GameObject> generatedPlanes, ref GameObject vrAnchor)
     {
         BinaryFormatter bf = new BinaryFormatter ();
@@ -103,6 +106,8 @@ public class SaveLoadData: MonoBehaviour
         {
             FileStream gofile = File.Open (Application.persistentDataPath + "/gameobjectdata.dat", System.IO.FileMode.Open);
             List<SerializedGameObject> gameObjectData = (List<SerializedGameObject>)bf.Deserialize(gofile);
+
+            // Set the vrAnchor's position and remove it from the array.
             SerializedGameObject serializedAnchor = gameObjectData[0];
             vrAnchor.transform.position = new Vector3(serializedAnchor.position.x, serializedAnchor.position.y, serializedAnchor.position.z);
             vrAnchor.transform.rotation = new Quaternion(serializedAnchor.rotation.x, serializedAnchor.rotation.y, serializedAnchor.rotation.z, serializedAnchor.rotation.w);
@@ -113,6 +118,8 @@ public class SaveLoadData: MonoBehaviour
                 FileStream file = File.Open(Application.persistentDataPath + "/vertexdata.dat",
                 System.IO.FileMode.Open);
                 List<PlaneData> data = (List<PlaneData>) bf.Deserialize(file);
+
+                // Iterate over each plane, recreate its mesh and then apply its position/rotation from the game object array.
                 int goIndex = 0;
                 foreach (var plane in data)
                 {

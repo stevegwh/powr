@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Responsible for handling all generic player bullet functionality. Attached to the bullet itself.
+
 public class PlayerBullet : MonoBehaviour
 {
     private float bulletSpeed = 50f;

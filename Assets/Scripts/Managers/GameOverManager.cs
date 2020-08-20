@@ -9,6 +9,7 @@ using Valve.VR;
 using Valve.VR.Extras;
 using Valve.VR.InteractionSystem;
 
+// Handles both positive and negative game over states in the game
 public class GameOverManager : MonoBehaviour
 {
     public GameObject GameOverText;

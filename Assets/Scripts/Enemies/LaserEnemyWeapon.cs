@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Responsible for the behaviour of the LaserEnemy's laser. Each laser will rotate a certain direction, wait, and then go back the opposite direction.
 public class LaserEnemyWeapon : MonoBehaviour
 {
     public enum LaserDirection

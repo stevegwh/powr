@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Casts a ray until it hits either a wall of the player. This is represented by changing the start/end of the LineRenderer component.
+
 public class LaserRayCast : MonoBehaviour
 {
     private PlayerDamageController playerCollider;
@@ -11,7 +13,6 @@ public class LaserRayCast : MonoBehaviour
     private AudioSource audioSource;
 
     private LineRenderer lr;
-    // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -27,9 +28,16 @@ public class LaserRayCast : MonoBehaviour
         {
             audioSource.Play();
         }
+        else
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource != null)
+            {
+                audioSource.Play();
+            }
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (enemyAiController.Dead)
@@ -39,7 +47,6 @@ public class LaserRayCast : MonoBehaviour
             return;
         }
         RaycastHit hit;
-        // Does the ray intersect any objects excluding the player layer
         if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask))
         {
             // Debug.DrawRay(transform.position, transform.TransformDirection(Vector3.forward) * hit.distance, Color.yellow);

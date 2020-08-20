@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 
+// Responsible for the object of the gun model itself.
 public class GunObject : MonoBehaviour
 {
     public Hand Hand;

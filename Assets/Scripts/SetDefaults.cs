@@ -5,6 +5,7 @@ using UnityEngine.XR;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 
+// Called before any other class. Can be used to set persistent variables.
 public  class SetDefaults : MonoBehaviour
 {
     public GameType gameType { get; set; }

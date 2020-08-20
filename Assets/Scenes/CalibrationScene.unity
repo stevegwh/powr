@@ -211,7 +211,6 @@ GameObject:
   - component: {fileID: 24466514}
   - component: {fileID: 24466513}
   - component: {fileID: 24466512}
-  - component: {fileID: 24466516}
   m_Layer: 5
   m_Name: Menu
   m_TagString: Untagged
@@ -310,21 +309,6 @@ RectTransform:
   m_AnchoredPosition: {x: -0.556, y: 1.141}
   m_SizeDelta: {x: 1000, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &24466516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 24466511}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 008dd32b7c8453c43a00e3253bc63dd7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  LookAtPoint: {fileID: 0}
-  laserPointer: {fileID: 0}
-  startingPanel: {fileID: 0}
 --- !u!1 &109852136
 GameObject:
   m_ObjectHideFlags: 0
@@ -681,7 +665,6 @@ GameObject:
   - component: {fileID: 594807806}
   - component: {fileID: 594807805}
   - component: {fileID: 594807804}
-  - component: {fileID: 594807803}
   - component: {fileID: 594807802}
   m_Layer: 5
   m_Name: Show Help
@@ -723,21 +706,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 158.64777, y: 30.000002, z: 36.74543}
   m_Center: {x: 1.069362, y: 0, z: -13.372717}
---- !u!114 &594807803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 594807800}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 206c87b2bfaa5e142963575ad61fc814, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tweenIn: 2
-  tweenOut: 2
-  PlayOnEnable: 1
 --- !u!114 &594807804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -874,7 +842,6 @@ GameObject:
   - component: {fileID: 604625409}
   - component: {fileID: 604625408}
   - component: {fileID: 604625407}
-  - component: {fileID: 604625406}
   - component: {fileID: 604625405}
   - component: {fileID: 604625410}
   m_Layer: 5
@@ -917,21 +884,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 158.64777, y: 30.000002, z: 36.74543}
   m_Center: {x: 1.069362, y: 0, z: -13.372717}
---- !u!114 &604625406
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 604625403}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 206c87b2bfaa5e142963575ad61fc814, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tweenIn: 2
-  tweenOut: 2
-  PlayOnEnable: 1
 --- !u!114 &604625407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1059,7 +1011,6 @@ GameObject:
   - component: {fileID: 604759175}
   - component: {fileID: 604759174}
   - component: {fileID: 604759173}
-  - component: {fileID: 604759172}
   - component: {fileID: 604759171}
   m_Layer: 5
   m_Name: RestartButton
@@ -1101,21 +1052,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 158.64777, y: 30.000002, z: 36.74543}
   m_Center: {x: 1.069362, y: 0, z: -13.372717}
---- !u!114 &604759172
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 604759169}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 206c87b2bfaa5e142963575ad61fc814, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tweenIn: 2
-  tweenOut: 2
-  PlayOnEnable: 1
 --- !u!114 &604759173
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1230,7 +1166,6 @@ GameObject:
   - component: {fileID: 617866287}
   - component: {fileID: 617866286}
   - component: {fileID: 617866285}
-  - component: {fileID: 617866284}
   - component: {fileID: 617866283}
   - component: {fileID: 617866288}
   m_Layer: 5
@@ -1273,21 +1208,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 158.64777, y: 30.000002, z: 36.74543}
   m_Center: {x: 1.069362, y: 0, z: -13.372717}
---- !u!114 &617866284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 617866281}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 206c87b2bfaa5e142963575ad61fc814, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tweenIn: 2
-  tweenOut: 2
-  PlayOnEnable: 1
 --- !u!114 &617866285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1493,7 +1413,6 @@ GameObject:
   - component: {fileID: 883244660}
   - component: {fileID: 883244659}
   - component: {fileID: 883244658}
-  - component: {fileID: 883244657}
   - component: {fileID: 883244656}
   m_Layer: 5
   m_Name: StartGame
@@ -1535,21 +1454,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 158.64777, y: 30.000002, z: 36.74543}
   m_Center: {x: 1.069362, y: 0, z: -13.372717}
---- !u!114 &883244657
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 883244654}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 206c87b2bfaa5e142963575ad61fc814, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tweenIn: 2
-  tweenOut: 2
-  PlayOnEnable: 1
 --- !u!114 &883244658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1718,7 +1622,6 @@ GameObject:
   - component: {fileID: 924059858}
   - component: {fileID: 924059857}
   - component: {fileID: 924059856}
-  - component: {fileID: 924059855}
   - component: {fileID: 924059854}
   m_Layer: 5
   m_Name: Previous
@@ -1760,21 +1663,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 158.64777, y: 30.000002, z: 36.74543}
   m_Center: {x: 1.069362, y: 0, z: -13.372717}
---- !u!114 &924059855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 924059852}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 206c87b2bfaa5e142963575ad61fc814, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tweenIn: 2
-  tweenOut: 2
-  PlayOnEnable: 1
 --- !u!114 &924059856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2695,7 +2583,6 @@ GameObject:
   - component: {fileID: 1559332298}
   - component: {fileID: 1559332297}
   - component: {fileID: 1559332296}
-  - component: {fileID: 1559332295}
   - component: {fileID: 1559332294}
   m_Layer: 5
   m_Name: SaveButton
@@ -2737,21 +2624,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 158.64777, y: 30.000002, z: 36.74543}
   m_Center: {x: 1.069362, y: 0, z: -13.372717}
---- !u!114 &1559332295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1559332292}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 206c87b2bfaa5e142963575ad61fc814, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tweenIn: 2
-  tweenOut: 2
-  PlayOnEnable: 1
 --- !u!114 &1559332296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2855,7 +2727,6 @@ GameObject:
   - component: {fileID: 1598316272}
   - component: {fileID: 1598316271}
   - component: {fileID: 1598316270}
-  - component: {fileID: 1598316269}
   - component: {fileID: 1598316268}
   m_Layer: 5
   m_Name: StartGame (1)
@@ -2897,21 +2768,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 158.64777, y: 30.000002, z: 36.74543}
   m_Center: {x: 1.069362, y: 0, z: -13.372717}
---- !u!114 &1598316269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1598316266}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 206c87b2bfaa5e142963575ad61fc814, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tweenIn: 2
-  tweenOut: 2
-  PlayOnEnable: 1
 --- !u!114 &1598316270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3115,7 +2971,6 @@ GameObject:
   - component: {fileID: 1746838569}
   - component: {fileID: 1746838568}
   - component: {fileID: 1746838567}
-  - component: {fileID: 1746838566}
   - component: {fileID: 1746838565}
   m_Layer: 5
   m_Name: Next
@@ -3157,21 +3012,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 158.64777, y: 30.000002, z: 36.74543}
   m_Center: {x: 1.069362, y: 0, z: -13.372717}
---- !u!114 &1746838566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1746838563}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 206c87b2bfaa5e142963575ad61fc814, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tweenIn: 2
-  tweenOut: 2
-  PlayOnEnable: 1
 --- !u!114 &1746838567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3275,7 +3115,6 @@ GameObject:
   - component: {fileID: 1747282287}
   - component: {fileID: 1747282286}
   - component: {fileID: 1747282285}
-  - component: {fileID: 1747282284}
   - component: {fileID: 1747282283}
   m_Layer: 5
   m_Name: Hide Help
@@ -3317,21 +3156,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 158.64777, y: 30.000002, z: 36.74543}
   m_Center: {x: 1.069362, y: 0, z: -13.372717}
---- !u!114 &1747282284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1747282281}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 206c87b2bfaa5e142963575ad61fc814, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tweenIn: 2
-  tweenOut: 2
-  PlayOnEnable: 1
 --- !u!114 &1747282285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3829,7 +3653,6 @@ GameObject:
   - component: {fileID: 2123774597}
   - component: {fileID: 2123774596}
   - component: {fileID: 2123774595}
-  - component: {fileID: 2123774594}
   - component: {fileID: 2123774593}
   m_Layer: 5
   m_Name: LoadButton
@@ -3871,21 +3694,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 158.64777, y: 30.000002, z: 36.74543}
   m_Center: {x: 1.069362, y: 0, z: -13.372717}
---- !u!114 &2123774594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2123774591}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 206c87b2bfaa5e142963575ad61fc814, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tweenIn: 2
-  tweenOut: 2
-  PlayOnEnable: 1
 --- !u!114 &2123774595
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR.Extras;
 
+// The transition between one focal point to another.
 public class Transition
 {
     private AssetController currentFocalPoint;
@@ -30,7 +31,7 @@ public class Transition
         environment.transform.position = new Vector3(environment.transform.position.x, worldFloorPos.y, environment.transform.position.z);
         instance.MoveAllAssetsToFloorLevel();
 
-        // Fix teleport points' position
+        // Fix teleport point's position
         currentFocalPoint.AssociatedTeleportPoint.SetActive(false);
         if (currentFocalPoint.NextObject != null)
         {
@@ -42,20 +43,17 @@ public class Transition
                 localFloorPos.position.y,
                 telepoint.z
             );
-
-            // Now that we've finished instantiating the focalpoint we can prime the next one
-            // instance.currentFocalPoint = currentFocalPoint.NextObject;
-            GameManager.instance.ReadyCube.SetActive(true);
         }
         else
         {
             Debug.Log("Game over");
         }
+        GameManager.instance.ReadyCube.SetActive(true);
     }
 
     public Transition(GameObject level, AssetController currentFocalPoint)
     {
-        this.currentFocalPoint = currentFocalPoint; // TODO: Is this necessary?
+        this.currentFocalPoint = currentFocalPoint; 
         plane = currentFocalPoint.AssociatedPlane;
         pivotPoint = currentFocalPoint.AssociatedPivotPoint;
         transitionPoint = plane.transform.GetChild(0).gameObject;

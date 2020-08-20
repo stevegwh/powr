@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Net.Mime;
 using UnityEngine;
 using UnityEngine.UI;
 using Valve.VR;
 using Valve.VR.InteractionSystem;
 
+// Responsible for the hand holding the gun: mainly attaching the gun to the hand and binding/handling its firing function.
 public class GunController : MonoBehaviour
 {
     public GameObject GunGameObject;

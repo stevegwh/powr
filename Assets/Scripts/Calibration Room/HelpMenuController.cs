@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Responsible for showing the help text to the user in the calibration room.
 public class HelpMenuController
 {
 

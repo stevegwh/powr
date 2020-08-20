@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Takes the bottom left and top right vectors of an object and makes a plane of four vectors with it.
 public class PlaneGenerator : MonoBehaviour
 {
     private enum PlaneAxis {
@@ -48,7 +49,7 @@ public class PlaneGenerator : MonoBehaviour
 
         MeshFilter mFilter = (MeshFilter)plane.AddComponent(typeof(MeshFilter));
         mFilter.mesh = planeMesh;
-        MeshRenderer planeRenderer = plane.AddComponent(typeof(MeshRenderer)) as MeshRenderer; //TODO: Is the assignment necessary?
+        MeshRenderer planeRenderer = plane.AddComponent(typeof(MeshRenderer)) as MeshRenderer;
         // controllerVertices.Clear();
         // if (AssetsToSpawn[assetIndex] != null) SpawnScaledAsset(plane, planeMesh.normals[0]);
 
@@ -56,7 +57,7 @@ public class PlaneGenerator : MonoBehaviour
     }
     private static PlaneAxis DecideAxis(Vector3 a, Vector3 b) 
     {
-        // TODO
+        // TODO: Could be made to spawn horizontal planes.
         return PlaneAxis.Vertical;
     }
 }

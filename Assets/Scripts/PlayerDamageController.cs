@@ -6,6 +6,7 @@ using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
 using Valve.VR.InteractionSystem;
 
+// Responsible for handling what happens when the player is hit by an enemy bullet.
 public class PlayerDamageController : MonoBehaviour
 {
     public AudioSource audioSource;

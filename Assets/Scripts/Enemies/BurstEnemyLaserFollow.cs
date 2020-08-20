@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Ensures that the enemy is always looking at the player.
+
 public class BurstEnemyLaserFollow : MonoBehaviour
 {
     private Transform cachedTransform;
     public GameObject Player;
-    // Start is called before the first frame update
     void Start()
     {
         cachedTransform = transform;
@@ -14,13 +15,11 @@ public class BurstEnemyLaserFollow : MonoBehaviour
         {
             Player = GameObject.Find("VRCamera");
         }
-
     }
 
     // Update is called once per frame
     void Update()
     {
         cachedTransform.LookAt(Player.transform);
-        
     }
 }
