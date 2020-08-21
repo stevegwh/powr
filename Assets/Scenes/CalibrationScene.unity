@@ -2562,7 +2562,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Start Normal Game
+  m_Text: Start Experimental Game
 --- !u!222 &1517094918
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3469,9 +3469,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 206c87b2bfaa5e142963575ad61fc814, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tweenIn: 2
-  tweenOut: 2
-  PlayOnEnable: 1
 --- !u!114 &1947199230
 MonoBehaviour:
   m_ObjectHideFlags: 0
