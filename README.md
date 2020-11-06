@@ -1,4 +1,4 @@
-#Prop-Oriented World Rotation - an experimental VR technique
+# Prop-Oriented World Rotation - an experimental VR technique
 
 _Submitted for the MSc in Computer Science at University of Kent (Received 78% - Distinction)_
 
