@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
             {
                 _instance = GameObject.FindObjectOfType<GameManager>();
 
-                DontDestroyOnLoad( _instance.gameObject );
+                // DontDestroyOnLoad( _instance.gameObject );
             }
             return _instance;
         }

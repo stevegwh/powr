@@ -27,7 +27,6 @@ namespace Valve.VR.Extras
         public event PointerEventHandler PointerIn;
         public event PointerEventHandler PointerOut;
         public event PointerEventHandler PointerClick;
-        private LayerMask mask;
         private Ray raycast;
         RaycastHit hit;
 
@@ -57,7 +56,8 @@ namespace Valve.VR.Extras
             pointer.transform.localRotation = Quaternion.identity;
 
             // Set pointer to UI layer
-            mask = LayerMask.GetMask("UI");
+            holder.layer = 5;
+            pointer.layer = 5;
             Destroy(pointer.GetComponent<BoxCollider>());
 
             Material newMaterial = new Material(Shader.Find("Unlit/Color"));
@@ -100,7 +100,7 @@ namespace Valve.VR.Extras
         {
             float dist = _originalDist;
             raycast = new Ray(transform.position, transform.forward);
-            bool bHit = Physics.Raycast(raycast, out hit, mask);
+            bool bHit = Physics.Raycast(raycast, out hit, 1000f, ~5);
 
 
             if (previousContact && previousContact != hit.transform)

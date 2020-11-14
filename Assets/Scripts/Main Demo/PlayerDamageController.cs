@@ -12,7 +12,7 @@ public class PlayerDamageController : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip audioClip;
 
-    private int health = 20;
+    private int health = 1;
 
     public GameObject Player;
 

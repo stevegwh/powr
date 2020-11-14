@@ -40,6 +40,16 @@ namespace Valve.VR.Extras
         public SteamVR_Action_Boolean moveMarkerDown;
         private Vector3[] markerDirections = new[] { new Vector3(0.01f, 0, 0), new Vector3(0, 0.01f, 0), new Vector3(0, 0, 0.01f) };
         private int markerMoveIndex = 0;
+
+        void Awake()
+        {
+            if (GameObject.Find("Player") == null)
+            {
+                GameObject player = Resources.Load<GameObject>("CalibrationRoomPlayer");
+                Instantiate(player, Vector3.zero, Quaternion.identity);
+                player.name = "Player";
+            }
+        }
         void Start()    
         {
             controllerMarker = GameObject.Find("ControllerMarker").transform.GetChild(0).gameObject;

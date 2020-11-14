@@ -31,7 +31,7 @@ public class GameOverManager : MonoBehaviour
             {
                 _instance = GameObject.FindObjectOfType<GameOverManager>();
 
-                DontDestroyOnLoad( _instance.gameObject );
+                // DontDestroyOnLoad( _instance.gameObject );
             }
             return _instance;
         }
@@ -44,20 +44,20 @@ public class GameOverManager : MonoBehaviour
     }
     public void InitGameOver()
     {
-        // GameOver = true;
-        // GameObject.FindObjectOfType<GunController>().UnMapFire();
-        Time.timeScale = 0;
-        GameOverText.SetActive(true);
-        var vrCamera = GameObject.Find("VRCamera");
-        PostProcessVolume postProcess = vrCamera.GetComponent<PostProcessVolume>();
-        var blackAndWhite = postProcess.profile.GetSetting<ColorGrading>();
-        blackAndWhite.enabled.value = true;
-        GameOverText.transform.position = vrCamera.transform.position;
-        GameOverText.transform.position += vrCamera.transform.forward;
-        menuPointerController.enabled = true;
-        laserPoint.enabled = true;
-        hand.DetachObject(Gun);
-        Destroy(Gun);
+        // Time.timeScale = 0;
+        // GameOverText.SetActive(true);
+        // var vrCamera = GameObject.Find("VRCamera");
+        // PostProcessVolume postProcess = vrCamera.GetComponent<PostProcessVolume>();
+        // var blackAndWhite = postProcess.profile.GetSetting<ColorGrading>();
+        // blackAndWhite.enabled.value = true;
+        // GameOverText.transform.position = vrCamera.transform.position;
+        // GameOverText.transform.position += vrCamera.transform.forward;
+        // menuPointerController.enabled = true;
+        // laserPoint.enabled = true;
+        // hand.DetachObject(Gun);
+        // Destroy(Gun);
+        Destroy(player);
+        levelLoader.enabled = true;
     }
 
     public void Victory()
