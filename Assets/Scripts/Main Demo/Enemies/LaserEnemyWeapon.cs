@@ -62,10 +62,15 @@ public class LaserEnemyWeapon : MonoBehaviour
 
     void Start()
     {
-        Player = GameObject.Find("BodyColliderDamage");
+        GameEvents.current.onSceneLoaded += OnceSceneLoaded;
         _rotation = initialDirection == LaserDirection.Right ? 0.2f : -0.2f;
         EnemyAI enemyAiComponent = GetComponent<EnemyAI>() ?? GetComponentInParent<EnemyAI>();
         enemyAiComponent.Health = Health;
+    }
+
+    private void OnceSceneLoaded()
+    {
+        Player = GameObject.Find("BodyColliderDamage");
     }
 
     private IEnumerator LaserCountdown()

@@ -11,6 +11,11 @@ public class MenuPointerController : MonoBehaviour
 
     private void Awake()
     {
+        OnEnable();
+    }
+
+    private void OnEnable()
+    {
         if (laserPointer != null)
         {
             laserPointer.PointerIn += PointerInside;
@@ -21,6 +26,14 @@ public class MenuPointerController : MonoBehaviour
         {
             Debug.Log("Warning: No laser pointer attached to script.");
         }
+    }
+
+    private void OnDisable()
+    {
+        if (laserPointer == null) return;
+        laserPointer.PointerIn -= PointerInside;
+        laserPointer.PointerOut -= PointerOutside;
+        laserPointer.PointerClick -= PointerClick;
     }
 
     private void PointerClick(object sender, PointerEventArgs e)

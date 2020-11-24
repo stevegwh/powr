@@ -45,6 +45,7 @@ public class EnemyBullet : MonoBehaviour
 
     private void OnDisable()
     {
+        if (GameOverManager.instance.GameOver) return;
         Explosion.SetActive(false);
     }
 

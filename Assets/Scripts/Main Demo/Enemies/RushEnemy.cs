@@ -11,6 +11,7 @@ public class RushEnemy : MonoBehaviour
 {
     private ParticleSystem fireBurst;
     private bool assetSpawned;
+    private bool loaded;
     private GameObject player;
     private PlayerDamageController dmgController;
     private EnemyAI enemyAIController;
@@ -37,10 +38,9 @@ public class RushEnemy : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        GameEvents.current.onSceneLoaded += OnceSceneLoaded;
         fireBurst = GetComponentInChildren<ParticleSystem>();
         audioSource = GetComponent<AudioSource>();
-        player = GameObject.Find("BodyColliderDamage");
-        dmgController = player.GetComponent<PlayerDamageController>();
         enemyAIController = GetComponent<EnemyAI>();
         m_collider = GetComponent<Collider>();
         m_renderer = GetComponentInChildren<MeshRenderer>();
@@ -48,22 +48,20 @@ public class RushEnemy : MonoBehaviour
         cachedTransform = transform;
     }
 
+    private void OnceSceneLoaded()
+    {
+        dmgController = FindObjectOfType<PlayerDamageController>();
+        player = dmgController.gameObject;
+        // player = GameObject.Find("BodyColliderDamage");
+        loaded = true;
+    }
+
     void OnEnable()
     {
-        StartCoroutine(WaitOnPlayer());
         fireBurst.Stop();
         m_collider.enabled = false;
         m_renderer.enabled = false;
         StartCoroutine(SpawnDelay());
-    }
-
-    private IEnumerator WaitOnPlayer()
-    {
-        Debug.Log("Looking for player");
-        player = GameObject.Find("BodyColliderDamage");
-        while(player == null){
-            yield return null;
-        }
     }
 
     private IEnumerator SpawnDelay()
@@ -80,7 +78,7 @@ public class RushEnemy : MonoBehaviour
 
     void Update()
     {
-        if (!assetSpawned) return;
+        if (!assetSpawned || !loaded || GameOverManager.instance.GameOver) return;
         cachedTransform.position += cachedTransform.forward * (moveSpeed * Time.deltaTime);
         if (timer < maxTime)
         {

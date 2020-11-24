@@ -8,28 +8,30 @@ using Random = UnityEngine.Random;
 // Enemy type. Aims at enemy and fires a burst of three bullets. Each burst can occur any time between a set range.
 public class BurstFireEnemyWeapon : MonoBehaviour
 {
+    private bool loaded;
+    private bool assetSpawned;
     public AudioClip enemyActivate;
-    private List<EnemyBullet> _bulletStore;
-    private EnemyAI enemyAIController;
     public GameObject Player;
     public GameObject Nozzle;
     public GameObject Bullet;
+    public ParticleSystem flames;
+    public GameObject laser;
+    public int Health = 2;
+    public float spawnDelay = 2f;
+
+    private List<EnemyBullet> _bulletStore;
+    private EnemyAI enemyAIController;
     private float _bulletTimer;
     private float bulletDelay;
     private readonly int defaultBulletPool = 3;
     private int _bulletPool;
     private Transform cachedTransform;
     private Transform cachedNozzleTransform;
-    public int Health = 2;
     private AudioSource weaponSound;
-    public ParticleSystem flames;
-    public GameObject laser;
-
-    public float spawnDelay = 2f;
-    private bool assetSpawned;
 
     private void Awake()
     {
+        GameEvents.current.onSceneLoaded += OnceSceneLoaded;
         _bulletPool = defaultBulletPool;
         cachedTransform = transform;
         cachedNozzleTransform = Nozzle.transform;
@@ -40,14 +42,15 @@ public class BurstFireEnemyWeapon : MonoBehaviour
         enemyAIController.Health = Health;
     }
 
-    void Start()
+    private void OnceSceneLoaded()
     {
         Player = GameObject.Find("VRCamera");
+        loaded = true;
     }
 
     private void OnEnable()
     {
-        for (int i = 0; i < 10; i++)
+        for (var i = 0; i < 10; i++)
         {
             _bulletStore.Add(BulletManager.instance.RequestBullet());
             _bulletStore[i].parent = gameObject;
@@ -83,7 +86,7 @@ public class BurstFireEnemyWeapon : MonoBehaviour
     {
         foreach (var bullet in _bulletStore.Where(bullet => !bullet.gameObject.activeSelf))
         {
-            GameObject go = bullet.gameObject;
+            var go = bullet.gameObject;
             go.SetActive(true);
             go.transform.position = cachedNozzleTransform.position;
             go.transform.rotation = cachedNozzleTransform.rotation;
@@ -95,7 +98,7 @@ public class BurstFireEnemyWeapon : MonoBehaviour
 
     void Update()
     {
-        if (!assetSpawned) return;
+        if (!assetSpawned || !loaded) return;
         if (enemyAIController.Dead) return;
         cachedTransform.LookAt(Player.transform);
 

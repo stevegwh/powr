@@ -40,6 +40,7 @@ namespace Valve.VR.InteractionSystem
                                                               AttachmentFlags.TurnOnKinematic |
                                                               AttachmentFlags.SnapOnAttach;
 
+        public bool showController;
         public Hand otherHand;
         public SteamVR_Input_Sources handType;
 
@@ -1111,6 +1112,18 @@ namespace Valve.VR.InteractionSystem
             {
                 hoveringInteractable.SendMessage("HandHoverUpdate", this, SendMessageOptions.DontRequireReceiver);
             }
+
+            if (showController)
+            {
+                ShowController(true);
+                SetSkeletonRangeOfMotion(Valve.VR.EVRSkeletalMotionRange.WithController);
+            }
+            else
+            {
+                HideController(true);
+                SetSkeletonRangeOfMotion(Valve.VR.EVRSkeletalMotionRange.WithoutController);
+            }
+
         }
 
         /// <summary>

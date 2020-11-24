@@ -6,11 +6,11 @@ using Valve.VR.InteractionSystem;
 public class ShowControllers : MonoBehaviour
 {
     private Hand hand;
-    void Start()
+    private void Awake()
     {
-        hand = GetComponent<Hand>();
-        hand.ShowController(true);
-        hand.otherHand.ShowController(true);
+        // hand = GetComponent<Hand>();
+        // hand.ShowController(true);
+        // hand.otherHand.ShowController(true);
     }
 
 }

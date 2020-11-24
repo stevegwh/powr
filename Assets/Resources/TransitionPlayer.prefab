@@ -123,10 +123,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.2
-  m_Height: 1
+  m_Radius: 0.18489249
+  m_Height: 0.9
   m_Direction: 1
-  m_Center: {x: 0, y: 0.75, z: 0.042277336}
+  m_Center: {x: 0, y: -0.4, z: 0}
 --- !u!114 &3320119838102946573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,8 +168,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba2f893540e63e74684af94394f5f58e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 0}
-  audioClip: {fileID: 0}
+  audioSource: {fileID: 4413604189460716615}
+  audioClip: {fileID: 8300000, guid: 93724e563c4ab2b4f9dd7528b949af8d, type: 3}
   Player: {fileID: 8132182136505900942}
   hand: {fileID: 8132182136512447700}
   healthText: {fileID: 3320119836569838386}
@@ -2008,6 +2008,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29e3e4511966ba94d8ba0b98c6c62f82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showController: 1
   otherHand: {fileID: 8132182136512398410}
   handType: 2
   trackedObject: {fileID: 0}
@@ -2107,7 +2108,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8132182136505860310}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b2f511c1adaa1e94ebe7ca97bbcabd17, type: 3}
   m_Name: 
@@ -2120,6 +2121,9 @@ MonoBehaviour:
     actionPath: /actions/default/in/GrabGrip
     needsReinit: 0
   active: 1
+  mask:
+    serializedVersion: 2
+    m_Bits: 32
   color: {r: 0, g: 0, b: 0, a: 0}
   thickness: 0.002
   clickColor: {r: 0, g: 1, b: 0, a: 1}
@@ -2140,7 +2144,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   laserPointer: {fileID: 8132182136505860304}
-  Menu: {fileID: 0}
 --- !u!114 &8132182136505860305
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2148,16 +2151,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8132182136505860310}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c7bed38cc91a6b941af7e078fa5124fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GunGameObject: {fileID: 0}
   fireButton:
     actionPath: /actions/default/in/InteractUI
     needsReinit: 1
   pose: {fileID: 8164554404107159958}
+  Hand: {fileID: 8132182136512447700}
 --- !u!1 &8132182136505876708
 GameObject:
   m_ObjectHideFlags: 0
@@ -2208,6 +2211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29e3e4511966ba94d8ba0b98c6c62f82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showController: 0
   otherHand: {fileID: 8132182136512447700}
   handType: 1
   trackedObject: {fileID: 0}
@@ -2345,6 +2349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29e3e4511966ba94d8ba0b98c6c62f82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showController: 0
   otherHand: {fileID: 0}
   handType: 0
   trackedObject: {fileID: 0}
@@ -3006,7 +3011,7 @@ GameObject:
   - component: {fileID: 8132182136512382812}
   m_Layer: 0
   m_Name: TransitionPlayer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

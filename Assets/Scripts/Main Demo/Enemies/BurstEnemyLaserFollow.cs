@@ -1,25 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 // Ensures that the enemy is always looking at the player.
 
 public class BurstEnemyLaserFollow : MonoBehaviour
 {
     private Transform cachedTransform;
-    public GameObject Player;
+    private Transform _player;
     void Start()
     {
         cachedTransform = transform;
-        if (Player == null)
+        GameEvents.current.onSceneLoaded += OnceSceneLoaded;
+    }
+
+    private void OnceSceneLoaded()
+    {
+        if (_player == null)
         {
-            Player = GameObject.Find("VRCamera");
+            _player = FindObjectOfType<Camera>().transform;
         }
     }
+
 
     // Update is called once per frame
     void Update()
     {
-        cachedTransform.LookAt(Player.transform);
+        if (GameOverManager.instance.GameOver) return;
+        cachedTransform.LookAt(_player.transform);
     }
 }

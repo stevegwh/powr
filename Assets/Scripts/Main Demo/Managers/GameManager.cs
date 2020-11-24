@@ -2,11 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
+using UnityEngine.Analytics;
+using UnityEngine.SceneManagement;
 using Valve.VR;
-using Valve.VR.Extras;
 using Valve.VR.InteractionSystem;
 
 // Main class responsible for loading all necessary component of the game. 
@@ -21,7 +19,6 @@ public class GameManager : MonoBehaviour
     public AssetController StartingObject;
     public AssetController currentFocalPoint;
     public Transition activeTransition;
-    private AudioSource _audioSource;
     private bool gamePaused;
     private GameObject Level;
     private GameObject Environment;
@@ -40,8 +37,6 @@ public class GameManager : MonoBehaviour
 
 
     [SerializeField]
-    private SteamVR_Action_Boolean orientateButton = SteamVR_Input.GetBooleanAction("CalibrateButton");
-    [SerializeField]
     public SteamVR_Behaviour_Pose pose;
 
     //-------------------------------------------------
@@ -50,12 +45,13 @@ public class GameManager : MonoBehaviour
     {
         get
         {
-            if ( _instance == null )
+            if (_instance != null) return _instance;
+            _instance = GameObject.FindObjectOfType<GameManager>();
+            if (_instance == null)
             {
-                _instance = GameObject.FindObjectOfType<GameManager>();
-
-                // DontDestroyOnLoad( _instance.gameObject );
+                _instance = new GameObject().AddComponent<GameManager>();
             }
+            // DontDestroyOnLoad( _instance.gameObject );
             return _instance;
         }
     }
@@ -65,46 +61,47 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        // Set game type
-        if (SetDefaults.instance != null)
-        {
-            GameType = SetDefaults.instance.gameType;
-        }
-        else
-        {
-            Debug.Log("No game type specified. Using control scene.");
-            GameType = GameType.TransitionShooterControl;
-        }
-        // Find/load necessary game objects in scene
-        vrAnchorPoint = new GameObject();
-        _audioSource = GetComponent<AudioSource>();
-        Level = GameObject.Find("Level");
-        Environment = Level.transform.Find("Environment").gameObject;
         TransitionPoint = Resources.Load<GameObject>("TransitionPointView");
         TeleportPoint = Resources.Load<GameObject>("TeleportPoint");
-        ReadyCube = GameObject.Find("ReadyCube");
-
+        vrAnchorPoint = new GameObject();
         // Bind button
         if (pose == null)
             pose = GetComponent<SteamVR_Behaviour_Pose>();
         if (pose == null)
             Debug.Log("No SteamVR_Behaviour_Pose component found on this object", this);
-        orientateButton.AddOnStateDownListener(PauseGame, pose.inputSource);
-
         saveLoadData = GetComponent<SaveLoadData>();
         generatedPlanes = new List<GameObject>();
         instantiatedScaledAssets = new List<GameObject>();
+        StartCoroutine(WaitForSceneLoaded());
+    }
 
-        // Load game.
+    private IEnumerator WaitForSceneLoaded()
+    {
+        if (SteamVR_LoadLevel.loading) yield return null;
+
+        GameType = PersistentSettings.GameType; // TODO: Unnecessary?
+        // Find/load necessary game objects in scene
+        Level = GameObject.Find("Level");
+        Environment = Level.transform.Find("Environment").gameObject;
+        ReadyCube = GameObject.Find("ReadyCube");
+
+        FindObjectOfType<GunController>().AttachGunToPlayer();
+
+        currentFocalPoint = StartingObject;
         if (GameType == GameType.TransitionShooter)
         {
             Load();
+            StartTransition();
+            // activeTransition.TriggerTransition();
         }
         else if (GameType == GameType.TransitionShooterControl)
         {
             TransitionControlSceneLoad();
+            GameObject player = FindObjectOfType<Player>().gameObject;
+            player.transform.position = currentFocalPoint.transform.Find("TeleportPoint(Clone)").position;
         }
 
+        GameEvents.current.SceneLoaded(); // Trigger "scene loaded" event for subscribed GOs
     }
 
     private void TransitionControlSceneLoad()
@@ -128,25 +125,8 @@ public class GameManager : MonoBehaviour
 
     private void PauseGame(SteamVR_Action_Boolean fromAction, SteamVR_Input_Sources fromSource)
     {
-        GetComponent<PauseGame>().GamePause();
-    }
-
-    IEnumerator Start()
-    {
-        currentFocalPoint = StartingObject;
-        if (GameType == GameType.TransitionShooter)
-        {
-            StartTransition();
-            // activeTransition.TriggerTransition();
-        }
-        else if (GameType == GameType.TransitionShooterControl)
-        {
-            GameObject player = GameObject.Find("Player");
-            player.transform.position = currentFocalPoint.transform.Find("TeleportPoint(Clone)").position;
-            // currentFocalPoint.StartEnemyWave();
-            // currentFocalPoint = currentFocalPoint.NextObject;
-        }
-        yield return null;
+        // GetComponent<PauseGame>().GamePause();
+        GameOverManager.instance.InitGameOver();
     }
 
     public void TransitionControlSceneTeleportEnd()
@@ -254,7 +234,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (var asset in _assetsToScale)
         {
-            // As plane get's passed as reference and modified in AssetScaler it's important to make a visual copy of the original plane
+            // As plane gets passed as reference and modified in AssetScaler it's important to make a visual copy of the original plane
             AssetController assetController = asset.GetComponent<AssetController>();
             assetController.DecideBestPlane(planeDictionary[assetController.planeType]);
             GameObject planeCopy = Instantiate(assetController.AssociatedPlane);

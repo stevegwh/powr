@@ -65,7 +65,7 @@ public class GunObject : MonoBehaviour
     public void AttachGun(Hand hand)
     {
         if (hand != Hand) return;
-        hand.ShowSkeleton(false);
+        hand.HideSkeleton(true);
         hand.AttachObject(gameObject, GrabTypes.Grip, attachmentFlags, attachmentOffset);
     }
 }

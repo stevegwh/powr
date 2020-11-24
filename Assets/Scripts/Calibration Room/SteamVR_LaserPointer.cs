@@ -16,6 +16,7 @@ namespace Valve.VR.Extras
 
         public bool active = true;
 
+        public LayerMask mask;
         public Color color;
         public float thickness = 0.002f;
         public Color clickColor = Color.green;
@@ -46,7 +47,8 @@ namespace Valve.VR.Extras
 
 
             holder = new GameObject();
-            holder.transform.parent = this.transform;
+                // {layer = LayerMask.NameToLayer("UI")};
+            holder.transform.parent = transform;
             holder.transform.localScale = new Vector3(thickness, thickness, 1f);
             holder.transform.localPosition = Vector3.zero;
             pointer = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -100,7 +102,7 @@ namespace Valve.VR.Extras
         {
             float dist = _originalDist;
             raycast = new Ray(transform.position, transform.forward);
-            bool bHit = Physics.Raycast(raycast, out hit, 1000f, ~5);
+            bool bHit = Physics.Raycast(raycast, out hit, 1000f, mask);
 
 
             if (previousContact && previousContact != hit.transform)

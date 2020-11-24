@@ -1,21 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MoveGun : MonoBehaviour
 {
-    private GameObject Player;
+    private Transform _player;
     // Start is called before the first frame update
     void Start()
     {
-        Player = GameObject.Find("VRCamera");
-        
+        _player = FindObjectOfType<Camera>().transform;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.LookAt(Player.transform);
+        transform.LookAt(_player);
         
     }
 }

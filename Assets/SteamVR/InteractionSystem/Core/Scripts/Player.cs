@@ -252,6 +252,11 @@ namespace Valve.VR.InteractionSystem
 		//-------------------------------------------------
 		private void Awake()
 		{
+            if (_instance != null && _instance != this)
+            {
+                _instance = GameObject.FindObjectOfType<Player>();
+
+            }
 			if ( trackingOriginTransform == null )
 			{
 				trackingOriginTransform = this.transform;

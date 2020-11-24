@@ -38,10 +38,18 @@ public class GameOverManager : MonoBehaviour
     }
 
     //-------------------------------------------------
-    void Start()
+    void Awake()
     {
+        GameEvents.current.onSceneLoaded += OnceSceneLoaded;
         levelLoader = GetComponent<SteamVR_LoadLevel>();
     }
+
+    private void OnceSceneLoaded()
+    {
+        menuPointerController = FindObjectOfType<MenuPointerController>();
+        laserPoint = FindObjectOfType<SteamVR_LaserPointer>();
+    }
+
     public void InitGameOver()
     {
         // Time.timeScale = 0;
@@ -52,11 +60,12 @@ public class GameOverManager : MonoBehaviour
         // blackAndWhite.enabled.value = true;
         // GameOverText.transform.position = vrCamera.transform.position;
         // GameOverText.transform.position += vrCamera.transform.forward;
-        // menuPointerController.enabled = true;
-        // laserPoint.enabled = true;
-        // hand.DetachObject(Gun);
-        // Destroy(Gun);
-        Destroy(player);
+        GameOver = true;
+        menuPointerController.enabled = true;
+        laserPoint.enabled = true;
+        FindObjectOfType<GunController>().DetachGunFromPlayer();
+        Destroy(Gun);
+        GameEvents.current.ResetSubscriptions();
         levelLoader.enabled = true;
     }
 
