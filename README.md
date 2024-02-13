@@ -1,6 +1,6 @@
 # Prop-Oriented World Rotation - an experimental VR technique
 
-The associated academic paper for this project has now been published! Please read here: [https://](https://link.springer.com/article/10.1007/s11042-024-18200-4)
+The associated academic paper for this project has now been published! Please read [here](https://link.springer.com/article/10.1007/s11042-024-18200-4)
 
 _Submitted for the MSc in Computer Science at University of Kent (Received 78% - Distinction)_
 
