@@ -18,7 +18,7 @@ _Originally Submitted for the MSc in Computer Science at the University of Kent 
 
 This project won the award for best poster/demo at VRST 2021 as voted for by conference participants.
 
-<img src="VRST2021award.jpeg" alt="Award for best demo/poster. VRST 2021 conference." width="70%"/>
+<img src="VRST2021award.jpeg" alt="Award for best demo/poster. VRST 2021 conference." width="40%"/>
 
 ### Features
 - Implementation of "POWR" in a demonstration game.
